@@ -1,0 +1,51 @@
+
+.floating-controls {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.floating-btn {
+  background: var(--floating-btn-bg, rgba(30, 30, 30, 0.85));
+  color: var(--floating-btn-color, #fff);
+  border: none;
+  border-radius: 24px;
+  padding: 10px 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-bottom: 12px;
+  min-width: 160px;
+  justify-content: flex-start;
+}
+body.light .floating-btn {
+  --floating-btn-bg: rgba(246, 246, 246, 0.95);
+  --floating-btn-color: #222;
+}
+.floating-btn:last-child {
+  margin-bottom: 0;
+}
+.floating-btn.active {
+  background: #2a8ee0;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(42, 142, 224, 0.3);
+}
+.floating-btn:hover {
+  background: #3a3a3a;
+}
+.floating-label {
+  font-size: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.snow-btn svg {
+  margin-right: 6px;
+}

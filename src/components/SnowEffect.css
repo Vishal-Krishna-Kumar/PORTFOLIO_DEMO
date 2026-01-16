@@ -1,0 +1,54 @@
+.snow-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1001;
+  background: rgba(30, 30, 30, 0.8);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: background 0.2s;
+}
+.snow-btn:hover {
+  background: #3a3a3a;
+}
+.snow-label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.snow-overlay {
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.snowflake-dot {
+  position: absolute;
+  top: -10px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: snow-dot-fall linear forwards;
+}
+
+@keyframes snow-dot-fall {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0.2;
+  }
+}
