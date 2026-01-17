@@ -173,13 +173,17 @@ const App = () => {
 
   // Auto-change images every 3 seconds when in image mode
   useEffect(() => {
+    let interval: NodeJS.Timeout;
     if (displayMode === 'images') {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % profileImages.length);
-      }, 120000); // Change every 3 mins
-
-      return () => clearInterval(interval);
+      }, 120000); // Change every 2 mins
+    } else if (displayMode === 'ascii') {
+      interval = setInterval(() => {
+        setSelectedAscii(asciiList[Math.floor(Math.random() * asciiList.length)]);
+      }, 120000); // Change every 2 mins
     }
+    return () => clearInterval(interval);
   }, [displayMode]);
 
     // Listen for Taskbar overlay open events
