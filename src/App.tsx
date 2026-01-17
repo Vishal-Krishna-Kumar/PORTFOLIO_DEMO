@@ -69,7 +69,7 @@ const App = () => {
   const [expandWindow, setExpandWindow] = useState(String);
   const [selectedWindow, setSelectedWindow] = useState("me");
   const [leetCode, setLeetCode] = useState<LeetCodeData | null>(null);
-  const [experienceIndex] = useState(0);
+  const [experienceIndex, setExperienceIndex] = useState(0);
   const [projectIndex, setProjectIndex] = useState(0);
   const [projectSlideIndex, setProjectSlideIndex] = useState(0);
   const [, setAchievementIndex] = useState(0);
@@ -1145,6 +1145,7 @@ const App = () => {
                 onClick={() => {
                   setExpandWindow("experience");
                   setSelectExperience(experience.title);
+                  setExperienceIndex(index);
                 }}
               >
                 {experience.title} {index == experienceIndex ? " ❮" : ""}
