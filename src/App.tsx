@@ -176,7 +176,7 @@ const App = () => {
     if (displayMode === 'images') {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % profileImages.length);
-      }, 180000); // Change every 3 mins
+      }, 120000); // Change every 3 mins
 
       return () => clearInterval(interval);
     }
