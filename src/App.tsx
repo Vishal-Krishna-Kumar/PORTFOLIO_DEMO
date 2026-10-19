@@ -173,7 +173,7 @@ const App = () => {
 
   // Auto-change images every 3 seconds when in image mode
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval> | undefined;
     if (displayMode === 'images') {
       interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % profileImages.length);
