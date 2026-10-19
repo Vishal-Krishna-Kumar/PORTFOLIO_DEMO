@@ -3,88 +3,93 @@ import type { Experience, Project } from "../types/indexs";
 export const experiencesData: Experience[] = [
 
   {
-    title: "[1] Walmart Advanced Software Engineering Virtual Experience ",
-    window: "Experience Program",
+    title: "[1] AI Engineer Intern — Hirello.ai",
+    window: "Hirello.ai — Remote",
+    date: "July 2026 – September 2026",
+    description:
+      "Built a resume-grounded RAG application-autofill feature for job-portal forms. Contributed code to 5 of the platform's 10 agents (Resume Optimizer, LinkedIn Labs, Outreach, Action Academy, Chat with Hiro). Fixed 3 Resume Optimizer defects (a five-page template, inconsistent fit scores, broken PDF export), repaired Gmail, Outlook and Yahoo OAuth connection problems, fixed an IDOR access-control vulnerability and added regression tests, and added cross-browser end-to-end tests covering 3 browsers. Worked in a 7-person product and engineering team across 10 one-week sprints.",
+    image: "/hirello-1.png",
+    role: "AI Engineer Intern",
+    technologies: ["Python", "FastAPI", "SQLAlchemy", "MySQL", "JavaScript", "Vue 3", "Vertex AI/Gemini", "Pinecone"],
+    achievements: [
+      "Built a resume-grounded RAG application-autofill feature for job-portal forms",
+      "Contributed code to 5 of the platform's 10 agents",
+      "Fixed an IDOR access-control vulnerability and added regression tests",
+      "Added cross-browser end-to-end tests covering 3 browsers"
+    ],
+  },
+
+  {
+    title: "[2] Graduate Researcher | Applied ML and Intelligent Systems",
+    window: "City University of Seattle",
+    date: "August 2025 – Present",
+    description:
+      "Developed a modular RAG pipeline using dense and sparse retrieval, structured chunking and graph reasoning, reducing LLM hallucinations by 30%. Built reproducible experiment workflows, reducing debugging and rerun time by 40%. Worked with PyTorch computer-vision and NLP models. Image credit: the workflow diagram shown is from Daniel Bourke's simple-local-rag tutorial (github.com/mrdbourke/simple-local-rag), not from this research.",
+    image: "/lab_rag.png",
+    role: "Graduate Researcher",
+    technologies: ["PyTorch", "RAG", "Dense + sparse retrieval", "Graph reasoning"],
+    achievements: [
+      "Reduced LLM hallucinations by 30% with a modular RAG pipeline",
+      "Reduced debugging and rerun time by 40% with reproducible experiment workflows"
+    ],
+    links: [
+      {
+        name: "Separate project: NutriChat (follows Daniel Bourke's simple-local-rag tutorial)",
+        url: "https://github.com/Vishal-Krishna-Kumar/RAG-Pipeline"
+      },
+
+    ],
+
+  },
+  {
+    title: "[3] Graduate Teaching Assistant (part-time) — Computer Networks",
+    window: "Illinois Institute of Technology",
+    date: "January 2025 – May 2025",
+    description:
+      "Supported networking labs and graded assignments. Assisted students using the FABRIC testbed. Helped configure and troubleshoot multiple servers.",
+    image: "/graduate-assistant.jpg",
+    role: "Graduate Teaching Assistant (part-time)",
+    technologies: ["FABRIC testbed", "Computer networks"],
+    achievements: [
+      "Supported networking labs and graded assignments",
+      "Assisted students using the FABRIC testbed",
+      "Helped configure and troubleshoot multiple servers"
+    ],
+  },
+
+  {
+    title: "[4] Job simulation (Forage) — BCG Data Science",
+    window: "Job simulation (Forage) — not employment",
+    kind: "simulation",
     date: "January 2026",
     description:
-      "Completed advanced software engineering simulations across multiple Walmart teams. Implemented a novel heap data structure in Java for shipping workflows, demonstrating strong algorithmic problem-solving. Produced a UML class diagram for a data processor supporting multiple operating modes and database connections, and designed an ER diagram for a new accounting database based on business requirements.",
-    image: "/walmart-1.png",
-    role: "Advanced Software Engineering Simulation Participant",
-    technologies: ["Java", "Data Structures", "UML", "ER Modeling", "System Design"],
+      "Forage job simulation (not employment). Customer churn prediction: built a random forest on 10,000+ records and improved recall from 32% to 50%.",
+    image: "/BCG.png",
+    role: "Job simulation participant (Forage)",
+    technologies: ["Python", "Pandas", "NumPy", "Random Forest"],
     achievements: [
-      "Implemented a custom heap data structure in Java for shipping use-cases",
+      "Random forest on 10,000+ records",
+      "Improved recall from 32% to 50%"
+    ],
+  },
+
+  {
+    title: "[5] Job simulation (Forage) — Walmart Advanced Software Engineering",
+    window: "Job simulation (Forage) — not employment",
+    kind: "simulation",
+    date: "January 2026",
+    description:
+      "Forage job simulation (not employment). Implemented a heap data structure in Java for shipping workflows, produced a UML class diagram for a data processor supporting multiple operating modes and database connections, and designed an ER diagram for a new accounting database based on business requirements.",
+    image: "/walmart-1.png",
+    role: "Job simulation participant (Forage)",
+    technologies: ["Java", "Data Structures", "UML", "ER Modeling"],
+    achievements: [
+      "Implemented a heap data structure in Java for shipping use-cases",
       "Designed a UML class diagram for a multi-mode data processor",
       "Created an ER diagram for a requirements-driven accounting database"
     ],
   },
 
-
-  {
-  title: "[2] BCG Data Science Job Simulation",
-  window: "Experience Program",
-  date: "January 2026",
-  description:
-    "Completed a data science simulation focused on customer churn analysis, identifying key behavioral and transactional drivers. Applied structured analytical thinking to clean, analyze, and model client data, delivering actionable insights aligned with business objectives.",
-  image: "/BCG.png",
-  role: "Data Science Simulation Participant",
-  technologies: ["Python", "Pandas", "NumPy", "Machine Learning", "Random Forest", "Data Analysis"],
-  achievements: [
-    "Performed customer churn analysis using Python with Pandas and NumPy",
-    "Built and optimized a Random Forest model achieving a 50% recall rate",
-    "Translated analytical findings into an executive-level summary with strategic recommendations"
-  ],
-},
-
-
-
-
-
-  
-  {
-    title: "[3] Research Assistant | Applied Machine Learning & Intelligent Systems",
-    window: "Intelligent Systems Lab",
-    date: "August 2025 – Present",
-    description:
-      "Leading research in Retrieval-Augmented Generation (RAG) and graph-based reasoning systems. Developed modular RAG pipelines with semantic chunking and hybrid retrieval, reducing hallucinations by ~35%. Implemented computer vision models using PyTorch, achieving ~25% performance gains through architecture optimization.Contributed to open-source AI frameworks.",
-    image: "/lab_rag.png",
-    role: "Lead Researcher",
-    technologies: ["PyTorch", "Transformers", "Neo4j", "AWS", "Docker", "FastAPI"],
-    achievements: [
-      "Reduced hallucinated responses by 35% through optimized RAG pipelines",
-      "Achieved 25% performance improvement in CV models",
-      "Mentored 3 junior researchers in ML methodologies"
-    ],
-    links: [
-      {
-        name: "GitHub Repository",
-        url: "https://github.com/Vishal-Krishna-Kumar/RAG-Pipeline"
-      },
-      
-    ],
-    
-  },
-  {
-    title: "[4] Graduate Teaching Assistant — Computer Networks (Fabric Testbed)",
-    window: "Illinois Institute of Technology",
-    date: "January 2025 – May 2025",
-    description:
-      "Designed and configured a multi-node, geographically distributed Fabric network testbed, improving experimental reliability by ~40%. Optimized communication workflows achieving 26% performance improvement. Mentored 90+ graduate students in distributed systems, network protocols, and performance evaluation. Developed automated testing frameworks reducing setup time by 35%.",
-    image: "/graduate-assistant.jpg",
-    role: "Teaching Assistant",
-    technologies: ["Fabric", "Python", "Docker", "Kubernetes", "Network Protocols"],
-    achievements: [
-      "Improved experimental reliability by 40%",
-      "Reduced setup and execution time by 35%",
-      "Mentored 90+ graduate students",
-      "Developed comprehensive lab materials"
-    ],
-    metrics: [
-      { label: "Performance Improvement", value: "26%", color: "blue" },
-      { label: "Reliability Gain", value: "40%", color: "green" },
-      { label: "Time Reduction", value: "35%", color: "purple" }
-    ]
-  },
-  
 
   // {
   //   title: "[3] AI Research Intern | Deep Learning Applications",
@@ -107,67 +112,52 @@ export const experiencesData: Experience[] = [
 export const projectsData: Project[] = [
   {
     id: "gai-001",
+    // NOTE: App.tsx selects the GAI layout with title.includes('GraphAugmented Intelligence') — keep that phrase in the title.
     title: "[1] GraphAugmented Intelligence (GAI)",
-    window: "Prompt-Aware Knowledge Graph–Driven Retrieval-Augmented Intelligence",
+    window: "Knowledge-Graph RAG for Biomedical Q&A (built on KG-RAG, Baranzini Lab, UCSF)",
     date: "September 2025",
-    description: "Designed and implemented GraphAugmented Intelligence (GAI), a prompt-aware, knowledge graph–driven retrieval-augmented generation framework that enhances factual grounding and reduces hallucinations in LLMs by 40%. The system integrates semantic graph embeddings with multi-hop reasoning paths to improve answer accuracy across complex, multi-domain queries.",
+    description: "Knowledge-graph retrieval-augmented generation (KG-RAG) for biomedical question answering, built on the open-source KG-RAG framework from the Baranzini Lab, UCSF. I evaluated GPT-4 and Llama on the BiomixQA benchmark. Credit: the KG-RAG framework is the Baranzini Lab's work; BiomixQA is an existing benchmark, not my dataset.",
     category: "AI/ML",
     status: "Active",
     featured: true,
     // Main schematic video for top section
     VideoDemo: "/KGRAG-1.mov",
-    // Demo videos for bottom section
+    // Demo videos for bottom section.
     demoVideos: [
-      { 
-        title: "Query Processing Without KG-RAG", 
+      {
+        title: "Query Processing Without KG-RAG",
         url: "/KGRAGDEMO-1.mp4",
-        description: "Baseline query processing showing limitations in multi-hop reasoning",
+        description: "Demo from the KG-RAG project (Baranzini Lab, UCSF)",
         duration: "2:30"
       },
-      { 
-        title: "Query Processing With KG-RAG", 
+      {
+        title: "Query Processing With KG-RAG",
         url: "/KGRAGDEMO-2.mp4",
-        description: "Enhanced reasoning with knowledge graph augmentation",
+        description: "Demo from the KG-RAG project (Baranzini Lab, UCSF)",
         duration: "3:15"
       },
-      { 
-        title: "GPT-4 Integration on AWS p3.8xlarge", 
+      {
+        title: "KG-RAG with GPT-4",
         url: "/GPT_DEMO-1.mp4",
-        description: "Real-time inference with KG-RAG v0.3.0 on cloud infrastructure",
+        description: "Demo from the KG-RAG project (Baranzini Lab, UCSF)",
         duration: "4:20"
       },
-      { 
-        title: "Llama-2 Integration on AWS p3.8xlarge", 
+      {
+        title: "KG-RAG with Llama",
         url: "/LLAMA_DEMO-1.mp4",
-        description: "Open-source LLM integration with KG-RAG framework",
+        description: "Demo from the KG-RAG project (Baranzini Lab, UCSF)",
         duration: "3:45"
       }
     ],
-    metrics: [
-      { label: "Hallucination Reduction", value: "40%", color: "green", icon: "brain" },
-      { label: "Multi-hop Accuracy", value: "35%↑", color: "blue", icon: "trending-up" },
-      { label: "Response Latency", value: "< 2s", color: "purple", icon: "zap" },
-      { label: "Knowledge Recall", value: "92%", color: "orange", icon: "target" }
-    ],
-    techStack: ["PyTorch", "Neo4j", "AWS EC2", "FastAPI", "React", "Docker", "Kubernetes", "GraphQL"],
+    techStack: ["KG-RAG (Baranzini Lab, UCSF)", "GPT-4", "Llama", "BiomixQA (evaluation benchmark)"],
     architecture: [
-      "Semantic Graph Embeddings with Node2Vec",
-      "Multi-hop Reasoning Engine with Path Ranking",
-      "Hybrid Retrieval (Dense + Sparse + Keyword)",
-      "Real-time Inference Pipeline with Caching",
-      "Vector Database Integration (Pinecone)",
-      "WebSocket-based Streaming Responses"
-    ],
-    features: [
-      "Real-time knowledge graph updates",
-      "Multi-modal query support",
-      "Explainable AI with reasoning paths",
-      "Scalable microservices architecture",
-      "Automated knowledge extraction",
-      "Interactive visualization dashboard"
+      "Built on the open-source KG-RAG framework (Baranzini Lab, UCSF)",
+      "Knowledge-graph retrieval-augmented generation for biomedical Q&A",
+      "Evaluated GPT-4 and Llama on the BiomixQA benchmark"
     ],
     links: [
-      { name: "GitHub Repository", url: "https://github.com/Vishal-Krishna-Kumar/GraphAugmented-Intelligence_GAI" }
+      { name: "GitHub Repository", url: "https://github.com/Vishal-Krishna-Kumar/GraphAugmented-Intelligence_GAI" },
+      { name: "Upstream framework: KG-RAG (Baranzini Lab, UCSF)", url: "https://github.com/BaranziniLab/KG_RAG" }
     ],
     images: [
       "/gai-architecture.png",
@@ -175,18 +165,6 @@ export const projectsData: Project[] = [
       "/gai-knowledge-graph.png",
       "/gai-performance.png"
     ],
-    teamSize: 3,
-    impact: "Revolutionizes enterprise search and knowledge management systems",
-    challenges: [
-      "Real-time knowledge graph synchronization",
-      "Multi-modal data integration",
-      "Scalability to billion-scale graphs"
-    ],
-    futureWork: [
-      "Multi-modal KG integration",
-      "Federated learning support",
-      "Real-time collaborative editing"
-    ]
   },
 
 
@@ -195,27 +173,22 @@ export const projectsData: Project[] = [
 
   {
     id: "medical-ai-002",
-    title: "[2] 3D Attention UNet++ Brain Tumor Segmentation",
+    // NOTE: App.tsx captions the video "3D MRI Segmentation Demo" when the title includes "Tumor" — keep that word.
+    title: "[2] 3D Attention U-Net for Brain Tumor Segmentation",
     window: "Medical AI & Volumetric Segmentation",
     date: "June 2025",
     description:
-      "Advanced 3D Attention UNet++ model for multimodal MRI brain tumor segmentation with state-of-the-art performance. Achieved Dice scores > 0.97 across all tumor sub-regions on BraTS 2023 dataset. Model incorporates attention gates, residual connections, and deep supervision for superior boundary delineation.",
+      "2nd place, Hack for Research 2025 (team lead). Brain tumor segmentation on multimodal MRI from the BraTS 2019 dataset with a 3D Attention U-Net in PyTorch. I trained and modified public code from Islam et al. (2019); the architecture is theirs. Image credit: the gallery figures are from published papers — Islam et al. (2019) (BraTS 2019 results figure), a third-party 3D U-Net/CoT architecture figure, and Zhou et al. (2018) (UNet++ diagram) — credited to their authors; they are not my results.",
     category: "Healthcare AI",
     status: "Completed",
     featured: true,
     VideoDemo: "/3DUnet-2.mp4",
     images: [
       "/3DUnet.png",
-      "/3DUnet-3.png", 
+      "/3DUnet-3.png",
       "/3DUnet-4.png",
     ],
-    metrics: [
-      { label: "Dice Score", value: "0.97", color: "green", icon: "target" },
-      { label: "Accuracy", value: "98.2%", color: "blue", icon: "bar-chart-3" },
-      { label: "Sensitivity", value: "96.5%", color: "purple", icon: "activity" },
-      { label: "Inference Time", value: "0.8s", color: "orange", icon: "zap" }
-    ],
-    techStack: ["PyTorch", "3D CNNs", "BraTS Dataset", "MONAI", "NumPy", "Matplotlib", "ITK"],
+    techStack: ["PyTorch", "3D Attention U-Net (Islam et al., 2019)", "BraTS 2019"],
     links: [
       {
         name: "GitHub Repository",
@@ -223,17 +196,14 @@ export const projectsData: Project[] = [
         // icon: "github"
       },
       {
-        name: "Blog",
-        url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11929897/",
+        name: "Base code: Islam et al. (2019) 3D Attention U-Net",
+        url: "https://github.com/mobarakol/3D_Attention_UNet",
         // icon: "file-text"
       },
-      
+
     ],
-    teamSize: 2,
-    impact: "Potential to reduce surgical planning time by 60%",
     recognition: [
-      "Featured in Medical Image Analysis journal",
-      "Presented at MICCAI 2024"
+      "2nd place, Hack for Research 2025"
     ]
   },
 
@@ -246,26 +216,18 @@ export const projectsData: Project[] = [
     id: "deepfake-003",
     title: "[3] Deepfake Detection System",
     window: "AI & Media Forensics",
-    date: "April 2024",
+    date: "2023",
     description:
-      "Advanced deepfake detection framework using ensemble of XceptionNet, EfficientNet, and Vision Transformers. Achieved state-of-the-art 94.2% accuracy on DFDC dataset with 2.1% false positive rate. System includes real-time video analysis and explainable AI visualizations.",
+      "Final-year undergraduate team project at SRM Institute of Science and Technology: a deepfake detection system using XceptionNet, built with TensorFlow/Keras. Published as: S. Ezra Vethamani, Kawin P., Rishi R., Vishal K. \"Deepfake Detection System: AI and Deep Learning Framework for Cyber Verification.\" TDEMAS, 2023. Image credit: the animated demo is from the open-source PyDeepFakeDet toolkit (Fudan Vision and Learning Lab), not output of this project.",
     category: "Computer Vision",
     status: "Completed",
     featured: true,
-    images: ["/DeepFake.gif", "/DeepFake-2.png", "/DeepFake-3.png", ],
-    metrics: [
-      { label: "Detection Accuracy", value: "94.2%", color: "green", icon: "target" },
-      { label: "Performance Improvement", value: "35%", color: "blue", icon: "trending-up" },
-      { label: "False Positive Rate", value: "2.1%", color: "red", icon: "alert-circle" },
-      { label: "Real-time FPS", value: "30", color: "purple", icon: "zap" }
-    ],
-    techStack: ["TensorFlow", "XceptionNet", "OpenCV", "FFmpeg", "Flask", "React", "Docker"],
+    images: ["/DeepFake.gif"],
+    techStack: ["TensorFlow", "Keras", "XceptionNet"],
     features: [
-      "Real-time video analysis pipeline",
-      "Multi-modal detection (image/video/audio)",
-      "Transfer learning with domain adaptation",
-      "Explainable AI with saliency maps",
-      "Batch processing support"
+      "Deepfake detection with XceptionNet",
+      "Built with TensorFlow/Keras",
+      "Final-year undergraduate team project (SRM Institute of Science and Technology)"
     ],
     links: [
       {
@@ -273,16 +235,9 @@ export const projectsData: Project[] = [
         url: "https://github.com/Vishal-Krishna-Kumar/DeepFake-Detection-System",
         // icon: "github"
       },
-      {
-        name: "Research Documentation",
-        url: "https://deep-fake-detection-paper.tiiny.site",
-        // icon: "website"
-      },
-      
+
     ],
-    teamSize: 3,
-    impact: "Contributes to fight against misinformation",
-    recognition: "Published in TDEMAS journal"
+    recognition: "Published: TDEMAS, 2023"
   },
 
 
@@ -294,27 +249,22 @@ export const projectsData: Project[] = [
 
   {
     id: "rl-004",
-    title: "[4] AlphaZero-Inspired Reinforcement Learning System",
+    title: "[4] AlphaZero-Style Game Agent",
     window: "Deep Reinforcement Learning & Game AI",
     date: "December 2024",
     description:
-      "AlphaZero-inspired self-play reinforcement learning system with advanced Monte Carlo Tree Search (MCTS) and neural policy-value networks. Achieved 92% win rate against professional chess engines and 30% faster convergence through optimized exploration strategies.",
+      "AlphaZero-style game agent: self-play reinforcement learning with Monte Carlo Tree Search (MCTS) guided by a policy-value network, in PyTorch with CUDA. Extended Robert Förster's AlphaZero tutorial (the base implementation is his). Reached an 81% win rate vs rule-based opponents. Image credit: the gallery shows third-party illustrations (a CNN diagram, an Othello-agent figure, a figure on chess concepts in AlphaZero) and a screenshot of my separate ChessAI project; none shows this agent's results.",
     category: "Reinforcement Learning",
     status: "Completed",
     images: ["/AlphaZero-6.jpg", "/AlphaZero-2.png", "/AlphaZero-4.png", "/AlphaZero-5.png"],
     metrics: [
-      { label: "Win Rate", value: "92%", color: "green", icon: "trophy" },
-      { label: "Convergence Speed", value: "30%↑", color: "blue", icon: "zap" },
-      { label: "Training Games", value: "10K+", color: "purple", icon: "activity" },
-      { label: "Elo Rating", value: "2800", color: "orange", icon: "trending-up" }
+      { label: "Win rate vs rule-based opponents", value: "81%", color: "green", icon: "trophy" }
     ],
-    techStack: ["PyTorch", "TensorFlow", "MCTS", "OpenAI Gym", "Ray", "Docker", "CUDA"],
+    techStack: ["PyTorch", "CUDA", "Monte Carlo Tree Search", "Policy-value network"],
     features: [
-      "Real-time move analysis",
-      "Opening book integration",
-      "Endgame tablebase",
-      "Distributed training",
-      "Interactive web interface"
+      "Self-play reinforcement learning",
+      "Monte Carlo Tree Search guided by a policy-value network",
+      "Built by extending Robert Förster's AlphaZero tutorial"
     ],
     links: [
       {
@@ -323,19 +273,16 @@ export const projectsData: Project[] = [
         // icon: "github"
       },
       {
-        name: "Chess AI Driven by AlphaZero",
+        name: "Tutorial this builds on: Robert Förster's AlphaZeroFromScratch",
+        url: "https://github.com/foersterrobert/AlphaZeroFromScratch",
+      },
+      {
+        name: "Separate project: ChessAI (Pygame chess engine; not AlphaZero-based)",
         url: "https://github.com/Vishal-Krishna-Kumar/ChessAI",
         // icon: "github"
       },
-      {
-        name: "Research Documentation",
-        url: "https://alpha-zero-paper.tiiny.site/",
-        // icon: "website"
-      },
     ],
-    teamSize: 3,
     complexity: "High",
-    impact: "Advances research in self-play RL algorithms"
   },
 
 
@@ -348,23 +295,20 @@ export const projectsData: Project[] = [
     window: "NLP Sequence Labeling & Linguistics",
     date: "September 2024",
     description:
-      "State-of-the-art multilingual POS tagging and context-aware spell correction system supporting 5+ languages. Achieved 96.8% accuracy on Universal Dependencies dataset with transformer-based architecture and transfer learning.",
+      "Part-of-speech tagging and spelling correction across 3 languages (English, Japanese, Bulgarian). Compared a hidden Markov model tagger (Viterbi decoding) with RNN, LSTM, and BiLSTM taggers. A bigram HMM reached a 5.4% English word error rate.",
     category: "Natural Language Processing",
     status: "Active",
-    images: ["/NLP-1.png", "/NLP-2.png", "/NLP-3.png", "/NLP-4.png"],
+    images: ["/NLP-1.png", "/NLP-2.png", "/NLP-3.png"],
     metrics: [
-      { label: "POS Tagging Accuracy", value: "96.8%", color: "green", icon: "target" },
-      { label: "Spell Correction F1", value: "92.3%", color: "blue", icon: "check-circle" },
-      { label: "Languages Supported", value: "5+", color: "purple", icon: "globe" },
-      { label: "Inference Speed", value: "1000/s", color: "orange", icon: "zap" }
+      { label: "English word error rate (bigram HMM)", value: "5.4%", color: "green", icon: "target" },
+      { label: "Languages", value: "3", color: "purple", icon: "globe" }
     ],
-    techStack: ["spaCy", "Transformers", "NLTK", "Scikit-learn", "PyTorch", "FastAPI"],
+    techStack: ["Python", "HMM / Viterbi", "RNN", "LSTM", "BiLSTM"],
     features: [
-      "Real-time spell correction",
-      "Multi-language support",
-      "Context-aware suggestions",
-      "Grammar error detection",
-      "API endpoint for integration"
+      "HMM part-of-speech tagger with Viterbi decoding",
+      "Neural taggers: RNN, LSTM, BiLSTM",
+      "Spelling correction",
+      "Evaluated on English, Japanese, and Bulgarian"
     ],
     links: [
       {
@@ -378,9 +322,6 @@ export const projectsData: Project[] = [
         // icon: "file-text"
       },
     ],
-    teamSize: 1,
-    datasets: ["Universal Dependencies", "Wikipedia", "Common Crawl"],
-    impact: "Improves NLP pipeline accuracy for downstream tasks"
   },
 
 
@@ -508,7 +449,35 @@ export const projectsData: Project[] = [
   architecture: "Modular game engine with Combat Algo, rendering, physics, and input systems",
   testing: "Manual gameplay testing with Combat Algorithm behavior validation and FPS profiling",
   impact: "Demonstrates real-time AI decision-making, optimized rendering, and professional-grade game architecture"
-}
+},
+
+  {
+    id: "research-008",
+    title: "[8] AeroForge-TRIAD (research in progress)",
+    window: "Certified Gradients for Neural CFD Surrogates",
+    date: "In progress (status as of October 2026)",
+    description:
+      "Ongoing, unpublished research question: are neural-surrogate gradients much less accurate than predicted values, and can a guaranteed error bound (\"certificate\") on gradients stay valid along a whole optimiser run under distribution drift? Built a CFD pipeline on the SU2 solver (laminar flow, Re 1000) with exact adjoint gradients checked against finite differences (agreement within 0.12%). Surrogates: ensembles of 5 Fourier Neural Operator (FNO) and 5 MLP models. Hypotheses and decision rules were pre-registered before seeing data (protocols v1–v3).",
+    category: "Research (in progress)",
+    status: "Active",
+    images: [],
+    metrics: [
+      { label: "CFD calls saved by certificate gating", value: "90%", color: "green", icon: "zap" },
+      { label: "Runs fully covered (Theorem 1, α = 0.1)", value: "20/20", color: "blue", icon: "target" },
+      { label: "Gradient direction cosine similarity", value: "≈ 0.999", color: "purple", icon: "activity" }
+    ],
+    techStack: ["SU2 (CFD solver)", "Adjoint methods", "Fourier Neural Operators", "MLP ensembles", "Conformal prediction", "RunPod", "Google Colab"],
+    features: [
+      "Two design spaces: V1 (4 parameters, NACA airfoils) and V2 (13 parameters: 12 shape coefficients + angle of attack)",
+      "Finding: gradient errors are 3–9× value errors, but gradient directions are nearly exact (cosine similarity ≈ 0.999); the \"gradients far worse\" hypothesis was falsified",
+      "Finding: the standard i.i.d. certificate's coverage drops to 0.66 vs a 0.90 target along optimiser runs; in V2 only 0.20 of runs were fully covered",
+      "Finding: certificate gating reached the same designs as running CFD every step with 90% fewer CFD calls (the \"better designs\" hypothesis was falsified; efficiency result)",
+      "Finding: the run-level certificate (Theorem 1) fully covered 20/20 test runs at α = 0.1 and 0.85 at α = 0.2 — the only method meeting both targets vs Gaussian, weighted conformal, ACI and Bonferroni",
+      "Limitation: the run-level certificate is 3.6–4.2× wider and certifies about half of the steps; the random-step certificate narrowly missed (0.742 vs 0.75 at α = 0.2)",
+      "Ran cloud GPU workloads on RunPod under explicit budget caps",
+      "In progress: V3 transonic (shock-wave) regime — 17 local pilot runs converged; paper draft in progress (unpublished)"
+    ],
+  }
 
 ];
 
@@ -644,18 +613,18 @@ export const asciiList = [
 export const education = [
   {
     institution: "City University of Seattle",
-    degree: "Master of Science in Computer Science Specialized in Data Science",
-    date: "Expected May 2027",
-    gpa: "4.0",
-    courses: ["Advanced Algorithms", "Machine Learning", "Distributed Systems", "Cloud Computing"],
-    awards: ["Graduate Academic Award", "Schlarship for Excellence"],
+    degree: "MS Computer Science, Data Science concentration (in progress)",
+    date: "Expected 2027",
+    gpa: "3.9",
+    courses: ["Deep Learning", "NLP", "Large Language Models", "Graph RAG", "AI Cloud Computing", "Secure Systems", "Networking"],
+    awards: ["Dean's Scholar"],
   },
   {
-    institution: "SRM University Chennai",
-    degree: "Bachelor of Science in Computer Science Specialization in AI & ML",
-    date: "May 2024",
+    institution: "SRM Institute of Science and Technology",
+    degree: "B.Tech Computer Science and Engineering",
+    date: "October 2024",
     gpa: "3.61",
     courses: ["Data Structures", "Database Management Systems", "Operating Systems", "Computer Networks"],
-    awards: ["Dean's List", "Prime Minsiter Scholarship"],
+    awards: ["Dean's List", "Prime Minister Scholarship"],
   }
 ];

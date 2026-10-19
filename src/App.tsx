@@ -1135,8 +1135,14 @@ const App = () => {
           </p>
           <div className="my-2 mx-4">
             {experiencesData.map((experience, index) => (
+              <React.Fragment key={index}>
+              {/* Forage job simulations get their own non-employment heading. */}
+              {experience.kind === "simulation" && experiencesData[index - 1]?.kind !== "simulation" && (
+                <p className="text-xs lg:text-sm text-gray-400 mt-3 mb-1">
+                  Job simulations (Forage) — not employment
+                </p>
+              )}
               <div
-                key={index}
                 className={`rounded-md text-sm lg:text-base transition-all duration-150 cursor-pointer my-2 lg:my-1 ${
                   index === experienceIndex
                     ? `${
@@ -1154,6 +1160,7 @@ const App = () => {
               >
                 {experience.title} {index == experienceIndex ? " ❮" : ""}
               </div>
+              </React.Fragment>
             ))}
           </div>
         </div>
@@ -1346,10 +1353,10 @@ const App = () => {
                     <p className="text-[9px] lg:text-sm mb-2">
                       vishalkrishnakkr@gmail.com
                     </p>
-                    <p className="ml-4 text-xs lg:text-sm">ML Engineer | AI Specialist</p>
+                    <p className="ml-4 text-xs lg:text-sm">Graduate Researcher | Applied ML</p>
                     <p className="ml-4 text-xs lg:text-sm">CS @ CityU</p>
                     <p className="ml-4 text-xs lg:text-sm">
-                      Expected Grad: May 2027
+                      Expected 2027
                     </p>
                     <p className="ml-4 text-xs lg:text-sm">Seattle, WA</p>
                     <p className="ml-4 text-xs lg:text-sm">
@@ -1405,76 +1412,50 @@ const App = () => {
                   </p>
 
                   <p className={isDark ? "text-gray-200" : "text-gray-800"}>
-                    I later collaborated with{" "}
-                    <a
-                      href="https://www.wisen.com.au/"
-                      className="text-blue-300 underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Wisen Solutions
-                    </a>{" "}
-                    on a deepfake detection project where i was the team Lead, where I worked on the end-to-end implementation
-                    of computer vision pipelines using architectures such as XceptionNet, ResNet-50 and U-Net++.
-                    This experience strengthened my understanding of model training, evaluation,
-                    and real-world deployment.
+                    For my final-year undergraduate team project at SRM Institute of Science and Technology, I worked
+                    on deepfake detection with XceptionNet in TensorFlow/Keras; our paper was published at TDEMAS (2023).
+                    This experience strengthened my understanding of model training and evaluation.
                   </p>
 
                   <p className={isDark ? "text-gray-200" : "text-gray-800"}>
                     Building on this foundation, I worked on healthcare-focused AI applications,
-                    including skin lesion classification and brain tumor segmentation using U-Net++
-                    architectures. These projects motivated me to pursue AI/ML with a strong focus
-                    on healthcare and reliable, real-world systems.
+                    including skin lesion classification and brain tumor segmentation with a 3D Attention U-Net
+                    (built on public code from Islam et al., 2019; 2nd place, Hack for Research 2025). These projects
+                    motivated me to pursue AI/ML with a strong focus on healthcare and reliable, real-world systems.
                   </p>
 
                   <p className={isDark ? "text-gray-200" : "text-gray-800"}>
-                    I am currently pursuing my Master's in CS specialized in Data Science at City
-                    University of Seattle, with an expected graduation date of May 2027. My current
-                    work focuses on Graph Augmented Intelligence {" "}
+                    I am currently pursuing my MS in Computer Science (Data Science concentration) at City
+                    University of Seattle (Expected 2027), where I am a graduate researcher. My research
+                    focuses on retrieval-augmented generation (RAG): I developed a modular RAG pipeline using dense
+                    and sparse retrieval, structured chunking and graph reasoning that reduced LLM hallucinations by 30%.
+                    In a separate project{" "}
                     <a
                       href="https://github.com/Vishal-Krishna-Kumar/GraphAugmented-Intelligence_GAI"
                       className="text-blue-300 underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      (GAI) 
-                    </a>{" "} 
-                    and  {" "}
-                    Retrieval-Augmented Generation{" "}
+                      (GAI)
+                    </a>{" "}
+                    I evaluated GPT-4 and Llama on BiomixQA using the open-source{" "}
                     <a
-                      href="https://github.com/Vishal-Krishna-Kumar/RAG-Pipeline"
+                      href="https://github.com/BaranziniLab/KG_RAG"
                       className="text-blue-300 underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      (RAG)
-                    </a>{" "}
-                    
-                    
-                    a framework's introduced by{" "}
-                    
-                     <a
-                      href="https://cloud.google.com/blog/products/databases/using-spanner-graph-with-langchain-for-graphrag"
-                      className="text-blue-300 underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >Google
-                  </a>{" "}
-                    
-                     and {" "}
+                      KG-RAG framework from the Baranzini Lab, UCSF
+                    </a>
+                    . RAG itself was introduced by researchers at{" "}
                      <a
                       href="https://ai.meta.com/blog/retrieval-augmented-generation-streamlining-the-creation-of-intelligent-natural-language-processing-models/"
                       className="text-blue-300 underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >Meta
-                  </a>{" "}
-
-
-
- where I design systems that combine large language models with structured
-                    and unstructured data to enable grounded reasoning over complex, real-time
-                    information.
+                  </a>
+                    .
                   </p>
 
                   <p className={isDark ? "text-gray-200" : "text-gray-800"}>
@@ -1482,8 +1463,8 @@ const App = () => {
                   </p>
 
                   <p className={isDark ? "text-gray-200" : "text-gray-800"}>
-                    I am currently focused on strengthening my  skills and actively
-                    looking for  Summer 2026 internship opportunities.
+                    I recently completed an AI Engineer internship at Hirello.ai (July – September 2026),
+                    and I am looking for full-time software engineering roles starting in 2027.
                   </p>
                 </div>
               </div>
@@ -1522,11 +1503,14 @@ const App = () => {
                         if (selectedExperienceData) {
                           return (
                             <div>
+                              {/* Skip the image when an entry has none (e.g. the new Hirello.ai entry). */}
+                              {selectedExperienceData.image && (
                               <img
                                 src={selectedExperienceData.image}
                                 alt={selectedExperienceData.title}
                                 className="w-full h-48 object-cover rounded-lg mb-4 max-w-2xl mx-auto"
                               />
+                              )}
                               <p
                                 className={`mt-2 max-w-2xl mx-auto ${
                                   isDark ? "text-gray-200" : "text-gray-800"
@@ -1614,8 +1598,14 @@ const App = () => {
                     </p>
                     <div className="mt-2 mx-4">
                       {experiencesData.map((experience, index) => (
+                        <React.Fragment key={index}>
+                        {/* Forage job simulations get their own non-employment heading. */}
+                        {experience.kind === "simulation" && experiencesData[index - 1]?.kind !== "simulation" && (
+                          <p className="text-sm text-gray-400 mt-4 mb-1">
+                            Job simulations (Forage) — not employment
+                          </p>
+                        )}
                         <div
-                          key={index}
                           className={`rounded-md transition-all duration-150 cursor-pointer ${
                             index === experienceIndex
                               ? "text-white font-bold underline"
@@ -1626,6 +1616,7 @@ const App = () => {
                           {experience.title}{" "}
                           {index == experienceIndex ? " ❮" : ""}
                         </div>
+                        </React.Fragment>
                       ))}
                     </div>
                   </div>

@@ -20,8 +20,8 @@ const Skills = () => {
         <div><span className="text-yellow-400 font-bold">OS:</span>  MacOS / PortfolioOS v1.0</div>
         <div><span className="text-yellow-400 font-bold">Shell:</span> zsh 5.8</div>
         <div className="mt-2"><span className="text-purple-400 font-bold">Langs:</span> Python, TypeScript, C++, SQL</div>
-        <div><span className="text-purple-400 font-bold">Frameworks:</span> React, PyTorch, TensorFlow, FastAPI</div>
-        <div><span className="text-purple-400 font-bold">Tools:</span> Docker, Kubernetes, Git, Vercel</div>
+        <div><span className="text-purple-400 font-bold">Frameworks:</span> PyTorch, TensorFlow, FastAPI</div>
+        <div><span className="text-purple-400 font-bold">Tools:</span> Docker, Git</div>
         <div className="mt-2 text-gray-500">----------------------------------</div>
       </div>
     </div>

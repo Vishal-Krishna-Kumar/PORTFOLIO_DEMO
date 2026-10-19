@@ -40,6 +40,8 @@ export interface LeetCodeData {
 export interface Experience {
   title: string;
   window: string;
+  /** "simulation" = Forage job simulation (not employment); listed under its own heading. */
+  kind?: "employment" | "simulation";
   date: string;
   description: string;
   image?: string;
