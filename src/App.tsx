@@ -445,8 +445,8 @@ const App = () => {
       if (lowerCmd === "resume" || lowerCmd === "download cv" || lowerCmd === "cv") {
         try {
           const link = document.createElement("a");
-          link.href = "/resume.pdf";
-          link.download = "Vishal_Krishna_Resume.pdf";
+          link.href = "/vishal_krishna_kumar_resume.pdf";
+          link.download = "Vishal_Krishna_Kumar_Resume.pdf";
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
