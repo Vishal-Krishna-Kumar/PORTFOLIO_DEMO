@@ -2,7 +2,7 @@
 // Live Spotify data when the SPOTIFY_* environment variables are set; otherwise, or if Spotify
 // fails, the curated static list. The response shape is the same either way.
 import { getRandomTopTracks } from "./music-data.js";
-import { getLiveTopTracks, spotifyConfigured } from "./spotify-live.js";
+import { getLiveTopTracks, spotifyConfigured } from "./token-manager.js";
 
 export default async function handler(req, res) {
   if (spotifyConfigured()) {
