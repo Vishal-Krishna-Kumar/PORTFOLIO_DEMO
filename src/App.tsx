@@ -878,11 +878,34 @@ const App = () => {
               <p className="text-[9px] lg:text-sm mb-2">
                 vishalkrishnakkr@gmail.com
               </p>
-              <p className="ml-4 text-xs lg:text-sm">Machine Learning Engineer</p>
-              <p className="ml-4 text-xs lg:text-sm">CS @ CityU</p>
+              <p className="ml-4 text-xs lg:text-sm">AI and Software Engineer</p>
+              <p className="ml-4 text-xs lg:text-sm">M.S. CS (Data Science) @ CityU, June 2027</p>
               <p className="ml-4 text-xs lg:text-sm">Seattle, WA</p>
               <p className="ml-4 text-xs lg:text-sm">
                 {time.toLocaleTimeString()}
+              </p>
+              <p className="ml-4 mt-1 text-xs lg:text-sm text-green-400">
+                ● Open to 2027 SWE / ML roles
+              </p>
+              <p className="ml-4 mt-2 text-xs flex flex-wrap gap-x-3 gap-y-1">
+                {[
+                  { name: "GitHub", url: "https://github.com/Vishal-Krishna-Kumar" },
+                  { name: "LinkedIn", url: "https://www.linkedin.com/in/vishal-krishna-kumar-65583a201/" },
+                  { name: "Blog", url: "https://www.vishalkrishna.dev/blog" },
+                  { name: "Resume", url: "/vishal_krishna_kumar_resume.pdf" },
+                ].map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`underline underline-offset-2 ${
+                      isDark ? "text-blue-300 hover:text-blue-200" : "text-[#2A8EE0] hover:text-blue-700"
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                ))}
               </p>
               <p className="ml-4 mt-2 text-xs hidden lg:block text-gray-400">
                 <span className="inline-block text-lg">☆</span> try arrows keys & enter!
