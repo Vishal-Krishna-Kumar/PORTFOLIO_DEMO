@@ -7,7 +7,6 @@
     "dev": "concurrently -k -n server,client -c cyan,magenta \"node server.js\" \"vite\"",
     "server": "node server.js",
     "client": "vite",
-    "music:watch": "node scripts/music-watch.js",
     "start": "node server.js",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

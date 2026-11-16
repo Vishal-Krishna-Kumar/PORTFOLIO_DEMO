@@ -130,9 +130,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ theme, isExpanded = false, onClose, s
         setExpandWindow("experience");
         return "Showing Experience window...";
     }
-    if (lowerText.includes("music") || lowerText.includes("spotify")) {
-        setExpandWindow("spotify");
-        return "Opening Music player...";
+    if (lowerText.includes("blog") || lowerText.includes("writing") || lowerText.includes("open source")) {
+        setExpandWindow("writing");
+        return "Opening writing and open source...";
     }
     if (lowerText.includes("coding") || lowerText.includes("leetcode")) {
         setExpandWindow("leetcode");
