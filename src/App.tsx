@@ -9,6 +9,7 @@ import InteractiveParticles from "./components/InteractiveParticles";
 import LeetCodeCalendar from "./components/LeetCodeCalendar";
 import AnimatedEllipsis from "./components/AnimatedEllipsis";
 import WritingWindow from "./components/WritingWindow";
+import RecruiterSummary from "./components/RecruiterSummary";
 import HeadTracker from "./components/HeadTracker";
 // import HandTracker from "./components/HandTracker";
 
@@ -49,6 +50,13 @@ const App = () => {
     };
   const [isMultiplayer] = useState(false);
   const [entered, setEntered] = useState(false);
+  // One-page summary for visitors who want the facts quickly; also opens from /#summary.
+  const [showSummary, setShowSummary] = useState(() => window.location.hash === "#summary");
+  useEffect(() => {
+    const onHashChange = () => setShowSummary(window.location.hash === "#summary");
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme");
@@ -709,6 +717,17 @@ const App = () => {
     setAchievementIndex(newIndex);
   }, [achievementZoomIndex]);
 
+  const closeSummary = () => {
+    setShowSummary(false);
+    if (window.location.hash === "#summary") {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  };
+
+  if (showSummary) {
+    return <RecruiterSummary onClose={closeSummary} />;
+  }
+
   if (!entered) {
     return <WelcomeScreen onComplete={() => setEntered(true)} />;
   }
@@ -887,6 +906,15 @@ const App = () => {
               <p className="ml-4 mt-1 text-xs lg:text-sm text-green-400">
                 ● Open to 2027 SWE / ML roles
               </p>
+              <button
+                onClick={() => {
+                  window.history.replaceState(null, "", "#summary");
+                  setShowSummary(true);
+                }}
+                className="ml-4 mt-2 text-xs lg:text-sm font-semibold rounded px-2.5 py-1 bg-green-500 hover:bg-green-600 text-black transition-colors"
+              >
+                Quick summary for recruiters →
+              </button>
               <p className="ml-4 mt-2 text-xs flex flex-wrap gap-x-3 gap-y-1">
                 {[
                   { name: "GitHub", url: "https://github.com/Vishal-Krishna-Kumar" },
