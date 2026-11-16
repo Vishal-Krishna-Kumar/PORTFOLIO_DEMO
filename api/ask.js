@@ -458,7 +458,7 @@ export async function handleAskQuestion(messages = [], options = {}) {
     let fallbackResponse;
     
     if (error.message?.includes('API key') || error.message?.includes('quota')) {
-      fallbackResponse = `system note: api temporarily constrained\n\nvishal krishna kumar | graduate researcher\n\nfor "${lastMessage?.substring(0, 100)}..." — i'd normally answer from my work in ml, rag and computer vision. connect directly at vishalkrishnakkr@gmail.com.`;
+      fallbackResponse = `the assistant is offline right now, so here is the short version: i work on retrieval, rag evaluation and applied ml. my open-source tools are chunkaudit and ragbench (github.com/Vishal-Krishna-Kumar), and i write at vishalkrishna.dev/blog. reach me at vishalkrishnakkr@gmail.com.`;
     } else if (error.message?.includes('safety')) {
       fallbackResponse = `that question touches on content boundaries. ask me about my projects, research, or experience in ml, rag and computer vision.`;
     } else {
@@ -480,7 +480,7 @@ export async function handleAskQuestion(messages = [], options = {}) {
     return {
       answer: fallbackResponse,
       metadata: {
-        error: error.message,
+        error: "The assistant is temporarily unavailable.",
         category: QuestionClassifier.classify(lastMessage || ''),
         fallback: true,
         performance: performanceMonitor.getMetrics(),

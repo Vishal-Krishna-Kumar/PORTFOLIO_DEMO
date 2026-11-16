@@ -202,12 +202,6 @@ export const projectsData: Project[] = [
         url: "/GPT_DEMO-1.mp4",
         description: "Demo from the KG-RAG project (Baranzini Lab, UCSF)",
         duration: "4:20"
-      },
-      {
-        title: "KG-RAG with Llama",
-        url: "/LLAMA_DEMO-1.mp4",
-        description: "Demo from the KG-RAG project (Baranzini Lab, UCSF)",
-        duration: "3:45"
       }
     ],
     techStack: ["KG-RAG (Baranzini Lab, UCSF)", "GPT-4", "Llama", "BiomixQA (evaluation benchmark)"],
@@ -220,12 +214,7 @@ export const projectsData: Project[] = [
       { name: "GitHub Repository", url: "https://github.com/Vishal-Krishna-Kumar/GraphAugmented-Intelligence_GAI" },
       { name: "Upstream framework: KG-RAG (Baranzini Lab, UCSF)", url: "https://github.com/BaranziniLab/KG_RAG" }
     ],
-    images: [
-      "/gai-architecture.png",
-      "/gai-dashboard.png",
-      "/gai-knowledge-graph.png",
-      "/gai-performance.png"
-    ],
+    images: [],
   },
 
 

@@ -210,7 +210,7 @@ export default async function handler(req, res) {
     
     // Provide a fallback response
     const fallbackResponses = [
-      "I'm having trouble connecting right now, but here's what I can tell you about myself... I'm a graduate student in AI/ML at IIT, focused on computer vision and NLP projects.",
+      "I'm having trouble connecting right now, but here's what I can tell you about myself... I'm an M.S. Computer Science (Data Science) student at City University of Seattle, working on retrieval, RAG evaluation and applied machine learning.",
       "It seems there's a connection issue. Normally I'd tell you about my work in RAG systems and deep learning projects!",
       "Technical difficulties! Let me share quickly: I work on AI research projects including brain tumor segmentation and deepfake detection."
     ];
@@ -220,7 +220,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: false,
       answer: randomFallback,
-      error: error.message,
+      error: "The assistant is temporarily unavailable.",
       timestamp: new Date().toISOString(),
     });
   }
