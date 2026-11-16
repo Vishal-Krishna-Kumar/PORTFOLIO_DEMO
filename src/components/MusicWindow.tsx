@@ -189,7 +189,7 @@ const MusicWindow: React.FC<MusicWindowProps> = ({ isDark }) => {
       </div>
 
       {/* Top Tracks */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto">
         <p className={`text-sm font-semibold mb-3 ${isDark ? "text-blue-300" : "text-[#2A8EE0]"}`}>
           Top Tracks
         </p>
@@ -226,7 +226,7 @@ const MusicWindow: React.FC<MusicWindowProps> = ({ isDark }) => {
         </div>
       </div>
       {/* Spotify Profile Connect Button at the very bottom */}
-      <div className="flex justify-center mt-auto pt-2">
+      <div className="flex justify-center mt-auto pt-2 shrink-0">
         <a
           href="https://open.spotify.com/user/31m2ok63ld6ajumhxnb7yloh2gku"
           target="_blank"

@@ -798,7 +798,7 @@ const App = () => {
       />
 
       {/* Snow Toggle Button - Positioned below Head Motion button */}
-      <div className="fixed top-20 right-4 z-20">
+      <div className="fixed top-20 right-4 z-20 hidden lg:block">
         <button
           onClick={toggleSnow}
           className={`px-3 py-2 rounded-lg transition-all duration-300 shadow-lg text-sm font-medium ${
@@ -963,7 +963,7 @@ const App = () => {
               }}
             />
           </p>
-          <div className="mt-2 mx-2 h-full">
+          <div className="mt-2 mx-2 h-[calc(100%-2.75rem)]">
             <MusicWindow isDark={isDark} />
           </div>
         </div>
