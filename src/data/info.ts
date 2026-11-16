@@ -111,9 +111,70 @@ export const experiencesData: Experience[] = [
 
 export const projectsData: Project[] = [
   {
+    id: "oss-chunkaudit",
+    title: "[1] chunkaudit — Auditing RAG Chunking (open source)",
+    window: "How often does chunking cut the answer in half?",
+    date: "November 2026",
+    description:
+      "An open-source Python tool that audits RAG chunking strategies. For each strategy it reports how often the text that answers a question is split across two chunks, and whether retrieval still returns a chunk that contains the whole answer. Offline and deterministic: no API keys, and NumPy is the only core dependency.",
+    category: "Open source / RAG evaluation",
+    status: "Active",
+    featured: true,
+    images: ["/chunkaudit-squad.png", "/chunkaudit-demo.png"],
+    links: [
+      { name: "GitHub", url: "https://github.com/Vishal-Krishna-Kumar/chunkaudit" },
+      { name: "Write-up: how often chunking cuts the answer", url: "https://www.vishalkrishna.dev/blog/chunking-cuts-the-answer" },
+      { name: "Write-up: chunk size depends on the retriever", url: "https://www.vishalkrishna.dev/blog/chunk-size-depends-on-retriever" }
+    ],
+    metrics: [
+      { label: "SQuAD questions audited", value: "10,570", color: "blue", icon: "target" },
+      { label: "Answers split by fixed 200-word chunks", value: "14.1%", color: "purple", icon: "activity" },
+      { label: "Split rate with a 50-word overlap", value: "1.1%", color: "green", icon: "zap" }
+    ],
+    techStack: ["Python", "NumPy", "BM25", "sentence-transformers (optional)", "pytest", "GitHub Actions"],
+    features: [
+      "Four chunkers (fixed, sentence, paragraph, recursive) that keep character spans, so every hit is checked against the exact evidence position",
+      "Reports answer split rate, Recall@k, MRR and context size for each strategy",
+      "Finding: fixed 200-word chunks with no overlap split the answering sentence in 14.1% of 10,570 SQuAD questions; a 50-word overlap cut that to 1.1% and raised Recall@5 from 78.7% to 90.2%",
+      "Finding: with an embedding retriever the ranking changes; ten-sentence chunks fall from first place to fifth, and 400-word chunks drop from 87.5% to 62.7% Recall@5",
+      "--show-splits lists the answers a strategy cut, with the cut position marked",
+      "83 tests, type checks and CI on Python 3.10 to 3.13; one merged outside contribution"
+    ],
+  },
+
+  {
+    id: "oss-ragbench",
+    title: "[2] ragbench — Retrieval Benchmarking for RAG (open source)",
+    window: "BM25, TF-IDF and hybrid retrieval from scratch",
+    date: "November 2026",
+    description:
+      "An open-source retrieval benchmark for RAG. BM25, TF-IDF and hybrid Reciprocal Rank Fusion are implemented from scratch with NumPy and scored with standard IR metrics (Recall@k, MRR, graded nDCG) and latency. It ships a CLI, a FastAPI service and a Docker image.",
+    category: "Open source / Information retrieval",
+    status: "Active",
+    featured: true,
+    images: ["/ragbench-scifact.png"],
+    links: [
+      { name: "GitHub", url: "https://github.com/Vishal-Krishna-Kumar/ragbench" },
+      { name: "Write-up: an inverted index in NumPy", url: "https://www.vishalkrishna.dev/blog/inverted-index-in-numpy" }
+    ],
+    metrics: [
+      { label: "TF-IDF query latency", value: "216 ms → 0.22 ms", color: "green", icon: "zap" },
+      { label: "Peak indexing memory", value: "4.1 GB → 123 MB", color: "blue", icon: "activity" },
+      { label: "BM25 nDCG@10 on SciFact", value: "0.647", color: "purple", icon: "target" }
+    ],
+    techStack: ["Python", "NumPy", "FastAPI", "Docker", "GitHub Actions"],
+    features: [
+      "Measured on BEIR SciFact (5,183 documents, 300 queries): nDCG@10 of 0.647 for BM25, 0.612 for TF-IDF and 0.635 for the hybrid",
+      "Moved both retrievers to an inverted index: TF-IDF query latency went from 216 ms to 0.22 ms and peak indexing memory from 4.1 GB to 123 MB, with identical top-10 results for all 300 queries",
+      "CLI with table, Markdown, JSON and CSV output, plus a list of the queries each retriever gets wrong",
+      "CI with lint, type checks, tests on Python 3.10 to 3.13, a package build and a container smoke test"
+    ],
+  },
+
+  {
     id: "gai-001",
     // NOTE: App.tsx selects the GAI layout with title.includes('GraphAugmented Intelligence') — keep that phrase in the title.
-    title: "[1] GraphAugmented Intelligence (GAI)",
+    title: "[3] GraphAugmented Intelligence (GAI)",
     window: "Knowledge-Graph RAG for Biomedical Q&A (built on KG-RAG, Baranzini Lab, UCSF)",
     date: "September 2025",
     description: "Knowledge-graph retrieval-augmented generation (KG-RAG) for biomedical question answering, built on the open-source KG-RAG framework from the Baranzini Lab, UCSF. I evaluated GPT-4 and Llama on the BiomixQA benchmark. Credit: the KG-RAG framework is the Baranzini Lab's work; BiomixQA is an existing benchmark, not my dataset.",
@@ -174,7 +235,7 @@ export const projectsData: Project[] = [
   {
     id: "medical-ai-002",
     // NOTE: App.tsx captions the video "3D MRI Segmentation Demo" when the title includes "Tumor" — keep that word.
-    title: "[2] 3D Attention U-Net for Brain Tumor Segmentation",
+    title: "[4] 3D Attention U-Net for Brain Tumor Segmentation",
     window: "Medical AI & Volumetric Segmentation",
     date: "June 2025",
     description:
@@ -214,7 +275,7 @@ export const projectsData: Project[] = [
   
   {
     id: "deepfake-003",
-    title: "[3] Deepfake Detection System",
+    title: "[5] Deepfake Detection System",
     window: "AI & Media Forensics",
     date: "2023",
     description:
@@ -249,7 +310,7 @@ export const projectsData: Project[] = [
 
   {
     id: "rl-004",
-    title: "[4] AlphaZero-Style Game Agent",
+    title: "[6] AlphaZero-Style Game Agent",
     window: "Deep Reinforcement Learning & Game AI",
     date: "December 2024",
     description:
@@ -291,7 +352,7 @@ export const projectsData: Project[] = [
   
   {
     id: "nlp-005",
-    title: "[5] Multilingual POS Tagging & Context-Aware Spell Correction",
+    title: "[7] Multilingual POS Tagging & Context-Aware Spell Correction",
     window: "NLP Sequence Labeling & Linguistics",
     date: "September 2024",
     description:
@@ -329,7 +390,7 @@ export const projectsData: Project[] = [
   
   {
     id: "web-3d-006",
-    title: "[6] Interactive 3D Web Gaming Site",
+    title: "[8] Interactive 3D Web Gaming Site",
     window: "Frontend Engineering & 3D Graphics",
     date: "January 2026",
     description:
@@ -389,7 +450,7 @@ export const projectsData: Project[] = [
 
   {
   id: "desktop-007",
-  title: "[7] Combat Algo FPS Game",
+  title: "[9] Combat Algo FPS Game",
   window: "Game Development & AI Systems",
   date: "November 2023",
   description:
@@ -453,7 +514,7 @@ export const projectsData: Project[] = [
 
   {
     id: "research-008",
-    title: "[8] AeroForge-TRIAD (research in progress)",
+    title: "[10] AeroForge-TRIAD (research in progress)",
     window: "Certified Gradients for Neural CFD Surrogates",
     date: "In progress (status as of October 2026)",
     description:
