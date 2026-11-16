@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight, X, Play, Pause, ExternalLink, Code, FileText
 import InteractiveParticles from "./components/InteractiveParticles";
 import LeetCodeCalendar from "./components/LeetCodeCalendar";
 import AnimatedEllipsis from "./components/AnimatedEllipsis";
-import MusicWindow from "./components/MusicWindow";
+import WritingWindow from "./components/WritingWindow";
 import HeadTracker from "./components/HeadTracker";
 // import HandTracker from "./components/HandTracker";
 
@@ -556,8 +556,8 @@ const App = () => {
     if (isResumeOpen || isCertificatesOpen || zoomIndex !== null || achievementZoomIndex !== null) return;
 
     const windowOrder = isTimerOpen
-      ? ["me", "experience", "projects", "spotify", "timer", "cli"]
-      : ["me", "experience", "projects", "spotify", "leetcode", "cli"];
+      ? ["me", "experience", "projects", "writing", "timer", "cli"]
+      : ["me", "experience", "projects", "writing", "leetcode", "cli"];
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (expandWindow) return;
@@ -943,28 +943,28 @@ const App = () => {
             expandWindow ? "opacity-0" : ""
           } transition-opacity duration-500`}
           onClick={() => {
-            setSelectedWindow("spotify");
-            setExpandWindow("spotify");
+            setSelectedWindow("writing");
+            setExpandWindow("writing");
           }}
         >
           <p
             className={`rounded-t-xl text-sm text-center relative ${headerClass(
-              selectedWindow === "spotify"
+              selectedWindow === "writing"
             )}`}
           >
-            now-playing - zsh
+            writing - zsh
             <button className="rounded-full p-1 bg-red-500 absolute right-10 top-1/2 -translate-y-1/2" />
             <button className="rounded-full p-1 bg-yellow-500 absolute right-6 top-1/2 -translate-y-1/2" />
             <button
               className="rounded-full p-1 bg-green-500 absolute right-2 top-1/2 -translate-y-1/2"
               onClick={(e) => {
                 e.stopPropagation();
-                setExpandWindow("spotify");
+                setExpandWindow("writing");
               }}
             />
           </p>
           <div className="mt-2 mx-2 h-[calc(100%-2.75rem)]">
-            <MusicWindow isDark={isDark} />
+            <WritingWindow isDark={isDark} />
           </div>
         </div>
 
@@ -2206,17 +2206,17 @@ const App = () => {
               </>
             )}
 
-            {/* SPOTIFY NOW PLAYING */}
-            {expandWindow === "spotify" && (
+            {/* WRITING AND OPEN SOURCE */}
+            {expandWindow === "writing" && (
               <div
                 className={`w-full h-full lg:w-full lg:h-full max-w-4xl max-h-[90vh] lg:max-w-none lg:max-h-none ${windowThemeClass} rounded-xl lg:rounded-none overflow-y-auto overscroll-none`}
               >
                 <p
                   className={`rounded-t-xl lg:rounded-none text-sm text-center sticky top-0 ${headerClass(
-                    selectedWindow === "spotify"
+                    selectedWindow === "writing"
                   )}`}
                 >
-                  now-playing - zsh
+                  writing - zsh
                   <button
                     className="rounded-full p-1 bg-red-500 absolute right-10 top-1/2 -translate-y-1/2"
                     onClick={() => setExpandWindow("")}
@@ -2227,11 +2227,11 @@ const App = () => {
                   />
                   <button
                     className="rounded-full p-1 bg-green-500 absolute right-2 top-1/2 -translate-y-1/2"
-                    onClick={() => setExpandWindow("spotify")}
+                    onClick={() => setExpandWindow("writing")}
                   />
                 </p>
                 <div className="m-4">
-                  <MusicWindow isDark={isDark} />
+                  <WritingWindow isDark={isDark} expanded />
                 </div>
               </div>
             )}

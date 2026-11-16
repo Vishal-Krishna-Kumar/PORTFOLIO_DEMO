@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { getCuratedNowPlaying, getCuratedTopTracks, getMusicRotationStatus } from "./api/music-data.js";
 import { handleAskQuestion } from "./api/ask.js";
 
 // Load environment variables
@@ -253,49 +252,6 @@ app.post("/api/chatbot", async (req, res) => {
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "Vishal's AI brain is online!" });
 });
-
-// Spotify-style endpoints using static data (no external API needed)
-app.get("/api/now-playing", async (_req, res) => {
-  try {
-    res.setHeader("Cache-Control", "no-store");
-    const nowPlaying = getCuratedNowPlaying();
-    return res.status(200).json(nowPlaying);
-  } catch (error) {
-    console.error("now-playing error:", error);
-    return res.status(500).json({
-      error: "Internal server error",
-      is_playing: false,
-      item: null,
-    });
-  }
-});
-
-app.get("/api/top-tracks", async (_req, res) => {
-  try {
-    res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json(getCuratedTopTracks());
-  } catch (error) {
-    console.error("top-tracks error:", error);
-    return res.status(500).json({
-      error: "Internal server error",
-      tracks: [],
-    });
-  }
-});
-
-// Debug endpoint: verify music rotation without waiting
-app.get("/api/music-status", (_req, res) => {
-  try {
-    res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json(getMusicRotationStatus());
-  } catch (error) {
-    console.error("music-status error:", error);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-
-
 
 // DEBUG: Print the resolved dist path
 console.log("DIST PATH:", path.join(__dirname, "dist"));
