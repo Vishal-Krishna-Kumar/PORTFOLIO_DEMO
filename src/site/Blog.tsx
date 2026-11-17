@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 import { POSTS, formatDate } from "./posts";
 import type { IPost } from "./posts";
-import { Page, SectionLabel } from "./Shell";
+import { Page, SectionLabel, jumpToTop } from "./Shell";
 
 const FRAME = "relative min-h-screen bg-[#080808]/90 text-[#F1F0EC]";
 
@@ -32,9 +32,9 @@ export const PostRow = ({ post, index }: { post: IPost; index: number }) => (
 );
 
 export const BlogIndex = () => {
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.title = "Blog | Vishal Krishna Kumar";
-    window.scrollTo(0, 0);
+    jumpToTop();
   }, []);
 
   return (
@@ -70,9 +70,9 @@ export const BlogIndex = () => {
 export const BlogPost = ({ slug }: { slug: string }) => {
   const post = POSTS.find((item) => item.slug === slug);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.title = post ? `${post.title} | Vishal Krishna Kumar` : "Blog | Vishal Krishna Kumar";
-    window.scrollTo(0, 0);
+    jumpToTop();
   }, [post]);
 
   if (!post) {

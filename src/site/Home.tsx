@@ -123,53 +123,78 @@ const CountUp = ({ to }: { to: number }) => {
   return <>{value.toLocaleString("en-US")}</>;
 };
 
-/** Opening curtain: shown once per browser session. */
+/** True once the loading screen has played; it plays once per page load, not on every return to the home page. */
+let introPlayed = false;
+const STAIRS = 5;
+const LOAD_MS = 2400;
+
+/**
+ * Loading screen: a counter and a thin bar fill up, then five black columns rise over the
+ * screen one after another and drop away again to reveal the page.
+ */
 const Preloader = () => {
   const [show] = useState(() => {
+    if (introPlayed) return false;
     try {
-      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return false;
-      return sessionStorage.getItem("intro-seen") !== "1";
+      return !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     } catch {
       return false;
     }
   });
-  const [count, setCount] = useState(0);
-  const [done, setDone] = useState(false);
-  const [gone, setGone] = useState(false);
+  const [percent, setPercent] = useState(0);
+  const [phase, setPhase] = useState<"loading" | "cover" | "reveal" | "done">("loading");
 
   useEffect(() => {
     if (!show) return;
-    try {
-      sessionStorage.setItem("intro-seen", "1");
-    } catch {
-      // private windows: the curtain simply shows again next time
-    }
-    const timer = window.setInterval(() => setCount((value) => Math.min(value + 4, 100)), 40);
-    const finish = window.setTimeout(() => setDone(true), 1250);
-    const remove = window.setTimeout(() => setGone(true), 2300);
+    introPlayed = true;
+    const previous = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    const start = Date.now();
+    const timer = window.setInterval(() => {
+      setPercent(Math.min(Math.floor(((Date.now() - start) / LOAD_MS) * 100), 100));
+    }, 50);
+    // Columns rise (cover), the counter is removed behind them, then they fall (reveal).
+    const cover = window.setTimeout(() => setPhase("cover"), LOAD_MS + 300);
+    const reveal = window.setTimeout(() => setPhase("reveal"), LOAD_MS + 300 + 850);
+    const done = window.setTimeout(() => setPhase("done"), LOAD_MS + 300 + 850 + 950);
     return () => {
       window.clearInterval(timer);
-      window.clearTimeout(finish);
-      window.clearTimeout(remove);
+      window.clearTimeout(cover);
+      window.clearTimeout(reveal);
+      window.clearTimeout(done);
+      document.documentElement.style.overflow = previous;
     };
   }, [show]);
 
-  if (!show || gone) return null;
-  return (
-    <div
-      className="ink-preloader fixed inset-0 z-[70] bg-[#080808] text-[#F1F0EC] flex flex-col justify-between p-[6vw]"
-      data-done={done}
-      aria-hidden="true"
-    >
-      <p className="ink-label text-white/60">Vishal Krishna Kumar · Portfolio</p>
-      <div className="flex items-end justify-between">
-        <p className="ink-label text-white/40">AI and Software Engineer</p>
-        <p className="ink-display text-[clamp(4rem,16vw,14rem)]">
-          {count}
-          <span className="text-red-500">%</span>
-        </p>
+  useEffect(() => {
+    if (phase === "done") document.documentElement.style.overflow = "";
+  }, [phase]);
+
+  if (!show || phase === "done") return null;
+  // Rendered on the body so the theme's colour filter cannot move or recolour it.
+  return createPortal(
+    <div className="clean-site">
+    <div className="ink-preloader fixed inset-0 z-[9998] overflow-hidden" data-phase={phase} aria-hidden="true">
+      {phase !== "reveal" && (
+        <div className="absolute inset-0 bg-black text-[#F1F0EC]">
+          <p className="ink-label absolute left-[6vw] top-7 text-white/60">Vishal Krishna Kumar</p>
+          <p className="ink-label absolute right-[6vw] top-7 text-white/40">Portfolio · 2026</p>
+          <p className="ink-percent absolute bottom-4 right-8 max-md:right-6 max-sm:right-4 leading-none text-white/75 tabular-nums">
+            {percent}%
+          </p>
+          <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white/10">
+            <div className="h-full bg-white/70" style={{ width: `${percent}%` }} />
+          </div>
+        </div>
+      )}
+      <div className="pointer-events-none absolute inset-0 flex">
+        {Array.from({ length: STAIRS }, (_, position) => (
+          <span key={position} className="ink-stair" style={{ transitionDelay: `${position * 55}ms` }} />
+        ))}
       </div>
     </div>
+    </div>,
+    document.body
   );
 };
 

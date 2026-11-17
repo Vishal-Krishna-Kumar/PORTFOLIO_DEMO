@@ -231,12 +231,27 @@
   transform: translateX(14px);
 }
 
-/* Opening curtain */
-.clean-site .ink-preloader {
-  transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+/* Loading screen: counter, then five columns that rise and fall */
+.clean-site .ink-percent {
+  font-family: "Archivo", Arial, sans-serif;
+  font-weight: 200;
+  font-stretch: 112%;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  letter-spacing: -0.04em;
 }
-.clean-site .ink-preloader[data-done="true"] {
-  transform: translateY(-101%);
+.clean-site .ink-stair {
+  flex: 1 1 0;
+  height: 100%;
+  background: #000;
+  transform: translateY(100%);
+  transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.clean-site .ink-preloader[data-phase="cover"] .ink-stair {
+  transform: none;
+}
+.clean-site .ink-preloader[data-phase="reveal"] .ink-stair {
+  transform: translateY(100%);
+  transition-duration: 0.65s;
 }
 
 /* Pointer follower (desktop only) */
