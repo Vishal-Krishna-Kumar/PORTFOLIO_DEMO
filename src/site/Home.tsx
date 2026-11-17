@@ -15,6 +15,7 @@ import {
   RESUME_URL,
   SectionLabel,
   goToSection,
+  scrollToY,
 } from "./Shell";
 import { useTheme } from "./theme";
 
@@ -103,6 +104,62 @@ function useOnScroll(callback: () => void) {
       window.removeEventListener("resize", request);
     };
   }, []);
+}
+
+/**
+ * Keeps a pile of sticky cards together. Each card sticks a little lower than the one before.
+ * Left alone, the last card would let go first and slide up over the others; giving every card
+ * the same bottom edge makes the whole pile let go at once and leave as one block.
+ * Clicking a card that is tucked under the pile scrolls to it.
+ */
+function useCardStack() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+    const cards = () => Array.from(container.querySelectorAll<HTMLElement>(":scope > .ink-stack-card"));
+    const tops = (list: HTMLElement[]) => list.map((card) => parseFloat(getComputedStyle(card).top) || 0);
+
+    const level = () => {
+      const list = cards();
+      list.forEach((card) => {
+        card.style.minHeight = "";
+      });
+      if (!window.matchMedia("(min-width: 768px)").matches) return;
+      const offsets = tops(list);
+      const bottom = Math.max(...list.map((card, position) => offsets[position] + card.offsetHeight));
+      list.forEach((card, position) => {
+        card.style.minHeight = `${Math.ceil(bottom - offsets[position])}px`;
+      });
+    };
+
+    const onClick = (event: MouseEvent) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target || target.closest("a, button")) return;
+      const card = target.closest<HTMLElement>(".ink-stack-card");
+      if (!card || !window.matchMedia("(min-width: 768px)").matches) return;
+      const list = cards();
+      const position = list.indexOf(card);
+      if (position < 0) return;
+      // Where the card sits in the page before any sticking: the container's top plus the cards above it.
+      let natural = container.getBoundingClientRect().top + window.scrollY;
+      for (let before = 0; before < position; before += 1) natural += list[before].offsetHeight;
+      scrollToY(natural - tops(list)[position] + 2);
+    };
+
+    level();
+    const later = window.setTimeout(level, 900);
+    window.addEventListener("resize", level);
+    window.addEventListener("load", level);
+    container.addEventListener("click", onClick);
+    return () => {
+      window.clearTimeout(later);
+      window.removeEventListener("resize", level);
+      window.removeEventListener("load", level);
+      container.removeEventListener("click", onClick);
+    };
+  }, []);
+  return ref;
 }
 
 /** Counts up to a number once, easing out. */
@@ -232,23 +289,21 @@ const ScrollStatement = ({ text }: { text: string }) => {
 
 /** One role as a full card. Cards are sticky, so each new one slides over the last as you scroll. */
 const ExperienceCard = ({ item, index }: { item: Experience; index: number }) => {
-  const simulation = item.kind === "simulation";
   const title = clean(item.title).replace(/^Job simulation \(Forage\) — /, "");
   const description = item.description.replace(/^Forage job simulation \(not employment\)\.\s*/, "");
   // Some images are not mine; the data records who made them, and the card says so.
   const credit = item.description.match(/Image credit:.*$/)?.[0];
   return (
     <article
-      className="ink-stack-card border-t border-white/15 bg-[#0b0b0b] pt-6 pb-14 md:pb-20"
-      style={{ top: `${4.6 + index * 3.6}rem` }}
+      className="ink-stack-card border-t border-white/15 bg-[#0b0b0b] pt-4 pb-12 md:pb-16 md:cursor-pointer"
+      style={{ top: `${4.4 + index * 3.9}rem` }}
     >
       <div className="grid md:grid-cols-12 gap-x-6 gap-y-5">
         <p className="ink-label md:col-span-1 text-red-500">({String(index + 1).padStart(2, "0")})</p>
         <div className="md:col-span-7">
-          <h3 className="text-2xl md:text-[2.3rem] leading-[1.05] tracking-[-0.04em] text-[#F1F0EC]">{title}</h3>
+          <h3 className="text-2xl md:text-[2rem] md:leading-[2.4rem] md:truncate tracking-[-0.04em] text-[#F1F0EC]" title={title}>{title}</h3>
           <p className="ink-label mt-3 text-white/50">
             {item.window} · {item.date}
-            {simulation && " · Forage job simulation, not employment"}
           </p>
           {item.achievements && item.achievements.length > 0 ? (
             <ul className="mt-6 space-y-2.5 text-[15px] leading-relaxed text-white/70">
@@ -273,7 +328,7 @@ const ExperienceCard = ({ item, index }: { item: Experience; index: number }) =>
                 src={item.image}
                 alt={`${title}: ${item.window}`}
                 loading="lazy"
-                className="block h-44 md:h-52 w-full object-contain p-3"
+                className="block h-40 md:h-44 w-full object-contain p-3"
               />
             </div>
             {credit && <p className="mt-2 text-[11px] leading-snug text-white/40">{credit}</p>}
@@ -284,6 +339,18 @@ const ExperienceCard = ({ item, index }: { item: Experience; index: number }) =>
   );
 };
 
+/** Full-panel background pictures for the projects whose media is not a full-screen video. */
+const COVERS: Record<string, string> = {
+  "oss-chunkaudit": "/cover-oss-chunkaudit.webp",
+  "oss-ragbench": "/cover-oss-ragbench.webp",
+  "gai-001": "/cover-gai-001.webp",
+  "medical-ai-002": "/cover-medical-ai-002.webp",
+  "deepfake-003": "/cover-deepfake-003.webp",
+  "rl-004": "/cover-rl-004.webp",
+  "nlp-005": "/cover-nlp-005.webp",
+  "research-008": "/cover-research-008.webp",
+};
+
 /** One full-height panel of the work section. */
 const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number; onOpen: () => void }) => {
   const { ref, visible } = useOnScreen<HTMLDivElement>(0.3);
@@ -291,6 +358,7 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
   const cover = clips.find((clip) => clip.kind === "image")?.src;
   // Projects whose media is all video use it as the whole panel's background.
   const bleed = clips.length > 0 && clips.every((clip) => clip.kind === "video");
+  const backdrop = COVERS[project.id ?? ""];
   const number = String(index + 1).padStart(2, "0");
   const full = clean(project.title).replace(/\s*\((open source|research in progress)\)$/i, "");
   // "chunkaudit — Auditing RAG Chunking" shows as the name, with the rest as a subtitle.
@@ -312,16 +380,19 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
         }
       }}
     >
-      {/* Blurred wash of the project's own image, for colour */}
-      {cover && (
+      {/* A large picture behind the whole panel; the video or figure sits on top of it */}
+      {!bleed && (backdrop || cover) && (
         <img
-          src={cover}
+          src={backdrop ?? cover}
           alt=""
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover scale-125 blur-3xl opacity-25 pointer-events-none"
+          className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform duration-[1400ms] group-hover:scale-[1.04] ${
+            backdrop ? "opacity-60" : "scale-125 blur-3xl opacity-25"
+          }`}
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/55 to-[#080808]/30 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#080808]/95 via-[#080808]/60 to-[#080808]/25 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/40 pointer-events-none" />
       <span className="ink-display ink-ghost absolute -bottom-[0.06em] right-[2vw] select-none pointer-events-none" aria-hidden="true">
         {number}
       </span>
@@ -499,6 +570,8 @@ const Home = () => {
   const theme = useTheme();
   const [openProject, setOpenProject] = useState<Project | null>(null);
   useScrollReveal();
+  const experienceStack = useCardStack();
+  const skillStack = useCardStack();
 
 
   useEffect(() => {
@@ -624,7 +697,7 @@ const Home = () => {
           <h2 className="ink-statement mt-8 max-w-[900px]">
             Where I have <em>worked.</em>
           </h2>
-          <div className="mt-14">
+          <div className="mt-14" ref={experienceStack}>
             {experiencesData.map((item, position) => (
               <ExperienceCard key={item.title} item={item} index={position} />
             ))}
@@ -682,7 +755,7 @@ const Home = () => {
           <h2 className="ink-statement mt-8">
             What I work <em>with.</em>
           </h2>
-          <div className="mt-14">
+          <div className="mt-14" ref={skillStack}>
             {SKILLS.map((skill, position) => (
               <div
                 key={skill.group}

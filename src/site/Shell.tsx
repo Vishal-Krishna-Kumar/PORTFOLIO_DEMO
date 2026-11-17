@@ -266,6 +266,12 @@ export function jumpToTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 }
 
+/** Scroll the page smoothly to a position, through the smooth scroller when it is running. */
+export function scrollToY(y: number) {
+  if (activeLenis) activeLenis.scrollTo(y, { duration: 1.1 });
+  else window.scrollTo({ top: y, behavior: "smooth" });
+}
+
 /** Smooth, slightly weighted scrolling on desktop. Phones keep their native scroll. */
 function useSmoothScroll() {
   useEffect(() => {
