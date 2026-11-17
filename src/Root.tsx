@@ -3,6 +3,7 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import RecruiterSummary from "./components/RecruiterSummary";
 import { BlogIndex, BlogPost } from "./site/Blog";
 import Home from "./site/Home";
+import "./site/motion.css";
 
 // The original terminal-style interface is still available at /#/terminal. It is loaded only
 // when asked for, so the main site stays light.

@@ -89,6 +89,7 @@ html {
 .clean-site[data-theme="light"] .invertible {
   filter: invert(1) hue-rotate(180deg);
 }
-.clean-site[data-theme="light"] .invertible img {
+.clean-site[data-theme="light"] .invertible img,
+.clean-site[data-theme="light"] .invertible video {
   filter: invert(1) hue-rotate(180deg);
 }
