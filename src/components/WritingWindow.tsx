@@ -27,7 +27,7 @@ interface RepoStats {
   pushedAt: string;
 }
 
-const BLOG_URL = "https://www.vishalkrishna.dev/blog";
+const BLOG_URL = "/#/blog";
 
 const POSTS: Post[] = [
   {
