@@ -353,7 +353,7 @@ const Assistant = () => {
         <div
           role="dialog"
           aria-label="Ask about Vishal"
-          className="invertible assistant-in fixed bottom-20 right-5 z-[65] flex h-[min(38rem,calc(100vh-7rem))] w-[min(27rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0d0d0f]/95 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.95)] backdrop-blur-xl"
+          className="invertible assistant-in fixed bottom-20 right-5 z-[65] flex h-[min(38rem,calc(100vh-10rem))] w-[min(27rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0d0d0f]/95 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.95)] backdrop-blur-xl"
         >
           <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.04] px-4 py-3">
             <button type="button" aria-label="Close" onClick={() => setOpen(false)} className="h-3 w-3 rounded-full bg-[#ff5f57]" />

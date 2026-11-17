@@ -101,3 +101,11 @@ html {
 .clean-site[data-theme="light"] .invertible .reel video {
   filter: none;
 }
+
+/* Tiles that must stay as designed in the light theme (logos on white). */
+.clean-site[data-theme="light"] .invertible .keep-light {
+  filter: invert(1) hue-rotate(180deg);
+}
+.clean-site[data-theme="light"] .invertible .keep-light img {
+  filter: none;
+}
