@@ -196,101 +196,119 @@ export const ProjectDetail = ({ project, onClose }: { project: Project; onClose:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [name, tagline] = title.includes(" — ") ? title.split(" — ") : [title, ""];
+  const heading = "ink-label text-white/45";
+
   return (
     <div
-      className={`invertible fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md ${
-        closing ? "detail-backdrop-out" : "detail-backdrop-in"
+      className={`invertible fixed inset-0 z-50 overflow-y-auto bg-[#080808] text-[#F1F0EC] ${
+        closing ? "detail-backdrop-out" : "ink-menu"
       }`}
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      onClick={close}
     >
-      <div
-        className={`mx-auto my-6 md:my-12 w-[min(100%-1.5rem,56rem)] rounded-2xl border border-white/15 bg-neutral-950 shadow-2xl ${
-          closing ? "detail-out" : "detail-in"
-        }`}
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="sticky top-0 z-10 flex items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-neutral-950/95 backdrop-blur rounded-t-2xl">
-          <p className="text-sm text-gray-400 truncate">
-            {project.category ?? "Project"} · {project.date}
-          </p>
-          <button
-            onClick={close}
-            aria-label="Close project"
-            className="rounded-md border border-white/15 hover:border-white/50 text-gray-200 px-3 py-1 text-sm transition-colors"
-          >
-            Close ✕
-          </button>
+      <div className="sticky top-0 z-20 flex items-center justify-between gap-4 px-[6vw] py-5 bg-[#080808]/90 backdrop-blur border-b border-white/10">
+        <p className="ink-label truncate text-white/50">
+          {project.category ?? "Project"} · {project.date}
+        </p>
+        <button onClick={close} aria-label="Close project" className="flex items-center gap-3 text-white">
+          <span className="ink-label text-[11px]">Close</span>
+          <span className="relative block h-3 w-6">
+            <span className="absolute left-0 top-1.5 h-0.5 w-full rotate-45 bg-white" />
+            <span className="absolute left-0 top-1.5 h-0.5 w-full -rotate-45 bg-white" />
+          </span>
+        </button>
+      </div>
+
+      <div className="px-[6vw] pt-14 md:pt-20 pb-24">
+        <div className="flex items-center gap-3">
+          <span className="h-px w-7 bg-red-500/70" />
+          <span className="ink-label text-white/55">{tagline || project.window}</span>
+        </div>
+        <h2 className="ink-display mt-7 text-[clamp(2.3rem,7.4vw,7rem)]">{name}</h2>
+        {tagline && <p className="mt-6 max-w-[760px] text-lg text-white/60">{project.window}</p>}
+
+        {(project.links ?? []).length > 0 && (
+          <div className="mt-9 flex flex-wrap gap-x-8 gap-y-4">
+            {(project.links ?? []).map((link) => (
+              <a
+                key={link.url}
+                href={blogHref(link.url)}
+                {...(isInternal(link.url) ? { onClick: close } : { target: "_blank", rel: "noopener noreferrer" })}
+                className="ink-link ink-label"
+              >
+                {link.name} <span className="arrow">↗</span>
+              </a>
+            ))}
+          </div>
+        )}
+
+        {videos.length > 0 && (
+          <div className="mt-12 max-w-[1100px]">
+            <Reel clips={videos} variant="detail" />
+          </div>
+        )}
+
+        <div className="mt-14 grid lg:grid-cols-12 gap-x-[5vw] gap-y-12">
+          <div className="lg:col-span-7">
+            <h3 className={heading}>Overview</h3>
+            <p className="mt-5 text-[17px] leading-[1.85] text-white/75">{project.description}</p>
+
+            {project.features && project.features.length > 0 && (
+              <div className="mt-12">
+                <h3 className={heading}>What it does</h3>
+                <ul className="mt-5 border-b border-white/10">
+                  {project.features.map((feature, position) => (
+                    <li key={feature} className="flex gap-5 border-t border-white/10 py-4 text-[15px] leading-relaxed text-white/75">
+                      <span className="ink-label mt-1 shrink-0 text-red-500">{String(position + 1).padStart(2, "0")}</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <div className="lg:col-span-5 space-y-12">
+            {project.metrics && project.metrics.length > 0 && (
+              <div>
+                <h3 className={heading}>Results</h3>
+                <dl className="mt-5 border-b border-white/10">
+                  {project.metrics.map((metric) => (
+                    <div key={metric.label} className="flex items-baseline justify-between gap-6 border-t border-white/10 py-4">
+                      <dt className="text-sm text-white/55">{metric.label}</dt>
+                      <dd className="ink-display shrink-0 text-2xl md:text-3xl text-[#F1F0EC]">{metric.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
+
+            {project.techStack && (
+              <div>
+                <h3 className={heading}>Built with</h3>
+                <p className="mt-5 text-lg leading-[1.7] tracking-[-0.02em] text-white/80">
+                  {project.techStack.join("  /  ")}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="p-6 md:p-8">
-          <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight">{title}</h2>
-          <p className="mt-2 text-red-400">{project.window}</p>
-
-          {(project.links ?? []).length > 0 && (
-            <div className="mt-5 flex flex-wrap gap-3">
-              {(project.links ?? []).map((link) => (
-                <a
-                  key={link.url}
-                  href={blogHref(link.url)}
-                  {...(isInternal(link.url) ? { onClick: close } : { target: "_blank", rel: "noopener noreferrer" })}
-                  className="rounded-md border border-white/20 hover:border-red-400 hover:text-red-400 text-sm text-gray-100 px-3.5 py-1.5 transition-colors"
-                >
-                  {link.name} →
-                </a>
-              ))}
-            </div>
-          )}
-
-          {videos.length > 0 && (
-            <div className="mt-7">
-              <Reel clips={videos} variant="detail" />
-            </div>
-          )}
-
-          <p className="mt-7 text-[17px] leading-8 text-gray-300">{project.description}</p>
-
-          {project.metrics && project.metrics.length > 0 && (
-            <dl className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {project.metrics.map((metric) => (
-                <div key={metric.label} className="rounded-xl border border-white/10 bg-black/60 p-4 text-center">
-                  <dd className="text-xl font-bold text-white">{metric.value}</dd>
-                  <dt className="mt-1 text-xs text-gray-400">{metric.label}</dt>
-                </div>
-              ))}
-            </dl>
-          )}
-
-          {images.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-3">Gallery</h3>
+        {images.length > 0 && (
+          <div className="mt-16">
+            <h3 className={heading}>Gallery</h3>
+            <div className="mt-5">
               <Gallery images={images} title={title} />
             </div>
-          )}
+          </div>
+        )}
 
-          {project.features && project.features.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-3">What it does</h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-300 leading-relaxed">
-                {project.features.map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {project.techStack && (
-            <div className="mt-8">
-              <h3 className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-3">Built with</h3>
-              <div className="flex flex-wrap gap-2">
-                {project.techStack.map((tech) => (
-                  <Tag key={tech}>{tech}</Tag>
-                ))}
-              </div>
-            </div>
-          )}
+        <div className="mt-16 pt-8 border-t border-white/10 flex justify-between">
+          <button onClick={close} className="ink-link ink-label">
+            <span className="arrow">←</span> Back to all work
+          </button>
         </div>
       </div>
     </div>
