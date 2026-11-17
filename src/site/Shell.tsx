@@ -255,12 +255,21 @@ export const SiteFooter = () => (
   </footer>
 );
 
+let activeLenis: Lenis | null = null;
+
+/** Start a newly opened page at its top, at once, with no scrolling animation. */
+export function jumpToTop() {
+  activeLenis?.scrollTo(0, { immediate: true, force: true });
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+}
+
 /** Smooth, slightly weighted scrolling on desktop. Phones keep their native scroll. */
 function useSmoothScroll() {
   useEffect(() => {
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     if (!window.matchMedia?.("(pointer: fine)").matches) return;
     const lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+    activeLenis = lenis;
     let frame = 0;
     const loop = (time: number) => {
       lenis.raf(time);
@@ -269,6 +278,7 @@ function useSmoothScroll() {
     frame = requestAnimationFrame(loop);
     return () => {
       cancelAnimationFrame(frame);
+      if (activeLenis === lenis) activeLenis = null;
       lenis.destroy();
     };
   }, []);
