@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 import { experiencesData, projectsData } from "../data/info";
@@ -7,6 +7,8 @@ import type { Experience, Project } from "../types/indexs";
 import { PostCard } from "./Blog";
 import { POSTS } from "./posts";
 import { ProjectCard, ProjectDetail, Tag, clean } from "./Projects";
+import { Reel } from "./Reel";
+import type { Clip } from "./Reel";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL, Page, RESUME_URL, goToSection } from "./Shell";
 import { useTheme } from "./theme";
 
@@ -47,6 +49,38 @@ const SKILLS: { group: string; items: string[] }[] = [
     items: ["FastAPI", "SQLAlchemy", "MySQL", "PostgreSQL", "REST APIs", "OAuth 2.0", "Docker", "AWS", "GitHub Actions"],
   },
 ];
+
+/** The work reel at the top of the page: one clip per project, in this order. */
+const HERO_WORK: { id: string; clip: Clip }[] = [
+  { id: "web-3d-006", clip: { kind: "video", src: "/hero-4.mp4", label: "Interactive 3D web gaming site" } },
+  { id: "oss-chunkaudit", clip: { kind: "image", src: "/chunkaudit-demo.png", label: "chunkaudit · auditing RAG chunking" } },
+  { id: "gai-001", clip: { kind: "image", src: "/KGRAG-1.gif", label: "GraphAugmented Intelligence · KG-RAG" } },
+  { id: "medical-ai-002", clip: { kind: "image", src: "/3DUnet.png", label: "3D Attention U-Net · brain tumor segmentation" } },
+  { id: "deepfake-003", clip: { kind: "image", src: "/DeepFake.gif", label: "Deepfake detection system" } },
+  { id: "oss-ragbench", clip: { kind: "image", src: "/ragbench-scifact.png", label: "ragbench · retrieval benchmarking" } },
+];
+const HERO_REEL = HERO_WORK.map((item) => item.clip);
+const HERO_REEL_IDS = HERO_WORK.map((item) => item.id);
+
+const MARQUEE = ["Retrieval", "RAG evaluation", "PyTorch", "FastAPI", "Agents", "Open source", "Python", "TypeScript"];
+
+/** Counts up to a number once, easing out. */
+const CountUp = ({ to }: { to: number }) => {
+  const [value, setValue] = useState(to);
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    let frame = 0;
+    const start = performance.now();
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / 1500, 1);
+      setValue(Math.round(to * (1 - Math.pow(1 - progress, 3))));
+      if (progress < 1) frame = requestAnimationFrame(step);
+    };
+    frame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frame);
+  }, [to]);
+  return <>{value.toLocaleString("en-US")}</>;
+};
 
 const ROLES = ["AI and Software Engineer", "Retrieval and RAG evaluation", "Open-source builder"];
 
@@ -172,12 +206,33 @@ const Home = () => {
     document.title = "Vishal Krishna Kumar | AI and Software Engineer";
   }, []);
 
-  const stats = [
-    { value: "10,570", label: "questions in my chunking audit" },
+  const stats: { value: number | string; label: string }[] = [
+    { value: 10570, label: "questions in my chunking audit" },
     { value: "216 → 0.22 ms", label: "query latency after an inverted index" },
     { value: "2nd place", label: "Hack for Research 2025, team lead" },
-    ...(leetcode ? [{ value: String(leetcode), label: "LeetCode problems solved (live)" }] : []),
+    ...(leetcode ? [{ value: leetcode, label: "LeetCode problems solved (live)" }] : []),
   ];
+
+  const [reelIndex, setReelIndex] = useState(0);
+  const reelProject = projectsData.find((project) => project.id === HERO_REEL_IDS[reelIndex]) ?? null;
+
+  const tiltRef = useRef<HTMLDivElement>(null);
+  const tilt = (event: MouseEvent<HTMLDivElement>) => {
+    const element = tiltRef.current;
+    if (!element) return;
+    const box = element.getBoundingClientRect();
+    const x = (event.clientX - box.left) / box.width - 0.5;
+    const y = (event.clientY - box.top) / box.height - 0.5;
+    element.style.transform = `rotateY(${(x * 9).toFixed(2)}deg) rotateX(${(-y * 9).toFixed(2)}deg)`;
+  };
+  const untilt = () => {
+    if (tiltRef.current) tiltRef.current.style.transform = "";
+  };
+  const moveSpot = (event: MouseEvent<HTMLElement>) => {
+    const box = event.currentTarget.getBoundingClientRect();
+    event.currentTarget.style.setProperty("--mx", `${event.clientX - box.left}px`);
+    event.currentTarget.style.setProperty("--my", `${event.clientY - box.top}px`);
+  };
 
   const ghost =
     "rounded-md border border-white/25 bg-black/60 hover:border-white/60 text-white px-5 py-2.5 transition-all hover:-translate-y-0.5";
@@ -185,78 +240,133 @@ const Home = () => {
   return (
     <Page>
       {/* Hero */}
-      <section className="relative mx-auto max-w-5xl px-5 pt-32 pb-16 md:pt-40 md:pb-24">
-        <div className="hero-glow" aria-hidden="true" />
-        <div className="relative flex flex-col-reverse md:flex-row md:items-center gap-10">
-          <div className="grow">
-            <p className="rise inline-flex items-center gap-2 text-sm text-green-400 border border-green-400/40 bg-black/70 rounded-full px-3 py-1">
-              <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-              Open to full-time SWE and ML roles from July 2027
-            </p>
-            <h1
-              className="rise hero-name mt-5 text-4xl md:text-7xl font-bold tracking-tight leading-[1.03]"
-              style={{ animationDelay: "90ms, 0ms" }}
-            >
-              Vishal Krishna Kumar
-            </h1>
-            <p className="rise mt-4 h-8 text-xl md:text-2xl text-gray-100" style={{ animationDelay: "180ms" }}>
-              <span>{role}</span>
-              <span className="type-caret" aria-hidden="true" />
-            </p>
-            <p
-              className="rise mt-5 max-w-xl text-lg text-gray-200 leading-relaxed"
-              style={{ animationDelay: "270ms" }}
-            >
-              I build and measure retrieval and RAG systems. M.S. Computer Science (Data Science) at
-              City University of Seattle, graduating June 2027.
-            </p>
-            <div className="rise mt-8 flex flex-wrap gap-3" style={{ animationDelay: "360ms" }}>
-              <a
-                href={RESUME_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shine rounded-md bg-green-500 hover:bg-green-400 text-black font-semibold px-5 py-2.5 transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-10px_rgba(34,197,94,0.8)]"
-              >
-                Download resume
-              </a>
-              <button onClick={() => goToSection("projects")} className={ghost}>
-                See my work
-              </button>
-              <a href={`mailto:${EMAIL}`} className={ghost}>
-                Email me
-              </a>
-            </div>
-            <div className="rise mt-6 flex gap-5 text-sm text-gray-300" style={{ animationDelay: "450ms" }}>
-              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white underline underline-offset-4">
-                GitHub
-              </a>
-              <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white underline underline-offset-4">
-                LinkedIn
-              </a>
-              <span>Seattle, WA</span>
-            </div>
+      <section className="hero relative overflow-hidden" onMouseMove={moveSpot}>
+        <div className="hero-spot" aria-hidden="true" />
+        <div className="relative mx-auto max-w-6xl px-5 pt-28 md:pt-36 pb-12 md:pb-16">
+          <div className="rise site-mono flex flex-wrap items-center justify-between gap-3 text-xs uppercase tracking-[0.2em] text-gray-300">
+            <span className="flex items-center gap-2.5">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+              </span>
+              Open to SWE and ML roles · July 2027
+            </span>
+            <span>Seattle, WA · M.S. CS, June 2027</span>
           </div>
-          <div className="rise photo-ring shrink-0 self-start md:self-center" style={{ animationDelay: "200ms" }}>
-            <img
-              src="/img-1.png"
-              alt="Vishal Krishna Kumar"
-              className="relative block w-36 h-36 md:w-60 md:h-60 rounded-2xl object-cover"
-            />
+
+          <h1 className="hero-title mt-7 font-bold text-white" aria-label="Vishal Krishna Kumar">
+            <span className="block overflow-hidden pb-[0.06em]">
+              <span className="line-in block">Vishal Krishna</span>
+            </span>
+            <span className="block overflow-hidden pb-[0.12em]">
+              <span className="line-in flex items-center gap-[0.22em]" style={{ animationDelay: "120ms" }}>
+                <img src="/avatar.webp" alt="" className="hero-avatar" />
+                <span className="serif-accent text-green-400">Kumar</span>
+              </span>
+            </span>
+          </h1>
+
+          <div className="mt-10 grid lg:grid-cols-12 gap-10 lg:gap-12 items-end">
+            <div className="lg:col-span-6">
+              <p className="rise site-mono h-6 text-sm text-green-400" style={{ animationDelay: "380ms" }}>
+                <span aria-hidden="true">→ </span>
+                <span>{role}</span>
+                <span className="type-caret" aria-hidden="true" />
+              </p>
+              <p
+                className="rise mt-4 text-2xl md:text-[2rem] md:leading-[1.25] font-medium text-white tracking-tight"
+                style={{ animationDelay: "460ms" }}
+              >
+                I build retrieval systems and <span className="serif-accent text-green-400">measure</span>{" "}
+                whether they actually work.
+              </p>
+              <p className="rise mt-5 max-w-lg text-gray-300 leading-relaxed" style={{ animationDelay: "540ms" }}>
+                AI engineer intern at Hirello.ai, then two open-source tools for evaluating retrieval,
+                each with tests, CI and numbers anyone can reproduce.
+              </p>
+              <div
+                className="rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-4"
+                style={{ animationDelay: "620ms" }}
+              >
+                <a
+                  href={RESUME_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/cta inline-flex items-center gap-2 rounded-full bg-white text-black font-semibold pl-6 pr-2 py-2 transition-transform hover:-translate-y-0.5"
+                >
+                  Download resume
+                  <span className="grid place-items-center h-8 w-8 rounded-full bg-black text-white transition-transform group-hover/cta:rotate-45">
+                    ↗
+                  </span>
+                </a>
+                <button onClick={() => goToSection("projects")} className="link-line text-white">
+                  See my work
+                </button>
+                <a href={`mailto:${EMAIL}`} className="link-line text-white">
+                  Email
+                </a>
+                <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="link-line text-white">
+                  GitHub
+                </a>
+                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="link-line text-white">
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+
+            {/* Work reel: tilts with the pointer; a click opens the project on screen */}
+            <div className="rise lg:col-span-6 [perspective:1200px]" style={{ animationDelay: "500ms" }}>
+              <div
+                ref={tiltRef}
+                className="tilt-card rounded-2xl border border-white/15 bg-neutral-950 overflow-hidden cursor-pointer shadow-[0_40px_90px_-40px_rgba(74,222,128,0.45)]"
+                onMouseMove={tilt}
+                onMouseLeave={untilt}
+                onClick={() => reelProject && setOpenProject(reelProject)}
+                role="button"
+                tabIndex={0}
+                aria-label={reelProject ? `Open project: ${clean(reelProject.title)}` : "Selected work"}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && reelProject) setOpenProject(reelProject);
+                }}
+              >
+                <div className="relative aspect-[16/10]">
+                  <Reel clips={HERO_REEL} variant="hero" onIndexChange={setReelIndex} />
+                </div>
+                <div className="site-mono flex items-center justify-between gap-4 px-4 py-3 border-t border-white/10 text-xs uppercase tracking-[0.16em] text-gray-400">
+                  <span>
+                    Selected work · {String(reelIndex + 1).padStart(2, "0")}/
+                    {String(HERO_REEL.length).padStart(2, "0")}
+                  </span>
+                  <span className="text-green-400">Open project →</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <dl className="relative mt-14 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {stats.map((stat, position) => (
-            <div
-              key={stat.label}
-              className={`rise ${CARD} p-4 hover:border-blue-300/60 hover:-translate-y-1 transition-all duration-300`}
-              style={{ animationDelay: `${540 + position * 90}ms` }}
-            >
-              <dd className="text-2xl font-bold text-white">{stat.value}</dd>
-              <dt className="mt-1 text-sm text-gray-400 leading-snug">{stat.label}</dt>
-            </div>
-          ))}
+        <dl className="relative border-y border-white/10 bg-black/70 backdrop-blur-sm">
+          <div className="mx-auto max-w-6xl grid grid-cols-2 md:grid-cols-4 md:divide-x divide-white/10">
+            {stats.map((stat, position) => (
+              <div key={stat.label} className="rise px-5 py-6" style={{ animationDelay: `${700 + position * 90}ms` }}>
+                <dd className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                  {typeof stat.value === "number" ? <CountUp to={stat.value} /> : stat.value}
+                </dd>
+                <dt className="mt-1.5 text-sm text-gray-400 leading-snug">{stat.label}</dt>
+              </div>
+            ))}
+          </div>
         </dl>
+
+        <div className="marquee relative overflow-hidden py-6 md:py-8" aria-hidden="true">
+          <div className="marquee-track flex w-max items-center">
+            {[...MARQUEE, ...MARQUEE].map((word, position) => (
+              <span key={`${word}-${position}`} className="flex items-center">
+                <span className="outline-text px-6 text-4xl md:text-6xl font-bold whitespace-nowrap">{word}</span>
+                <span className="text-green-400 text-xl">✦</span>
+              </span>
+            ))}
+          </div>
+        </div>
       </section>
 
       <Section id="about" eyebrow="About" title="What I do">

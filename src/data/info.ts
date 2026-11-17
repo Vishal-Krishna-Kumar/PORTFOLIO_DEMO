@@ -510,7 +510,19 @@ export const projectsData: Project[] = [
       "Ongoing, unpublished research question: are neural-surrogate gradients much less accurate than predicted values, and can a guaranteed error bound (\"certificate\") on gradients stay valid along a whole optimiser run under distribution drift? Built a CFD pipeline on the SU2 solver (laminar flow, Re 1000) with exact adjoint gradients checked against finite differences (agreement within 0.12%). Surrogates: ensembles of 5 Fourier Neural Operator (FNO) and 5 MLP models. Hypotheses and decision rules were pre-registered before seeing data (protocols v1–v3).",
     category: "Research (in progress)",
     status: "Active",
-    images: [],
+    images: ["/aeroforge-02_cfd.png", "/aeroforge-06_train_end.png", "/aeroforge-08_gradients.png", "/aeroforge-09_results.png"],
+    demoVideos: [
+      {
+        title: "Training the transonic surrogate (V3, M = 0.70)",
+        url: "/aeroforge-training-v3.mp4",
+        description: "An FNO ensemble learning transonic flow over airfoils, made from the logged training runs"
+      },
+      {
+        title: "How the run-level certificate works",
+        url: "/aeroforge-certificate-toy.mp4",
+        description: "A 2-D toy illustration, not CFD and not a result of the paper"
+      }
+    ],
     metrics: [
       { label: "CFD calls saved by certificate gating", value: "90%", color: "green", icon: "zap" },
       { label: "Runs fully covered (Theorem 1, α = 0.1)", value: "20/20", color: "blue", icon: "target" },
