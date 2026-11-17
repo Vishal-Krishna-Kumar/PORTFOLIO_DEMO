@@ -594,11 +594,11 @@ const Home = () => {
               </h2>
             </div>
             <a href="#/blog" className="ink-link ink-label shrink-0">
-              All posts <span className="arrow">↗</span>
+              All {POSTS.length} posts <span className="arrow">↗</span>
             </a>
           </div>
           <ul className="mt-14 border-b border-white/10">
-            {POSTS.map((post, position) => (
+            {POSTS.slice(0, 4).map((post, position) => (
               <li key={post.slug} className="ink-row">
                 <a
                   href={`#/blog/${post.slug}`}
