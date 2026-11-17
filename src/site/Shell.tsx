@@ -65,7 +65,9 @@ const Cursor = () => {
       element.dataset.on = "true";
       const target = event.target instanceof Element ? event.target : null;
       const labelled = target?.closest<HTMLElement>("[data-cursor]");
-      const inControl = target?.closest(".reel button, video");
+      // A button, link or video inside a labelled area keeps the plain pointer, so the label never covers it.
+      const control = target?.closest("a, button, video");
+      const inControl = !!control && !!labelled && control !== labelled && labelled.contains(control);
       if (labelled && !inControl) {
         element.dataset.mode = "label";
         setLabel(labelled.dataset.cursor ?? "");

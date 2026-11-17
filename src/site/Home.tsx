@@ -335,11 +335,12 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
             <p className="ink-label text-white/50">
               {project.category ?? "Project"} / {tagline || project.window}
             </p>
-            <h3 className="ink-display ink-panel-title mt-4 text-[#F1F0EC]">{title}</h3>
+            <h3 className={`ink-display ink-panel-title mt-4 text-[#F1F0EC] ${title.length > 24 ? "ink-panel-title-long" : ""}`}>{title}</h3>
             <p className="mt-5 max-w-[520px] text-sm md:text-[15px] leading-relaxed text-white/60">
               {firstSentence(project.description)}
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-2.5">
+              <span className="ink-label rounded-full bg-white px-4 py-2 text-black">Open project →</span>
               {mainLinks(project).map((link) => (
                 <a
                   key={link.url}
@@ -352,7 +353,6 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
                   {link.kind} ↗
                 </a>
               ))}
-              <span className="ink-label rounded-full bg-white px-4 py-2 text-black">Open project →</span>
             </div>
           </div>
         </div>

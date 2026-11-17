@@ -206,6 +206,11 @@
   .clean-site .ink-panel-title {
     font-size: clamp(2.2rem, min(4.3vw, 9.5vh), 4.8rem);
   }
+  /* Long names get smaller type so they take three lines, not five */
+  .clean-site .ink-panel-title-long {
+    font-size: clamp(1.7rem, min(2.9vw, 6.4vh), 3.2rem);
+    line-height: 0.95;
+  }
 }
 
 /* Stack: each card sticks under the header and the next one slides over it */
@@ -281,9 +286,10 @@
   margin: -22px 0 0 -22px;
 }
 .clean-site .ink-cursor[data-mode="label"] {
-  width: 84px;
-  height: 84px;
-  margin: -42px 0 0 -42px;
+  width: 64px;
+  height: 64px;
+  margin: 14px 0 0 14px;
+  mix-blend-mode: normal;
 }
 .clean-site .ink-cursor span {
   color: #000;

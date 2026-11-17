@@ -69,12 +69,22 @@ export const linkKind = (link: { name: string; url: string }): string => {
   return "";
 };
 
-/** The links worth a button on a work panel: the project's own GitHub, blog posts, live site, paper. */
-export const mainLinks = (project: Project) =>
-  (project.links ?? [])
-    .map((link) => ({ ...link, kind: linkKind(link), href: blogHref(link.url), internal: isInternal(link.url) }))
-    .filter((link) => link.kind)
-    .slice(0, 4);
+const BUTTON_ORDER = ["GitHub", "Blog", "Live", "Play", "Paper"];
+
+/**
+ * The buttons a work panel shows: one per kind, always in the same order. When a project has
+ * several links of one kind (two write-ups, two repositories) the first one listed is used;
+ * the rest stay in the project view.
+ */
+export const mainLinks = (project: Project) => {
+  const links = (project.links ?? []).map((link) => ({
+    ...link,
+    kind: linkKind(link),
+    href: blogHref(link.url),
+    internal: isInternal(link.url),
+  }));
+  return BUTTON_ORDER.flatMap((kind) => links.filter((link) => link.kind === kind).slice(0, 1));
+};
 
 export const Tag = ({ children }: { children: ReactNode }) => (
   <span className="text-xs rounded-full border border-white/10 bg-neutral-900 px-2.5 py-1 text-gray-300">
