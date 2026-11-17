@@ -144,6 +144,9 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
+.clean-site .ink-panel-stage {
+  margin-top: 2rem;
+}
 .clean-site .ink-panel-media {
   width: 100%;
   aspect-ratio: 16 / 10;
@@ -170,7 +173,7 @@
     will-change: transform;
   }
   .clean-site .ink-panel {
-    width: 76vw;
+    width: 90vw;
     height: 100%;
     flex-shrink: 0;
     border-top: 0;
@@ -179,14 +182,35 @@
   .clean-site .ink-panel-intro {
     width: 46vw;
   }
+  /* Text on the left, media filling the right: no empty space in between */
+  .clean-site .ink-panel-body {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 4vw;
+  }
+  .clean-site .ink-panel-text {
+    height: 100%;
+    min-height: 0;
+  }
+  .clean-site .ink-panel-stage {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 0;
+    margin-top: 0;
+  }
   .clean-site .ink-panel-media {
-    width: auto;
-    height: 46vh;
-    max-width: 100%;
+    width: min(100%, calc((100vh - 13rem) * 1.6));
+    height: auto;
   }
   .clean-site .ink-panel-title {
-    font-size: clamp(2.4rem, min(5.4vw, 11vh), 5.6rem);
+    font-size: clamp(2.2rem, min(4.3vw, 9.5vh), 4.8rem);
   }
+}
+
+/* Stack: each card sticks under the header and the next one slides over it */
+.clean-site .ink-stack-card {
+  position: sticky;
 }
 
 /* Full-screen menu */

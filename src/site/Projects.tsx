@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import type { Project } from "../types/indexs";
 import { Reel, useOnScreen } from "./Reel";
+import { ChunkSplitViz, RecallBarsViz, SpeedupViz, TerminalViz } from "./Viz";
 import type { Clip } from "./Reel";
 
 /** Titles in the data file carry a "[3] " prefix used by the terminal view. */
@@ -14,13 +15,36 @@ export const firstSentence = (text: string) => {
 };
 
 /** The 3D site's own scene videos; they play one after another. */
-const SITE_3D = ["/hero-4.mp4", "/3dsite-hero-1.mp4", "/3dsite-hero-2.mp4", "/3dsite-hero-3.mp4"];
+const SITE_3D = [
+  "/hero-4.mp4",
+  "/3dsite-hero-1.mp4",
+  "/3dsite-hero-2.mp4",
+  "/3dsite-hero-3.mp4",
+  "/3dsite-feature-1.mp4",
+  "/3dsite-feature-2.mp4",
+  "/3dsite-feature-3.mp4",
+  "/3dsite-feature-4.mp4",
+  "/3dsite-feature-5.mp4",
+];
+
+/** Drawings that animate in the browser, for the tools that have no recorded video. */
+const LIVE: Record<string, Clip[]> = {
+  "oss-chunkaudit": [
+    { kind: "live", src: "live:chunk-split", Live: ChunkSplitViz, seconds: 9.6, label: "Where the cut lands", note: "Measured on SQuAD v1.1 with chunkaudit" },
+    { kind: "live", src: "live:recall-bars", Live: RecallBarsViz, seconds: 7.2, label: "Recall@5 by strategy and retriever", note: "Measured on SQuAD v1.1 with chunkaudit" },
+  ],
+  "oss-ragbench": [
+    { kind: "live", src: "live:terminal", Live: TerminalViz, seconds: 7, label: "A benchmark run", note: "Numbers from ragbench on BEIR SciFact" },
+    { kind: "live", src: "live:speedup", Live: SpeedupViz, seconds: 7.8, label: "Dense matrix to inverted index", note: "Numbers from ragbench on BEIR SciFact" },
+  ],
+};
 
 /** Clips light enough to play by themselves inside a card on the home page. */
 const CARD_VIDEOS: Record<string, string[]> = {
-  "web-3d-006": SITE_3D,
+  "web-3d-006": ["/hero-4.mp4", "/3dsite-hero-3.mp4", "/3dsite-feature-2.mp4", "/3dsite-feature-3.mp4", "/3dsite-feature-5.mp4"],
+  "desktop-007": ["/3D-DEMO.mov"],
   "gai-001": ["/KGRAGDEMO-2.mp4", "/GPT_DEMO-1.mp4"],
-  "research-008": ["/aeroforge-certificate-toy.mp4"],
+  "research-008": ["/aeroforge-kg-growth.mp4", "/aeroforge-certificate-toy.mp4"],
 };
 
 /** Cover images for projects whose data has no still images. */
@@ -35,6 +59,22 @@ const imagesOf = (project: Project) =>
 
 const blogHref = (url: string) => url.replace("https://www.vishalkrishna.dev/blog/", "#/blog/");
 const isInternal = (url: string) => url.includes("vishalkrishna.dev/blog/");
+
+/** Short button labels for a project's links: GitHub, Blog, Live, Paper, or the link's own name. */
+export const linkKind = (link: { name: string; url: string }): string => {
+  if (/paper|arxiv|doi\.org/i.test(`${link.name} ${link.url}`)) return "Paper";
+  if (link.url.includes("/blog/")) return "Blog";
+  if (link.url.includes("github.com/Vishal-Krishna-Kumar")) return "GitHub";
+  if (/netlify\.app|itch\.io|vercel\.app/.test(link.url)) return /itch\.io/.test(link.url) ? "Play" : "Live";
+  return "";
+};
+
+/** The links worth a button on a work panel: the project's own GitHub, blog posts, live site, paper. */
+export const mainLinks = (project: Project) =>
+  (project.links ?? [])
+    .map((link) => ({ ...link, kind: linkKind(link), href: blogHref(link.url), internal: isInternal(link.url) }))
+    .filter((link) => link.kind)
+    .slice(0, 4);
 
 export const Tag = ({ children }: { children: ReactNode }) => (
   <span className="text-xs rounded-full border border-white/10 bg-neutral-900 px-2.5 py-1 text-gray-300">
@@ -51,7 +91,12 @@ export const cardClips = (project: Project): Clip[] => {
   const videos = (CARD_VIDEOS[id] ?? []).map((src) => video(src));
   const images = imagesOf(project).map((src) => image(src));
   if (id === "web-3d-006") return videos;
-  return [...images, ...videos];
+  // The game leads with its gameplay recording; the tools lead with their live drawings.
+  if (id === "desktop-007") {
+    // Three ten-second cuts from the one gameplay recording.
+    return [4, 24, 42].map((start) => ({ kind: "video" as const, src: "/3D-DEMO.mov", start, end: start + 10 }));
+  }
+  return [...(LIVE[id] ?? []), ...images, ...videos];
 };
 
 /** What the project view plays at the top: every video the project has, in order. */
@@ -61,6 +106,7 @@ const detailClips = (project: Project): Clip[] => {
     return SITE_3D.map((src, position) => video(src, `${title} · scene ${position + 1} of ${SITE_3D.length}`));
   }
   return [
+    ...(LIVE[project.id ?? ""] ?? []),
     ...(project.VideoDemo ? [video(project.VideoDemo, `${title} · overview`)] : []),
     ...(project.demoVideos ?? []).map((demo) => video(demo.url, demo.title, demo.description)),
   ];
@@ -205,6 +251,7 @@ export const ProjectDetail = ({ project, onClose }: { project: Project; onClose:
         closing ? "detail-backdrop-out" : "ink-menu"
       }`}
       role="dialog"
+      data-lenis-prevent
       aria-modal="true"
       aria-label={title}
     >

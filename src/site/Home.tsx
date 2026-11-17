@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { experiencesData, projectsData } from "../data/info";
 import type { Experience, Project } from "../types/indexs";
 import { POSTS, formatDate } from "./posts";
-import { ProjectDetail, cardClips, clean, firstSentence } from "./Projects";
+import { ProjectDetail, cardClips, clean, firstSentence, mainLinks } from "./Projects";
 import { Reel, useOnScreen } from "./Reel";
 import {
   EMAIL,
@@ -295,36 +295,57 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
         {number}
       </span>
 
-      <div className="relative h-full flex flex-col px-[6vw] md:px-[4vw] pt-10 md:pt-24 pb-12 md:pb-[7vh]">
-        <div className="flex items-center justify-between">
-          <span className="flex items-center gap-3">
-            <span className="h-px w-7 bg-red-500/70" />
-            <span className="ink-label text-red-500">{number}</span>
-          </span>
-          <span className="ink-label text-white/45">{project.date}</span>
-        </div>
+      <div className="ink-panel-body relative h-full px-[6vw] md:px-[4vw] pt-10 md:pt-24 pb-12 md:pb-[7vh]">
+        {/* Text: number, name, one line on what it is, and the links that matter */}
+        <div className="ink-panel-text flex flex-col">
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-3">
+              <span className="h-px w-7 bg-red-500/70" />
+              <span className="ink-label text-red-500">{number}</span>
+            </span>
+            <span className="ink-label text-white/45">{project.date}</span>
+          </div>
 
-        <div
-          ref={ref}
-          className="ink-panel-media relative mt-6 self-end overflow-hidden rounded-lg border border-white/10 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)] transition-transform duration-700 group-hover:scale-[1.02]"
-        >
-          {clips.length > 0 ? (
-            <Reel clips={clips} variant="card" active={visible} />
-          ) : (
-            <div className="absolute inset-0 grid place-items-center bg-[radial-gradient(circle_at_30%_20%,rgba(239,43,43,0.35),transparent_60%)]">
-              <span className="ink-display text-3xl text-white/70 px-6 text-center">{title}</span>
+          <div className="mt-8 md:mt-auto">
+            <p className="ink-label text-white/50">
+              {project.category ?? "Project"} / {tagline || project.window}
+            </p>
+            <h3 className="ink-display ink-panel-title mt-4 text-[#F1F0EC]">{title}</h3>
+            <p className="mt-5 max-w-[520px] text-sm md:text-[15px] leading-relaxed text-white/60">
+              {firstSentence(project.description)}
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-2.5">
+              {mainLinks(project).map((link) => (
+                <a
+                  key={link.url}
+                  href={link.href}
+                  title={link.name}
+                  onClick={(event) => event.stopPropagation()}
+                  {...(link.internal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+                  className="ink-label rounded-full border border-white/25 px-4 py-2 text-white/85 hover:border-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                >
+                  {link.kind} ↗
+                </a>
+              ))}
+              <span className="ink-label rounded-full bg-white px-4 py-2 text-black">Open project →</span>
             </div>
-          )}
+          </div>
         </div>
 
-        <div className="mt-8 md:mt-auto">
-          <p className="ink-label text-white/50">
-            {project.category ?? "Project"} / {tagline || project.window}
-          </p>
-          <h3 className="ink-display ink-panel-title mt-4 text-[#F1F0EC]">{title}</h3>
-          <p className="mt-5 max-w-[560px] text-sm md:text-[15px] leading-relaxed text-white/60">
-            {firstSentence(project.description)}
-          </p>
+        {/* Media fills the rest of the panel */}
+        <div className="ink-panel-stage">
+          <div
+            ref={ref}
+            className="ink-panel-media relative overflow-hidden rounded-lg border border-white/10 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)] transition-transform duration-700 group-hover:scale-[1.015]"
+          >
+            {clips.length > 0 ? (
+              <Reel clips={clips} variant="card" active={visible} />
+            ) : (
+              <div className="absolute inset-0 grid place-items-center bg-[radial-gradient(circle_at_30%_20%,rgba(239,43,43,0.35),transparent_60%)]">
+                <span className="ink-display text-3xl text-white/70 px-6 text-center">{title}</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </article>
@@ -610,11 +631,16 @@ const Home = () => {
           <h2 className="ink-statement mt-8">
             What I work <em>with.</em>
           </h2>
-          <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
-            {SKILLS.map((skill) => (
-              <div key={skill.group} className="border-t border-white/10 pt-4">
-                <h3 className="ink-label text-red-500">{skill.group}</h3>
-                <ul className="mt-5 space-y-2 text-lg tracking-[-0.02em] text-white/80">
+          <div className="mt-14">
+            {SKILLS.map((skill, position) => (
+              <div
+                key={skill.group}
+                className="ink-stack-card grid md:grid-cols-12 gap-x-6 gap-y-4 border-t border-white/15 bg-[#0b0b0b] px-1 pt-6 pb-16 md:pb-24"
+                style={{ top: `${5 + position * 4.4}rem` }}
+              >
+                <p className="ink-label md:col-span-1 text-red-500">({String(position + 1).padStart(2, "0")})</p>
+                <h3 className="md:col-span-5 text-3xl md:text-[2.6rem] leading-none tracking-[-0.04em] text-[#F1F0EC]">{skill.group}</h3>
+                <ul className="md:col-span-6 flex flex-wrap gap-x-6 gap-y-2 text-lg md:text-xl tracking-[-0.02em] text-white/75">
                   {skill.items.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
