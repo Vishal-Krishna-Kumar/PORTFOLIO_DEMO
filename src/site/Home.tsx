@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { experiencesData, projectsData } from "../data/info";
 import type { Experience, Project } from "../types/indexs";
+import Backdrop from "./Backdrop";
 import { PostCard } from "./Blog";
 import { POSTS } from "./posts";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL, RESUME_URL, SiteFooter, SiteNav, goToSection } from "./Shell";
@@ -28,7 +29,7 @@ const Section = ({
 }) => (
   <section id={id} className="scroll-mt-20 py-16 md:py-20 border-t border-white/10">
     <div className="mx-auto max-w-5xl px-5">
-      <p className="text-sm uppercase tracking-[0.25em] text-emerald-400">{eyebrow}</p>
+      <p className="text-sm uppercase tracking-[0.25em] text-blue-300">{eyebrow}</p>
       <h2 className="mt-2 text-3xl md:text-4xl font-bold text-white tracking-tight">{title}</h2>
       <div className="mt-8">{children}</div>
     </div>
@@ -36,7 +37,7 @@ const Section = ({
 );
 
 const Tag = ({ children }: { children: ReactNode }) => (
-  <span className="text-xs rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-gray-300">
+  <span className="text-xs rounded-full border border-white/10 bg-black/50 px-2.5 py-1 text-gray-300">
     {children}
   </span>
 );
@@ -76,7 +77,7 @@ function useLeetCodeTotal(): number | null {
 
 const ExperienceItem = ({ item }: { item: Experience }) => (
   <li className="relative pl-6 border-l border-white/10">
-    <span className="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-emerald-400" />
+    <span className="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-green-400" />
     <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1">
       <h3 className="text-lg font-semibold text-white">{clean(item.title)}</h3>
       <p className="text-sm text-gray-500 shrink-0">{item.date}</p>
@@ -106,7 +107,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
   const cover = project.images?.[0];
 
   return (
-    <article className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden flex flex-col">
+    <article className="rounded-xl border border-white/10 bg-black/60 overflow-hidden flex flex-col">
       {cover && (
         <img
           src={cover}
@@ -120,7 +121,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
           <h3 className="text-lg font-semibold text-white leading-snug">{clean(project.title)}</h3>
           <span className="text-xs text-gray-500 shrink-0 mt-1">{project.date}</span>
         </div>
-        <p className="mt-1 text-sm text-emerald-300/90">{project.window}</p>
+        <p className="mt-1 text-sm text-blue-300/90">{project.window}</p>
         <p className="mt-3 text-gray-300 leading-relaxed">
           {open ? project.description : firstSentence(project.description)}
         </p>
@@ -158,7 +159,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
               key={link.url}
               href={link.url.replace("https://www.vishalkrishna.dev/blog/", "#/blog/")}
               {...(link.url.includes("vishalkrishna.dev/blog/") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-              className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4"
+              className="text-blue-300 hover:text-blue-300 underline underline-offset-4"
             >
               {link.name}
             </a>
@@ -193,15 +194,16 @@ const Home = () => {
   ];
 
   return (
-    <div className="clean-site min-h-screen bg-[#0b0d10] text-gray-200">
+    <div className="clean-site relative isolate min-h-screen text-gray-200">
+      <Backdrop />
       <SiteNav />
 
       {/* Hero */}
       <section className="mx-auto max-w-5xl px-5 pt-32 pb-16 md:pt-40 md:pb-24">
         <div className="flex flex-col-reverse md:flex-row md:items-center gap-10">
           <div className="grow">
-            <p className="inline-flex items-center gap-2 text-sm text-emerald-300 border border-emerald-400/30 bg-emerald-400/5 rounded-full px-3 py-1">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <p className="inline-flex items-center gap-2 text-sm text-green-400 border border-green-400/40 bg-green-400/10 rounded-full px-3 py-1">
+              <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
               Open to full-time SWE and ML roles from July 2027
             </p>
             <h1 className="mt-5 text-4xl md:text-6xl font-bold text-white tracking-tight leading-[1.05]">
@@ -217,7 +219,7 @@ const Home = () => {
                 href={RESUME_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-md bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-5 py-2.5 transition-colors"
+                className="rounded-md bg-green-500 hover:bg-green-400 text-black font-semibold px-5 py-2.5 transition-colors"
               >
                 Download resume
               </a>
@@ -253,7 +255,7 @@ const Home = () => {
 
         <dl className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div key={stat.label} className="rounded-xl border border-white/10 bg-black/60 p-4">
               <dd className="text-2xl font-bold text-white">{stat.value}</dd>
               <dt className="mt-1 text-sm text-gray-500 leading-snug">{stat.label}</dt>
             </div>
@@ -300,7 +302,7 @@ const Home = () => {
             </p>
             <ul className="grid md:grid-cols-2 gap-4">
               {simulations.map((item) => (
-                <li key={item.title} className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
+                <li key={item.title} className="rounded-xl border border-white/10 bg-black/60 p-5">
                   <h3 className="font-semibold text-white">
                     {clean(item.title).replace(/^Job simulation \(Forage\) — /, "")}
                   </h3>
@@ -345,13 +347,13 @@ const Home = () => {
           ))}
         </div>
         <div className="mt-12 grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
+          <div className="rounded-xl border border-white/10 bg-black/60 p-5">
             <h3 className="font-semibold text-white">City University of Seattle</h3>
             <p className="text-sm text-gray-400">
               M.S. Computer Science, Data Science concentration · expected June 2027 · Dean&apos;s Scholar
             </p>
           </div>
-          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
+          <div className="rounded-xl border border-white/10 bg-black/60 p-5">
             <h3 className="font-semibold text-white">SRM Institute of Science and Technology</h3>
             <p className="text-sm text-gray-400">B.Tech Computer Science and Engineering</p>
           </div>
@@ -371,7 +373,7 @@ const Home = () => {
         <div className="mt-7 flex flex-wrap gap-3">
           <a
             href={`mailto:${EMAIL}`}
-            className="rounded-md bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-5 py-2.5 transition-colors"
+            className="rounded-md bg-green-500 hover:bg-green-400 text-black font-semibold px-5 py-2.5 transition-colors"
           >
             {EMAIL}
           </a>
