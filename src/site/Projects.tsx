@@ -8,7 +8,7 @@ import type { Clip } from "./Reel";
 /** Titles in the data file carry a "[3] " prefix used by the terminal view. */
 export const clean = (title: string) => title.replace(/^\[\d+\]\s*/, "");
 
-const firstSentence = (text: string) => {
+export const firstSentence = (text: string) => {
   const match = text.match(/^.*?[.!?](?=\s|$)/);
   return match ? match[0] : text;
 };
@@ -46,7 +46,7 @@ const video = (src: string, label?: string, note?: string): Clip => ({ kind: "vi
 const image = (src: string, label?: string): Clip => ({ kind: "image", src, label });
 
 /** What a card plays: its videos and images, in a loop. */
-const cardClips = (project: Project): Clip[] => {
+export const cardClips = (project: Project): Clip[] => {
   const id = project.id ?? "";
   const videos = (CARD_VIDEOS[id] ?? []).map((src) => video(src));
   const images = imagesOf(project).map((src) => image(src));
@@ -84,7 +84,7 @@ const CardMedia = ({ project }: { project: Project }) => {
       {/* Short note that slides up on hover */}
       <div className="card-note pointer-events-none absolute inset-0 flex flex-col justify-end p-5 pr-16 bg-gradient-to-t from-black via-black/70 to-transparent">
         <p className="text-sm text-gray-100 leading-relaxed">{firstSentence(project.description)}</p>
-        <p className="mt-2 text-sm font-semibold text-green-400">Open project →</p>
+        <p className="mt-2 text-sm font-semibold text-red-500">Open project →</p>
       </div>
     </div>
   );
@@ -92,7 +92,7 @@ const CardMedia = ({ project }: { project: Project }) => {
 
 export const ProjectCard = ({ project, onOpen }: { project: Project; onOpen: () => void }) => (
   <article
-    className="project-card group sr rounded-xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm overflow-hidden flex flex-col cursor-pointer hover:border-blue-300/60 hover:-translate-y-1 hover:shadow-[0_18px_50px_-20px_rgba(96,165,250,0.45)] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-300"
+    className="project-card group sr rounded-xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm overflow-hidden flex flex-col cursor-pointer hover:border-red-400/60 hover:-translate-y-1 hover:shadow-[0_18px_50px_-20px_rgba(96,165,250,0.45)] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-400"
     role="button"
     tabIndex={0}
     aria-label={`Open project: ${clean(project.title)}`}
@@ -107,12 +107,12 @@ export const ProjectCard = ({ project, onOpen }: { project: Project; onOpen: () 
     <CardMedia project={project} />
     <div className="p-6 flex flex-col grow">
       <div className="flex items-start justify-between gap-3">
-        <h3 className="text-lg font-semibold text-white leading-snug group-hover:text-blue-300 transition-colors">
+        <h3 className="text-lg font-semibold text-white leading-snug group-hover:text-red-400 transition-colors">
           {clean(project.title)}
         </h3>
         <span className="text-xs text-gray-500 shrink-0 mt-1">{project.date}</span>
       </div>
-      <p className="mt-1 text-sm text-blue-300/90">{project.window}</p>
+      <p className="mt-1 text-sm text-red-400/90">{project.window}</p>
 
       {project.metrics && project.metrics.length > 0 && (
         <dl className="mt-4 grid grid-cols-3 gap-2">
@@ -227,7 +227,7 @@ export const ProjectDetail = ({ project, onClose }: { project: Project; onClose:
 
         <div className="p-6 md:p-8">
           <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tight">{title}</h2>
-          <p className="mt-2 text-blue-300">{project.window}</p>
+          <p className="mt-2 text-red-400">{project.window}</p>
 
           {(project.links ?? []).length > 0 && (
             <div className="mt-5 flex flex-wrap gap-3">
@@ -236,7 +236,7 @@ export const ProjectDetail = ({ project, onClose }: { project: Project; onClose:
                   key={link.url}
                   href={blogHref(link.url)}
                   {...(isInternal(link.url) ? { onClick: close } : { target: "_blank", rel: "noopener noreferrer" })}
-                  className="rounded-md border border-white/20 hover:border-blue-300 hover:text-blue-300 text-sm text-gray-100 px-3.5 py-1.5 transition-colors"
+                  className="rounded-md border border-white/20 hover:border-red-400 hover:text-red-400 text-sm text-gray-100 px-3.5 py-1.5 transition-colors"
                 >
                   {link.name} →
                 </a>

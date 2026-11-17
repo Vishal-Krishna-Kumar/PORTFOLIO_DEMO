@@ -3,12 +3,12 @@ import type { Theme } from "./theme";
 
 const SCRIM = {
   dark: {
-    narrow: "rgba(0,0,0,0.78)",
-    wide: "linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.9) 12%, rgba(0,0,0,0.9) 88%, rgba(0,0,0,0.25) 100%)",
+    narrow: "rgba(0,0,0,0.68)",
+    wide: "rgba(0,0,0,0.62)",
   },
   light: {
     narrow: "rgba(255,255,255,0.8)",
-    wide: "linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.92) 12%, rgba(255,255,255,0.92) 88%, rgba(255,255,255,0.3) 100%)",
+    wide: "rgba(255,255,255,0.7)",
   },
 };
 

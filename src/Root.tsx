@@ -4,6 +4,7 @@ import RecruiterSummary from "./components/RecruiterSummary";
 import { BlogIndex, BlogPost } from "./site/Blog";
 import Home from "./site/Home";
 import "./site/motion.css";
+import "./site/ink.css";
 
 // The original terminal-style interface is still available at /#/terminal. It is loaded only
 // when asked for, so the main site stays light.
