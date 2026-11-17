@@ -176,14 +176,15 @@ const Preloader = () => {
     <div className="clean-site">
     <div className="ink-preloader fixed inset-0 z-[9998] overflow-hidden" data-phase={phase} aria-hidden="true">
       {phase !== "reveal" && (
-        <div className="absolute inset-0 bg-black text-[#F1F0EC]">
+        <div className="absolute inset-0 overflow-hidden bg-black text-[#F1F0EC]">
+          <div className="ink-glow opacity-70" />
           <p className="ink-label absolute left-[6vw] top-7 text-white/60">Vishal Krishna Kumar</p>
           <p className="ink-label absolute right-[6vw] top-7 text-white/40">Portfolio · 2026</p>
-          <p className="ink-percent absolute bottom-4 right-8 max-md:right-6 max-sm:right-4 leading-none text-white/75 tabular-nums">
+          <p className="ink-percent absolute bottom-4 right-8 max-md:right-6 max-sm:right-4 leading-none tabular-nums">
             {percent}%
           </p>
           <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white/10">
-            <div className="h-full bg-white/70" style={{ width: `${percent}%` }} />
+            <div className="h-full bg-red-400/80" style={{ width: `${percent}%` }} />
           </div>
         </div>
       )}
@@ -229,37 +230,28 @@ const ScrollStatement = ({ text }: { text: string }) => {
   );
 };
 
-const ExperienceRow = ({
-  item,
-  index,
-  open,
-  onToggle,
-}: {
-  item: Experience;
-  index: number;
-  open: boolean;
-  onToggle: () => void;
-}) => (
-  <li className="ink-row" data-open={open}>
-    <button
-      onClick={onToggle}
-      aria-expanded={open}
-      className="group w-full grid grid-cols-12 gap-x-4 gap-y-1 items-baseline py-7 text-left"
+/** One role as a full card. Cards are sticky, so each new one slides over the last as you scroll. */
+const ExperienceCard = ({ item, index }: { item: Experience; index: number }) => {
+  const simulation = item.kind === "simulation";
+  const title = clean(item.title).replace(/^Job simulation \(Forage\) — /, "");
+  const description = item.description.replace(/^Forage job simulation \(not employment\)\.\s*/, "");
+  // Some images are not mine; the data records who made them, and the card says so.
+  const credit = item.description.match(/Image credit:.*$/)?.[0];
+  return (
+    <article
+      className="ink-stack-card border-t border-white/15 bg-[#0b0b0b] pt-6 pb-14 md:pb-20"
+      style={{ top: `${4.6 + index * 3.6}rem` }}
     >
-      <span className="ink-label col-span-12 md:col-span-1 text-red-500">{String(index + 1).padStart(2, "0")}</span>
-      <span className="col-span-12 md:col-span-6 text-2xl md:text-[2rem] tracking-[-0.035em] text-[#F1F0EC] group-hover:translate-x-2 transition-transform duration-500">
-        {clean(item.title)}
-      </span>
-      <span className="col-span-8 md:col-span-3 text-sm text-white/55">{item.window}</span>
-      <span className="ink-label col-span-4 md:col-span-2 text-right text-white/45">
-        {item.date} <span className="ml-2 text-white/70">{open ? "–" : "+"}</span>
-      </span>
-    </button>
-    {open && (
-      <div className="detail-in grid grid-cols-12 gap-4 pb-9">
-        <div className="col-span-12 md:col-start-2 md:col-span-7">
+      <div className="grid md:grid-cols-12 gap-x-6 gap-y-5">
+        <p className="ink-label md:col-span-1 text-red-500">({String(index + 1).padStart(2, "0")})</p>
+        <div className="md:col-span-7">
+          <h3 className="text-2xl md:text-[2.3rem] leading-[1.05] tracking-[-0.04em] text-[#F1F0EC]">{title}</h3>
+          <p className="ink-label mt-3 text-white/50">
+            {item.window} · {item.date}
+            {simulation && " · Forage job simulation, not employment"}
+          </p>
           {item.achievements && item.achievements.length > 0 ? (
-            <ul className="space-y-2.5 text-[15px] leading-relaxed text-white/70">
+            <ul className="mt-6 space-y-2.5 text-[15px] leading-relaxed text-white/70">
               {item.achievements.map((line) => (
                 <li key={line} className="flex gap-3">
                   <span className="mt-[0.7em] h-px w-4 shrink-0 bg-red-500/70" />
@@ -268,24 +260,37 @@ const ExperienceRow = ({
               ))}
             </ul>
           ) : (
-            <p className="text-[15px] leading-relaxed text-white/70">{item.description}</p>
+            <p className="mt-6 max-w-[640px] text-[15px] leading-relaxed text-white/70">{description}</p>
+          )}
+          {item.technologies && (
+            <p className="ink-label mt-6 leading-[2] text-white/40">{item.technologies.join(" / ")}</p>
           )}
         </div>
-        {item.technologies && (
-          <p className="ink-label col-span-12 md:col-span-4 leading-[2.1] text-white/40">
-            {item.technologies.join(" / ")}
-          </p>
+        {item.image && (
+          <div className="md:col-span-4">
+            <div className="overflow-hidden rounded-lg border border-white/10 bg-white">
+              <img
+                src={item.image}
+                alt={`${title}: ${item.window}`}
+                loading="lazy"
+                className="block h-44 md:h-52 w-full object-contain p-3"
+              />
+            </div>
+            {credit && <p className="mt-2 text-[11px] leading-snug text-white/40">{credit}</p>}
+          </div>
         )}
       </div>
-    )}
-  </li>
-);
+    </article>
+  );
+};
 
 /** One full-height panel of the work section. */
 const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number; onOpen: () => void }) => {
   const { ref, visible } = useOnScreen<HTMLDivElement>(0.3);
   const clips = cardClips(project);
   const cover = clips.find((clip) => clip.kind === "image")?.src;
+  // Projects whose media is all video use it as the whole panel's background.
+  const bleed = clips.length > 0 && clips.every((clip) => clip.kind === "video");
   const number = String(index + 1).padStart(2, "0");
   const full = clean(project.title).replace(/\s*\((open source|research in progress)\)$/i, "");
   // "chunkaudit — Auditing RAG Chunking" shows as the name, with the rest as a subtitle.
@@ -294,7 +299,8 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
   return (
     <article
       className="ink-panel group"
-      data-cursor="Open"
+      data-bleed={bleed}
+      data-cursor="Open ↗"
       role="button"
       tabIndex={0}
       aria-label={`Open project: ${title}`}
@@ -432,6 +438,55 @@ const WorkSection = ({ onOpen }: { onOpen: (project: Project) => void }) => {
   );
 };
 
+const PHOTOS = ["/portrait-1.webp", "/portrait-2.webp", "/portrait-3.webp"];
+
+/** Three photos that slide sideways every few seconds; hovering pauses, the dots jump. */
+const PhotoSlider = () => {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    if (paused) return;
+    const timer = window.setInterval(() => setIndex((value) => (value + 1) % PHOTOS.length), 4200);
+    return () => window.clearInterval(timer);
+  }, [paused]);
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-lg border border-white/10"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div
+        className="flex transition-transform duration-[1100ms] ease-[cubic-bezier(0.76,0,0.24,1)]"
+        style={{ transform: `translateX(-${index * 100}%)` }}
+      >
+        {PHOTOS.map((src, position) => (
+          <img
+            key={src}
+            src={src}
+            alt={position === 0 ? "Vishal Krishna Kumar" : ""}
+            loading="lazy"
+            className="block w-full shrink-0 aspect-[4/5] object-cover object-top"
+          />
+        ))}
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-red-700/45 via-transparent to-transparent pointer-events-none" />
+      <p className="ink-label absolute left-4 bottom-4 text-white/85">Seattle, WA</p>
+      <div className="absolute right-4 bottom-4 flex gap-1.5">
+        {PHOTOS.map((src, position) => (
+          <button
+            key={src}
+            type="button"
+            aria-label={`Show photo ${position + 1}`}
+            onClick={() => setIndex(position)}
+            className={`h-1.5 rounded-full transition-all duration-500 ${position === index ? "w-6 bg-white" : "w-1.5 bg-white/50"}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Fact = ({ label, children }: { label: string; children: ReactNode }) => (
   <div className="border-t border-white/10 pt-3">
     <p className="ink-label text-white/40">{label}</p>
@@ -443,11 +498,8 @@ const Home = () => {
   const leetcode = useLeetCodeTotal();
   const theme = useTheme();
   const [openProject, setOpenProject] = useState<Project | null>(null);
-  const [openJob, setOpenJob] = useState(0);
   useScrollReveal();
 
-  const jobs = experiencesData.filter((item) => item.kind !== "simulation");
-  const simulations = experiencesData.filter((item) => item.kind === "simulation");
 
   useEffect(() => {
     document.title = "Vishal Krishna Kumar | AI and Software Engineer";
@@ -509,6 +561,15 @@ const Home = () => {
             Let&apos;s talk <span className="arrow">↗</span>
           </a>
         </div>
+        <button
+          onClick={() => goToSection("about")}
+          aria-label="Scroll to About"
+          className="rise absolute left-1/2 bottom-[5.5vh] hidden md:flex -translate-x-1/2 flex-col items-center gap-3 text-white/60 hover:text-white transition-colors"
+          style={{ animationDelay: "1000ms" }}
+        >
+          <span className="ink-label">Scroll</span>
+          <span className="ink-scroll-cue" />
+        </button>
       </section>
 
       {/* Statement */}
@@ -540,16 +601,7 @@ const Home = () => {
             </div>
           </div>
           <div className="sr lg:col-span-5">
-            <div className="group relative overflow-hidden rounded-lg border border-white/10">
-              <img
-                src="/portrait.webp"
-                alt="Vishal Krishna Kumar"
-                loading="lazy"
-                className="block w-full aspect-[4/5] object-cover object-top grayscale group-hover:grayscale-0 transition-[filter] duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-red-700/55 via-transparent to-transparent pointer-events-none" />
-              <p className="ink-label absolute left-4 bottom-4 text-white/85">Seattle, WA</p>
-            </div>
+            <PhotoSlider />
           </div>
         </div>
 
@@ -565,44 +617,18 @@ const Home = () => {
         </dl>
       </section>
 
-      {/* Experience */}
+      {/* Experience: cards that stack as you scroll, so each role opens by itself */}
       <section id="experience" className={SECTION}>
         <div className={WRAP}>
           <SectionLabel index="02">Experience</SectionLabel>
           <h2 className="ink-statement mt-8 max-w-[900px]">
             Where I have <em>worked.</em>
           </h2>
-          <ul className="mt-14 border-b border-white/10">
-            {jobs.map((item, position) => (
-              <ExperienceRow
-                key={item.title}
-                item={item}
-                index={position}
-                open={openJob === position}
-                onToggle={() => setOpenJob(openJob === position ? -1 : position)}
-              />
+          <div className="mt-14">
+            {experiencesData.map((item, position) => (
+              <ExperienceCard key={item.title} item={item} index={position} />
             ))}
-          </ul>
-          {simulations.length > 0 && (
-            <div className="mt-16">
-              <p className="ink-label text-white/45">Job simulations (Forage) · practice programs, not employment</p>
-              <ul className="mt-6 grid md:grid-cols-2 gap-x-10">
-                {simulations.map((item) => (
-                  <li key={item.title} className="border-t border-white/10 py-6">
-                    <div className="flex items-baseline justify-between gap-4">
-                      <h3 className="text-lg tracking-[-0.02em] text-[#F1F0EC]">
-                        {clean(item.title).replace(/^Job simulation \(Forage\) — /, "")}
-                      </h3>
-                      <span className="ink-label shrink-0 text-white/40">{item.date}</span>
-                    </div>
-                    <p className="mt-2 text-sm leading-relaxed text-white/55">
-                      {item.description.replace(/^Forage job simulation \(not employment\)\.\s*/, "")}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          </div>
         </div>
       </section>
 
@@ -627,7 +653,7 @@ const Home = () => {
               <li key={post.slug} className="ink-row">
                 <a
                   href={`#/blog/${post.slug}`}
-                  data-cursor="Read"
+                  data-cursor="Read ↗"
                   className="group grid grid-cols-12 gap-x-4 gap-y-2 items-baseline py-8"
                 >
                   <span className="ink-label col-span-12 md:col-span-1 text-red-500">
@@ -705,7 +731,7 @@ const Home = () => {
           </p>
           <a
             href={`mailto:${EMAIL}`}
-            data-cursor="Email"
+            data-cursor="Email ↗"
             className="ink-display ink-contact-title mt-12 block w-fit"
           >
             LET&apos;S

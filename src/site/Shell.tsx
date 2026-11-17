@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import Lenis from "lenis";
 
+import Assistant from "./Assistant";
 import Backdrop from "./Backdrop";
 import { toggleTheme, useTheme } from "./theme";
 
@@ -298,6 +299,7 @@ export const Page = ({ children }: { children: ReactNode }) => {
         {children}
         <SiteFooter />
       </div>
+      <Assistant />
       <Cursor />
     </div>
   );
