@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import type { Project } from "../types/indexs";
+import { Reel, useOnScreen } from "./Reel";
+import type { Clip } from "./Reel";
 
 /** Titles in the data file carry a "[3] " prefix used by the terminal view. */
 export const clean = (title: string) => title.replace(/^\[\d+\]\s*/, "");
@@ -11,9 +13,14 @@ const firstSentence = (text: string) => {
   return match ? match[0] : text;
 };
 
-/** Small looping clips that are light enough to play inside a card. */
-const CARD_VIDEO: Record<string, string> = {
-  "web-3d-006": "/hero-4.mp4",
+/** The 3D site's own scene videos; they play one after another. */
+const SITE_3D = ["/hero-4.mp4", "/3dsite-hero-1.mp4", "/3dsite-hero-2.mp4", "/3dsite-hero-3.mp4"];
+
+/** Clips light enough to play by themselves inside a card on the home page. */
+const CARD_VIDEOS: Record<string, string[]> = {
+  "web-3d-006": SITE_3D,
+  "gai-001": ["/KGRAGDEMO-2.mp4", "/GPT_DEMO-1.mp4"],
+  "research-008": ["/aeroforge-certificate-toy.mp4"],
 };
 
 /** Cover images for projects whose data has no still images. */
@@ -35,88 +42,47 @@ export const Tag = ({ children }: { children: ReactNode }) => (
   </span>
 );
 
-/** True while the element is on screen; used to start and stop videos and slideshows. */
-function useOnScreen<T extends Element>() {
-  const ref = useRef<T>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
-      threshold: 0.35,
-    });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-  return { ref, visible };
-}
+const video = (src: string, label?: string, note?: string): Clip => ({ kind: "video", src, label, note });
+const image = (src: string, label?: string): Clip => ({ kind: "image", src, label });
 
-/** Card media: a looping clip, an automatic slideshow, a single image, or a plain title tile. */
+/** What a card plays: its videos and images, in a loop. */
+const cardClips = (project: Project): Clip[] => {
+  const id = project.id ?? "";
+  const videos = (CARD_VIDEOS[id] ?? []).map((src) => video(src));
+  const images = imagesOf(project).map((src) => image(src));
+  if (id === "web-3d-006") return videos;
+  return [...images, ...videos];
+};
+
+/** What the project view plays at the top: every video the project has, in order. */
+const detailClips = (project: Project): Clip[] => {
+  const title = clean(project.title);
+  if (project.id === "web-3d-006") {
+    return SITE_3D.map((src, position) => video(src, `${title} · scene ${position + 1} of ${SITE_3D.length}`));
+  }
+  return [
+    ...(project.VideoDemo ? [video(project.VideoDemo, `${title} · overview`)] : []),
+    ...(project.demoVideos ?? []).map((demo) => video(demo.url, demo.title, demo.description)),
+  ];
+};
+
+/** Card media: a reel of the project's clips and images, or a plain title tile. */
 const CardMedia = ({ project }: { project: Project }) => {
   const { ref, visible } = useOnScreen<HTMLDivElement>();
-  const video = CARD_VIDEO[project.id ?? ""];
-  const images = imagesOf(project);
-  const [index, setIndex] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (video || images.length < 2 || !visible) return;
-    const timer = window.setInterval(() => setIndex((value) => (value + 1) % images.length), 2600);
-    return () => window.clearInterval(timer);
-  }, [video, images.length, visible]);
-
-  useEffect(() => {
-    const element = videoRef.current;
-    if (!element) return;
-    if (visible) element.play().catch(() => {});
-    else element.pause();
-  }, [visible]);
+  const clips = cardClips(project);
 
   return (
     <div ref={ref} className="relative aspect-[16/9] overflow-hidden bg-[#0d1117] border-b border-white/10">
-      {video ? (
-        <video
-          ref={videoRef}
-          src={video}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="card-zoom absolute inset-0 w-full h-full object-cover"
-        />
-      ) : images.length > 0 ? (
-        images.map((src, position) => (
-          <img
-            key={src}
-            src={src}
-            alt={position === 0 ? `${clean(project.title)} preview` : ""}
-            loading="lazy"
-            className={`card-zoom absolute inset-0 w-full h-full object-contain p-3 transition-opacity duration-700 ${
-              position === index ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ))
+      {clips.length > 0 ? (
+        <Reel clips={clips} variant="card" active={visible} />
       ) : (
         <div className="card-zoom absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(96,165,250,0.25),transparent_55%),radial-gradient(circle_at_75%_80%,rgba(34,197,94,0.22),transparent_55%)]">
           <span className="text-2xl font-bold text-white/80 px-6 text-center">{clean(project.title)}</span>
         </div>
       )}
 
-      {images.length > 1 && !video && (
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
-          {images.map((src, position) => (
-            <span
-              key={src}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                position === index ? "w-5 bg-white" : "w-1.5 bg-white/40"
-              }`}
-            />
-          ))}
-        </div>
-      )}
-
       {/* Short note that slides up on hover */}
-      <div className="card-note absolute inset-0 flex flex-col justify-end p-5 bg-gradient-to-t from-black via-black/70 to-transparent">
+      <div className="card-note pointer-events-none absolute inset-0 flex flex-col justify-end p-5 pr-16 bg-gradient-to-t from-black via-black/70 to-transparent">
         <p className="text-sm text-gray-100 leading-relaxed">{firstSentence(project.description)}</p>
         <p className="mt-2 text-sm font-semibold text-green-400">Open project →</p>
       </div>
@@ -209,6 +175,7 @@ export const ProjectDetail = ({ project, onClose }: { project: Project; onClose:
   const [closing, setClosing] = useState(false);
   const title = clean(project.title);
   const images = imagesOf(project);
+  const videos = detailClips(project);
 
   const close = () => {
     setClosing(true);
@@ -277,14 +244,10 @@ export const ProjectDetail = ({ project, onClose }: { project: Project; onClose:
             </div>
           )}
 
-          {project.VideoDemo && (
-            <video
-              src={project.VideoDemo}
-              controls
-              playsInline
-              preload="metadata"
-              className="mt-7 w-full rounded-lg border border-white/10 bg-black"
-            />
+          {videos.length > 0 && (
+            <div className="mt-7">
+              <Reel clips={videos} variant="detail" />
+            </div>
           )}
 
           <p className="mt-7 text-[17px] leading-8 text-gray-300">{project.description}</p>
@@ -315,29 +278,6 @@ export const ProjectDetail = ({ project, onClose }: { project: Project; onClose:
                   <li key={feature}>{feature}</li>
                 ))}
               </ul>
-            </div>
-          )}
-
-          {project.demoVideos && project.demoVideos.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-3">Demo videos</h3>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {project.demoVideos.map((demo) => (
-                  <figure key={demo.url}>
-                    <video
-                      src={demo.url}
-                      controls
-                      playsInline
-                      preload="metadata"
-                      className="w-full rounded-lg border border-white/10 bg-black"
-                    />
-                    <figcaption className="mt-2 text-sm text-gray-300">
-                      {demo.title}
-                      {demo.description && <span className="block text-xs text-gray-500">{demo.description}</span>}
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
             </div>
           )}
 

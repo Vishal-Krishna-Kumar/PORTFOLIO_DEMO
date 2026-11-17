@@ -93,3 +93,11 @@ html {
 .clean-site[data-theme="light"] .invertible video {
   filter: invert(1) hue-rotate(180deg);
 }
+/* Players keep their own dark look in the light theme. */
+.clean-site[data-theme="light"] .invertible .reel {
+  filter: invert(1) hue-rotate(180deg);
+}
+.clean-site[data-theme="light"] .invertible .reel img,
+.clean-site[data-theme="light"] .invertible .reel video {
+  filter: none;
+}
