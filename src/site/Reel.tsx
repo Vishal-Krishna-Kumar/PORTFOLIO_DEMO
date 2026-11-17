@@ -1,9 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import type { MouseEvent, ReactNode } from "react";
+import type { ComponentType, MouseEvent, ReactNode } from "react";
 
 export type Clip = {
-  kind: "video" | "image";
+  kind: "video" | "image" | "live";
+  /** File to show; for a live clip, any unique name. */
   src: string;
+  /** A drawing that animates in the browser (kind "live"). */
+  Live?: ComponentType;
+  /** For a video: play only this part, in seconds. */
+  start?: number;
+  end?: number;
+  /** How long an image or live clip stays up. */
+  seconds?: number;
   /** Shown over the clip, bottom left. */
   label?: string;
   /** Second, smaller line under the label (used for credits). */
@@ -89,19 +97,19 @@ export const Reel = ({
     element.muted = muted;
     if (playing) element.play().catch(() => {});
     else element.pause();
-  }, [playing, muted, started, clip.src]);
+  }, [playing, muted, started, clip.src, clip.start]);
 
   useEffect(() => {
-    if (clip.kind !== "image" || !playing || !many) return;
+    if (clip.kind === "video" || !playing || !many) return;
     const timer = window.setInterval(
-      () => setProgress((value) => value + 0.1 / IMAGE_SECONDS),
+      () => setProgress((value) => value + 0.1 / (clip.seconds ?? IMAGE_SECONDS)),
       100
     );
     return () => window.clearInterval(timer);
-  }, [clip.kind, clip.src, playing, many]);
+  }, [clip.kind, clip.src, clip.seconds, playing, many]);
 
   useEffect(() => {
-    if (clip.kind === "image" && progress >= 1) go(index + 1);
+    if (clip.kind !== "video" && progress >= 1) go(index + 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress]);
 
@@ -124,7 +132,7 @@ export const Reel = ({
       {started &&
         (clip.kind === "video" ? (
           <video
-            key={clip.src}
+            key={`${clip.src}@${clip.start ?? 0}`}
             ref={videoRef}
             src={clip.src}
             muted
@@ -133,12 +141,28 @@ export const Reel = ({
             loop={!many}
             preload="auto"
             className={mediaClass}
+            onLoadedMetadata={(event) => {
+              if (clip.start) event.currentTarget.currentTime = clip.start;
+            }}
             onEnded={() => go(index + 1)}
             onTimeUpdate={(event) => {
               const element = event.currentTarget;
-              if (element.duration) setProgress(element.currentTime / element.duration);
+              if (!element.duration) return;
+              const from = clip.start ?? 0;
+              const to = Math.min(clip.end ?? element.duration, element.duration);
+              if (clip.end && element.currentTime >= to) {
+                // A cut clip: loop it when it is the only one, otherwise move on.
+                if (many) go(index + 1);
+                else element.currentTime = from;
+                return;
+              }
+              setProgress(Math.max(element.currentTime - from, 0) / Math.max(to - from, 0.1));
             }}
           />
+        ) : clip.kind === "live" && clip.Live ? (
+          <div key={clip.src} className="reel-fade absolute inset-0 [container-type:inline-size]">
+            <clip.Live />
+          </div>
         ) : (
           <img key={clip.src} src={clip.src} alt={clip.label ?? ""} className={mediaClass} />
         ))}
@@ -148,7 +172,7 @@ export const Reel = ({
         <div className="absolute top-0 inset-x-0 z-10 flex gap-1 p-2.5">
           {clips.map((item, position) => (
             <button
-              key={item.src}
+              key={`${item.src}@${item.start ?? 0}`}
               type="button"
               aria-label={`Show clip ${position + 1} of ${clips.length}`}
               onClick={stop(() => go(position))}

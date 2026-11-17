@@ -448,6 +448,7 @@ export const projectsData: Project[] = [
   category: "Game Development",
   status: "Completed",
 
+  VideoDemo: "/3D-DEMO.mov",
   images: [
     "/Game-1.png",
     "/Game-2.png",
@@ -489,8 +490,8 @@ export const projectsData: Project[] = [
       // icon: "github"
     },
     {
-      name: "Gameplay Demo",
-      url: "/3D-DEMO.mov",
+      name: "Play on itch.io",
+      url: "https://vishalkrishna.itch.io/combat",
       // icon: "play"
     },
   ],
@@ -511,6 +512,9 @@ export const projectsData: Project[] = [
     category: "Research (in progress)",
     status: "Active",
     images: ["/aeroforge-02_cfd.png", "/aeroforge-06_train_end.png", "/aeroforge-08_gradients.png", "/aeroforge-09_results.png"],
+    links: [
+      { name: "GitHub Repository", url: "https://github.com/Vishal-Krishna-Kumar/AeroForge-TRIAD" }
+    ],
     demoVideos: [
       {
         title: "Training the transonic surrogate (V3, M = 0.70)",
@@ -521,6 +525,16 @@ export const projectsData: Project[] = [
         title: "How the run-level certificate works",
         url: "/aeroforge-certificate-toy.mp4",
         description: "A 2-D toy illustration, not CFD and not a result of the paper"
+      },
+      {
+        title: "Knowledge graph of the project growing",
+        url: "/aeroforge-kg-growth.mp4",
+        description: "Rendered from the project's own notes and results"
+      },
+      {
+        title: "Training timelapse: watching the network learn",
+        url: "/aeroforge-video-project.mp4",
+        description: "Network against CFD on shapes it never trains on, then predicted against true objective on 48 unseen shapes"
       }
     ],
     metrics: [

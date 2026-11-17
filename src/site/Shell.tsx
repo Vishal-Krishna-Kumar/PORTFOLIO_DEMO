@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import Lenis from "lenis";
 
 import Backdrop from "./Backdrop";
 import { toggleTheme, useTheme } from "./theme";
@@ -164,7 +165,7 @@ export const SiteNav = () => {
       </header>
 
       {open && (
-        <div className="invertible ink-menu fixed inset-0 z-50 overflow-y-auto bg-[#080808] text-[#F1F0EC]">
+        <div data-lenis-prevent className="invertible ink-menu fixed inset-0 z-50 overflow-y-auto bg-[#080808] text-[#F1F0EC]">
           <div className="min-h-full flex flex-col justify-between px-[6vw] pt-24 pb-8">
             <nav className="grid lg:grid-cols-12 gap-10 items-end">
               <ul className="lg:col-span-8">
@@ -254,9 +255,29 @@ export const SiteFooter = () => (
   </footer>
 );
 
+/** Smooth, slightly weighted scrolling on desktop. Phones keep their native scroll. */
+function useSmoothScroll() {
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia?.("(pointer: fine)").matches) return;
+    const lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+    let frame = 0;
+    const loop = (time: number) => {
+      lenis.raf(time);
+      frame = requestAnimationFrame(loop);
+    };
+    frame = requestAnimationFrame(loop);
+    return () => {
+      cancelAnimationFrame(frame);
+      lenis.destroy();
+    };
+  }, []);
+}
+
 /** Shared frame for every page: themed background, menu, content, footer. */
 export const Page = ({ children }: { children: ReactNode }) => {
   const theme = useTheme();
+  useSmoothScroll();
   return (
     <div className="clean-site relative isolate min-h-screen text-gray-200" data-theme={theme}>
       <Backdrop theme={theme} />
