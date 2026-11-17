@@ -58,7 +58,7 @@ const imagesOf = (project: Project) =>
     : (EXTRA_IMAGES[project.id ?? ""] ?? []);
 
 const blogHref = (url: string) => url.replace("https://www.vishalkrishna.dev/blog/", "#/blog/");
-const isInternal = (url: string) => url.includes("vishalkrishna.dev/blog/");
+const isInternal = (url: string) => url.includes("vishalkrishna.dev/blog/") || url.startsWith("/#/blog/");
 
 /** Short button labels for a project's links: GitHub, Blog, Live, Paper, or the link's own name. */
 export const linkKind = (link: { name: string; url: string }): string => {

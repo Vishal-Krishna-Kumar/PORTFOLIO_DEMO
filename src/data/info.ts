@@ -211,6 +211,7 @@ export const projectsData: Project[] = [
       "Evaluated GPT-4 and Llama on the BiomixQA benchmark"
     ],
     links: [
+      { name: "Write-up: what I did", url: "/#/blog/scoring-kg-rag-on-biomixqa" },
       { name: "GitHub Repository", url: "https://github.com/Vishal-Krishna-Kumar/GraphAugmented-Intelligence_GAI" },
       { name: "Upstream framework: KG-RAG (Baranzini Lab, UCSF)", url: "https://github.com/BaranziniLab/KG_RAG" }
     ],
@@ -240,6 +241,7 @@ export const projectsData: Project[] = [
     ],
     techStack: ["PyTorch", "3D Attention U-Net (Islam et al., 2019)", "BraTS 2019"],
     links: [
+      { name: "Write-up: what I did", url: "/#/blog/brats-3d-attention-unet-hackathon" },
       {
         name: "GitHub Repository",
         url: "https://github.com/Vishal-Krishna-Kumar/BRaTS-attention-Tumor-Segmentation-UNet-",
@@ -280,6 +282,7 @@ export const projectsData: Project[] = [
       "Final-year undergraduate team project (SRM Institute of Science and Technology)"
     ],
     links: [
+      { name: "Write-up: what I did", url: "/#/blog/deepfake-detection-with-xception" },
       {
         name: "GitHub Repository",
         url: "https://github.com/Vishal-Krishna-Kumar/DeepFake-Detection-System",
@@ -317,6 +320,7 @@ export const projectsData: Project[] = [
       "Built by extending Robert Förster's AlphaZero tutorial"
     ],
     links: [
+      { name: "Write-up: what I did", url: "/#/blog/alphazero-self-play-notes" },
       {
         name: "AlphaZero Chess",
         url: "https://github.com/Vishal-Krishna-Kumar/AlphaZero-Chess",
@@ -361,6 +365,7 @@ export const projectsData: Project[] = [
       "Evaluated on English, Japanese, and Bulgarian"
     ],
     links: [
+      { name: "Write-up: what I did", url: "/#/blog/hmm-vs-lstm-pos-tagging" },
       {
         name: "GitHub Repository",
         url: "https://github.com/Vishal-Krishna-Kumar/nlp-sequence-labeling-autocorrection",
@@ -383,7 +388,7 @@ export const projectsData: Project[] = [
     window: "Frontend Engineering & 3D Graphics",
     date: "January 2026",
     description:
-      "Immersive 3D web experience with real-time rendering, physics simulations, and interactive animations. Built with modern web technologies achieving 90 FPS on mid-range devices and <1.5s load time.",
+      "A scroll-driven gaming site in React and GSAP: full-screen video scenes, clip-path transitions and pointer-tilt cards. Built by following JavaScript Mastery's award-winning-website tutorial; the design it reproduces is by Zentry.",
     category: "Web Development",
     status: "Completed",
     VideoDemo: "/hero-4.mp4",
@@ -394,16 +399,15 @@ export const projectsData: Project[] = [
       { label: "Bundle Size", value: "12 MB", color: "purple", icon: "package" },
       { label: "Lighthouse Score", value: "98", color: "orange", icon: "bar-chart" }
     ],
-    techStack: ["React", "Three.js", "GSAP", "WebGL", "Vite", "TypeScript", "Tailwind CSS"],
+    techStack: ["React", "GSAP", "ScrollTrigger", "Vite", "Tailwind CSS"],
     features: [
-      "Scroll-triggered 3D animations",
-      "Cinematic camera transitions with Bézier curves",
-      "Real-time particle systems with physics",
-      "Mobile-responsive design with touch gestures",
-      "WebGL optimization with instanced rendering",
-      "Progressive Web App capabilities"
+      "Scroll-triggered animations with GSAP ScrollTrigger",
+      "Video scenes that swap with a clip-path transition",
+      "Cards that tilt toward the pointer with CSS perspective",
+      "Built by following JavaScript Mastery's award-winning-website tutorial; design by Zentry"
     ],
     links: [
+      { name: "Write-up: what I did", url: "/#/blog/scroll-driven-site-with-gsap" },
       {
         name: "Live Website",
         url: "https://3d-gamingsite.netlify.app/",
@@ -466,16 +470,16 @@ export const projectsData: Project[] = [
     "Python",
     "Pygame",
     "Ray Casting",
-    "A* Pathfinding",
+    "Breadth-first search pathfinding",
     "OOP",
     "Vector Math",
-    "AI Behavior Trees"
+    "Sprite projection"
   ],
 
   features: [
     "Mouse-controlled camera and keyboard-based movement (W, A, S, D)",
     "Space-bar shooting with weapon recoil and hit detection",
-    "AI enemies using shortest-path (A*) algorithms to chase the player",
+    "Enemies chase the player along the shortest path, found with breadth-first search on the map grid",
     "Dynamic enemy spawning to prevent overcrowding and unfair combat",
     "Real-time ray-casting engine for 3D world rendering",
     "Mini-map with live enemy and player tracking",
@@ -484,6 +488,7 @@ export const projectsData: Project[] = [
   ],
 
   links: [
+      { name: "Write-up: what I did", url: "/#/blog/raycasting-fps-in-pygame" },
     {
       name: "GitHub Repository",
       url: "https://github.com/Vishal-Krishna-Kumar/Combat-Algo-Game",
@@ -513,6 +518,7 @@ export const projectsData: Project[] = [
     status: "Active",
     images: ["/aeroforge-02_cfd.png", "/aeroforge-06_train_end.png", "/aeroforge-08_gradients.png", "/aeroforge-09_results.png"],
     links: [
+      { name: "Write-up: what I did", url: "/#/blog/aeroforge-certified-gradients" },
       { name: "GitHub Repository", url: "https://github.com/Vishal-Krishna-Kumar/AeroForge-TRIAD" }
     ],
     demoVideos: [
