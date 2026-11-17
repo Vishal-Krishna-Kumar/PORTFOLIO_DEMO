@@ -9,7 +9,7 @@ export const PostCard = ({ slug }: { slug: string }) => {
   return (
     <a
       href={`#/blog/${post.slug}`}
-      className="group block rounded-xl border border-white/10 bg-black/60 p-6 hover:border-blue-300/60 hover:bg-white/[0.04] transition-colors"
+      className="group block rounded-xl border border-white/10 bg-neutral-950/90 backdrop-blur-sm p-6 hover:-translate-y-0.5 hover:border-blue-300/60 hover:bg-white/[0.04] transition-colors"
     >
       <p className="text-sm text-gray-500">
         {formatDate(post.date)} · {post.readingMinutes} min read

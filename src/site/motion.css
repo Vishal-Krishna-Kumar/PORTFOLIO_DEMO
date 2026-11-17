@@ -1,0 +1,178 @@
+/* Motion for the clean site. Everything here is switched off for visitors who ask for
+   reduced motion (see the media query at the end). */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+.clean-site .rise {
+  opacity: 0;
+  animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+/* Name: a band of blue and green light that moves across white text */
+@keyframes sheen {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.clean-site .hero-name {
+  background: linear-gradient(90deg, #ffffff 0%, #ffffff 40%, #93c5fd 55%, #4ade80 70%, #ffffff 85%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards, sheen 7s linear infinite;
+}
+
+/* Soft glow that drifts behind the hero */
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -24px) scale(1.12); }
+}
+.clean-site .hero-glow {
+  position: absolute;
+  left: -6rem;
+  top: 5rem;
+  width: 34rem;
+  max-width: 100%;
+  height: 22rem;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(96, 165, 250, 0.28), rgba(34, 197, 94, 0.14) 55%, transparent 75%);
+  filter: blur(46px);
+  animation: drift 11s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Rotating light around the photo */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.clean-site .photo-ring {
+  position: relative;
+  padding: 3px;
+  border-radius: 1.15rem;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -20px rgba(96, 165, 250, 0.55);
+}
+.clean-site .photo-ring::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: conic-gradient(from 0deg, #22c55e, #60a5fa, transparent 55%, #22c55e);
+  animation: spin-slow 6s linear infinite;
+}
+
+/* Typing caret */
+@keyframes blink {
+  50% { opacity: 0; }
+}
+.clean-site .type-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 3px;
+  vertical-align: -0.15em;
+  background: #4ade80;
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Sweep of light across the main button */
+@keyframes shine {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  60%, 100% { transform: translateX(260%) skewX(-20deg); }
+}
+.clean-site .shine {
+  position: relative;
+  overflow: hidden;
+}
+.clean-site .shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: shine 3.6s ease-in-out infinite;
+}
+
+/* Reveal on scroll */
+.clean-site .sr {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
+}
+.clean-site .sr.in {
+  opacity: 1;
+  transform: none;
+}
+.clean-site .project-card.sr.in:hover {
+  transform: translateY(-4px);
+}
+
+/* Project card: zoom the media and slide a short note up on hover */
+.clean-site .card-zoom {
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.7s ease;
+}
+.clean-site .project-card:hover .card-zoom,
+.clean-site .project-card:focus-visible .card-zoom {
+  transform: scale(1.1);
+}
+.clean-site .card-note {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.clean-site .project-card:hover .card-note,
+.clean-site .project-card:focus-visible .card-note {
+  opacity: 1;
+  transform: none;
+}
+
+/* Opening and closing a project */
+@keyframes detail-in {
+  from { opacity: 0; transform: translateY(40px) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes detail-out {
+  to { opacity: 0; transform: translateY(24px) scale(0.97); }
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-out { to { opacity: 0; } }
+.clean-site .detail-in { animation: detail-in 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.clean-site .detail-out { animation: detail-out 0.22s ease-in both; }
+.clean-site .detail-backdrop-in { animation: fade-in 0.3s ease both; }
+.clean-site .detail-backdrop-out { animation: fade-out 0.22s ease both; }
+
+/* Gallery strip that scrolls by itself and pauses under the pointer */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+.clean-site .gallery-track {
+  animation: marquee 28s linear infinite;
+}
+.clean-site .gallery:hover .gallery-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clean-site .rise,
+  .clean-site .hero-name,
+  .clean-site .sr {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    transition: none;
+  }
+  .clean-site .hero-name {
+    color: #ffffff;
+    background: none;
+  }
+  .clean-site .hero-glow,
+  .clean-site .photo-ring::before,
+  .clean-site .shine::after,
+  .clean-site .gallery-track,
+  .clean-site .type-caret {
+    animation: none;
+  }
+}
