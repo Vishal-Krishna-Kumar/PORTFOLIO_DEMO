@@ -41,7 +41,7 @@ export const SiteNav = () => {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-40 transition-colors ${
-        scrolled || open ? "bg-[#0b0d10]/90 backdrop-blur border-b border-white/10" : ""
+        scrolled || open ? "bg-black/85 backdrop-blur border-b border-white/10" : ""
       }`}
     >
       <nav className="mx-auto max-w-5xl px-5 h-16 flex items-center justify-between">
@@ -66,7 +66,7 @@ export const SiteNav = () => {
             href={RESUME_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-semibold rounded-md bg-emerald-500 hover:bg-emerald-400 text-black px-3.5 py-1.5 transition-colors"
+            className="text-sm font-semibold rounded-md bg-green-500 hover:bg-green-400 text-black px-3.5 py-1.5 transition-colors"
           >
             Resume
           </a>
@@ -102,7 +102,7 @@ export const SiteNav = () => {
             href={RESUME_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="self-start text-sm font-semibold rounded-md bg-emerald-500 text-black px-3.5 py-2"
+            className="self-start text-sm font-semibold rounded-md bg-green-500 text-black px-3.5 py-2"
           >
             Resume
           </a>

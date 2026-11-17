@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import Backdrop from "./Backdrop";
 import { POSTS, formatDate } from "./posts";
 import { SiteFooter, SiteNav } from "./Shell";
 
@@ -9,12 +10,12 @@ export const PostCard = ({ slug }: { slug: string }) => {
   return (
     <a
       href={`#/blog/${post.slug}`}
-      className="group block rounded-xl border border-white/10 bg-white/[0.02] p-6 hover:border-emerald-400/50 hover:bg-white/[0.04] transition-colors"
+      className="group block rounded-xl border border-white/10 bg-black/60 p-6 hover:border-blue-300/60 hover:bg-white/[0.04] transition-colors"
     >
       <p className="text-sm text-gray-500">
         {formatDate(post.date)} · {post.readingMinutes} min read
       </p>
-      <h3 className="mt-2 text-xl font-semibold text-white group-hover:text-emerald-300 transition-colors">
+      <h3 className="mt-2 text-xl font-semibold text-white group-hover:text-blue-300 transition-colors">
         {post.title}
       </h3>
       <p className="mt-2 text-gray-400 leading-relaxed">{post.summary}</p>
@@ -39,10 +40,11 @@ export const BlogIndex = () => {
   }, []);
 
   return (
-    <div className="clean-site min-h-screen bg-[#0b0d10] text-gray-200">
+    <div className="clean-site relative isolate min-h-screen text-gray-200">
+      <Backdrop />
       <SiteNav />
       <main className="mx-auto max-w-3xl px-5 pt-28 pb-20">
-        <p className="text-sm uppercase tracking-[0.25em] text-emerald-400">Blog</p>
+        <p className="text-sm uppercase tracking-[0.25em] text-blue-300">Blog</p>
         <h1 className="mt-3 text-4xl md:text-5xl font-bold text-white tracking-tight">
           Things I measured
         </h1>
@@ -71,12 +73,13 @@ export const BlogPost = ({ slug }: { slug: string }) => {
 
   if (!post) {
     return (
-      <div className="clean-site min-h-screen bg-[#0b0d10] text-gray-200">
+      <div className="clean-site relative isolate min-h-screen text-gray-200">
+        <Backdrop />
         <SiteNav />
         <main className="mx-auto max-w-3xl px-5 pt-28 pb-20">
           <h1 className="text-3xl font-bold text-white">Post not found</h1>
           <p className="mt-4">
-            <a href="#/blog" className="text-emerald-400 underline underline-offset-4">
+            <a href="#/blog" className="text-blue-300 underline underline-offset-4">
               See all posts
             </a>
           </p>
@@ -87,10 +90,11 @@ export const BlogPost = ({ slug }: { slug: string }) => {
 
   const { Content } = post;
   return (
-    <div className="clean-site min-h-screen bg-[#0b0d10] text-gray-200">
+    <div className="clean-site relative isolate min-h-screen text-gray-200">
+      <Backdrop />
       <SiteNav />
       <main className="mx-auto max-w-3xl px-5 pt-28 pb-20">
-        <a href="#/blog" className="text-sm text-gray-400 hover:text-emerald-300 transition-colors">
+        <a href="#/blog" className="text-sm text-gray-400 hover:text-blue-300 transition-colors">
           ← All posts
         </a>
         <p className="mt-8 text-sm text-gray-500">
