@@ -83,3 +83,12 @@ button {
 html {
   scroll-behavior: smooth;
 }
+
+/* Light theme for the clean site. The pages are designed dark; in light mode the content is
+   colour-inverted (hue kept), and images are inverted back so they look normal. */
+.clean-site[data-theme="light"] .invertible {
+  filter: invert(1) hue-rotate(180deg);
+}
+.clean-site[data-theme="light"] .invertible img {
+  filter: invert(1) hue-rotate(180deg);
+}

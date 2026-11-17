@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 
-import Backdrop from "./Backdrop";
 import { POSTS, formatDate } from "./posts";
-import { SiteFooter, SiteNav } from "./Shell";
+import { Page } from "./Shell";
 
 export const PostCard = ({ slug }: { slug: string }) => {
   const post = POSTS.find((item) => item.slug === slug);
@@ -40,9 +39,7 @@ export const BlogIndex = () => {
   }, []);
 
   return (
-    <div className="clean-site relative isolate min-h-screen text-gray-200">
-      <Backdrop />
-      <SiteNav />
+    <Page>
       <main className="mx-auto max-w-3xl px-5 pt-28 pb-20">
         <p className="text-sm uppercase tracking-[0.25em] text-blue-300">Blog</p>
         <h1 className="mt-3 text-4xl md:text-5xl font-bold text-white tracking-tight">
@@ -58,8 +55,7 @@ export const BlogIndex = () => {
           ))}
         </div>
       </main>
-      <SiteFooter />
-    </div>
+    </Page>
   );
 };
 
@@ -73,9 +69,7 @@ export const BlogPost = ({ slug }: { slug: string }) => {
 
   if (!post) {
     return (
-      <div className="clean-site relative isolate min-h-screen text-gray-200">
-        <Backdrop />
-        <SiteNav />
+      <Page>
         <main className="mx-auto max-w-3xl px-5 pt-28 pb-20">
           <h1 className="text-3xl font-bold text-white">Post not found</h1>
           <p className="mt-4">
@@ -84,15 +78,13 @@ export const BlogPost = ({ slug }: { slug: string }) => {
             </a>
           </p>
         </main>
-      </div>
+      </Page>
     );
   }
 
   const { Content } = post;
   return (
-    <div className="clean-site relative isolate min-h-screen text-gray-200">
-      <Backdrop />
-      <SiteNav />
+    <Page>
       <main className="mx-auto max-w-3xl px-5 pt-28 pb-20">
         <a href="#/blog" className="text-sm text-gray-400 hover:text-blue-300 transition-colors">
           ← All posts
@@ -116,7 +108,6 @@ export const BlogPost = ({ slug }: { slug: string }) => {
           </div>
         </div>
       </main>
-      <SiteFooter />
-    </div>
+    </Page>
   );
 };

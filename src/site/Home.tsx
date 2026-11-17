@@ -3,10 +3,9 @@ import type { ReactNode } from "react";
 
 import { experiencesData, projectsData } from "../data/info";
 import type { Experience, Project } from "../types/indexs";
-import Backdrop from "./Backdrop";
 import { PostCard } from "./Blog";
 import { POSTS } from "./posts";
-import { EMAIL, GITHUB_URL, LINKEDIN_URL, RESUME_URL, SiteFooter, SiteNav, goToSection } from "./Shell";
+import { EMAIL, GITHUB_URL, LINKEDIN_URL, Page, RESUME_URL, goToSection } from "./Shell";
 
 /** Titles in the data file carry a "[3] " prefix used by the terminal view. */
 const clean = (title: string) => title.replace(/^\[\d+\]\s*/, "");
@@ -194,9 +193,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="clean-site relative isolate min-h-screen text-gray-200">
-      <Backdrop />
-      <SiteNav />
+    <Page>
 
       {/* Hero */}
       <section className="mx-auto max-w-5xl px-5 pt-32 pb-16 md:pt-40 md:pb-24">
@@ -396,8 +393,7 @@ const Home = () => {
         </div>
       </Section>
 
-      <SiteFooter />
-    </div>
+    </Page>
   );
 };
 

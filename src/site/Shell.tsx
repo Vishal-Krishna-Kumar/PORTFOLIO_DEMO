@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
+
+import Backdrop from "./Backdrop";
+import { toggleTheme, useTheme } from "./theme";
 
 export const EMAIL = "vishalkrishnakkr@gmail.com";
 export const RESUME_URL = "/vishal_krishna_kumar_resume.pdf";
@@ -28,6 +32,7 @@ export function goToSection(id: string) {
 export const SiteNav = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -40,7 +45,7 @@ export const SiteNav = () => {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-40 transition-colors ${
+      className={`invertible fixed top-0 inset-x-0 z-40 transition-colors ${
         scrolled || open ? "bg-black/85 backdrop-blur border-b border-white/10" : ""
       }`}
     >
@@ -62,6 +67,23 @@ export const SiteNav = () => {
               {section.label}
             </button>
           ))}
+          <button
+            onClick={toggleTheme}
+            aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+            title={theme === "dark" ? "Light theme" : "Dark theme"}
+            className="p-1.5 rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              {theme === "dark" ? (
+                <>
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+                </>
+              ) : (
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+              )}
+            </svg>
+          </button>
           <a
             href={RESUME_URL}
             target="_blank"
@@ -72,16 +94,35 @@ export const SiteNav = () => {
           </a>
         </div>
 
-        <button
-          className="md:hidden p-2 -mr-2 text-gray-200"
+        <div className="md:hidden flex items-center gap-1">
+          <button
+            onClick={toggleTheme}
+            aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+            title={theme === "dark" ? "Light theme" : "Dark theme"}
+            className="p-1.5 rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              {theme === "dark" ? (
+                <>
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+                </>
+              ) : (
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+              )}
+            </svg>
+          </button>
+          <button
+            className="p-2 -mr-2 text-gray-200"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           onClick={() => setOpen(!open)}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-          </svg>
-        </button>
+            </svg>
+          </button>
+        </div>
       </nav>
 
       {open && (
@@ -133,3 +174,18 @@ export const SiteFooter = () => (
     </div>
   </footer>
 );
+
+/** Shared frame for every page: themed background, menu, content, footer. */
+export const Page = ({ children }: { children: ReactNode }) => {
+  const theme = useTheme();
+  return (
+    <div className="clean-site relative isolate min-h-screen text-gray-200" data-theme={theme}>
+      <Backdrop theme={theme} />
+      <SiteNav />
+      <div className="invertible">
+        {children}
+        <SiteFooter />
+      </div>
+    </div>
+  );
+};
