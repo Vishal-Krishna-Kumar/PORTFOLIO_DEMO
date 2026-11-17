@@ -182,40 +182,73 @@
   .clean-site .ink-panel-intro {
     width: 46vw;
   }
-  /* Text on the left, media filling the right: no empty space in between */
+  /* The media is the stage; the project name is laid over its lower left corner */
   .clean-site .ink-panel-body {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: 4vw;
-  }
-  .clean-site .ink-panel-text {
-    height: 100%;
-    min-height: 0;
+    position: relative;
   }
   .clean-site .ink-panel-stage {
+    position: absolute;
+    top: 6.5rem;
+    right: 4vw;
+    bottom: 21vh;
+    left: 24%;
+    margin-top: 0;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    min-height: 0;
-    margin-top: 0;
   }
   .clean-site .ink-panel-media {
-    width: min(100%, calc((100vh - 13rem) * 1.6));
-    height: auto;
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    aspect-ratio: 16 / 10;
+  }
+  .clean-site .ink-panel-body::after {
+    content: "";
+    position: absolute;
+    inset: 35% 0 0 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent, rgba(8, 8, 8, 0.86) 62%, #080808);
+    z-index: 1;
+  }
+  .clean-site .ink-panel-text {
+    position: absolute;
+    inset: 6rem 4vw 7vh 4vw;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .clean-site .ink-panel-text > * {
+    pointer-events: auto;
+  }
+  .clean-site .ink-panel-text > :last-child {
+    max-width: 68%;
   }
   .clean-site .ink-panel-title {
-    font-size: clamp(2.2rem, min(4.3vw, 9.5vh), 4.8rem);
+    font-size: clamp(2.6rem, min(6.2vw, 13.5vh), 7rem);
   }
-  /* Long names get smaller type so they take three lines, not five */
   .clean-site .ink-panel-title-long {
-    font-size: clamp(1.7rem, min(2.9vw, 6.4vh), 3.2rem);
+    font-size: clamp(1.9rem, min(3.5vw, 7.6vh), 3.9rem);
     line-height: 0.95;
+  }
+  /* All-video projects: the video is the whole panel */
+  .clean-site .ink-panel[data-bleed="true"] .ink-panel-stage {
+    inset: 0;
+  }
+  .clean-site .ink-panel[data-bleed="true"] .ink-panel-media {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
   }
 }
 
 /* Stack: each card sticks under the header and the next one slides over it */
-.clean-site .ink-stack-card {
-  position: sticky;
+/* On phones the cards simply follow one another; stacking needs the room of a larger screen */
+@media (min-width: 768px) {
+  .clean-site .ink-stack-card {
+    position: sticky;
+  }
 }
 
 /* Full-screen menu */
@@ -238,11 +271,13 @@
 
 /* Loading screen: counter, then five columns that rise and fall */
 .clean-site .ink-percent {
-  font-family: "Archivo", Arial, sans-serif;
-  font-weight: 200;
-  font-stretch: 112%;
-  font-size: clamp(3rem, 9vw, 6.5rem);
-  letter-spacing: -0.04em;
+  font-family: "Archivo", "Arial Black", Arial, sans-serif;
+  font-weight: 900;
+  font-stretch: 125%;
+  font-size: clamp(3.4rem, 11vw, 8.5rem);
+  letter-spacing: -0.05em;
+  color: #f0c9c6;
+  opacity: 0.85;
 }
 .clean-site .ink-stair {
   flex: 1 1 0;
@@ -286,17 +321,46 @@
   margin: -22px 0 0 -22px;
 }
 .clean-site .ink-cursor[data-mode="label"] {
-  width: 64px;
-  height: 64px;
-  margin: 14px 0 0 14px;
+  width: auto;
+  height: auto;
+  margin: -46px 0 0 -40px;
+  padding: 9px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(12, 12, 12, 0.82);
   mix-blend-mode: normal;
+  white-space: nowrap;
 }
 .clean-site .ink-cursor span {
-  color: #000;
+  color: #fff;
   font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+/* Scroll cue under the hero */
+@keyframes ink-cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.clean-site .ink-scroll-cue {
+  display: block;
+  width: 1px;
+  height: 34px;
+  background: currentColor;
+  animation: ink-cue 2.2s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+/* Assistant window */
+@keyframes assistant-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.clean-site .assistant-in {
+  transform-origin: bottom right;
+  animation: assistant-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 /* Big footer call */
@@ -311,6 +375,8 @@
     animation: none;
   }
   .clean-site .ink-glow,
+  .clean-site .ink-scroll-cue,
+  .clean-site .assistant-in,
   .clean-site .ink-menu {
     animation: none;
   }
