@@ -15,7 +15,7 @@ export const UL = ({ children }: { children: ReactNode }) => (
 );
 
 export const Code = ({ children }: { children: ReactNode }) => (
-  <code className="site-mono bg-white/10 px-1.5 py-0.5 rounded text-[0.88em] text-blue-300">
+  <code className="site-mono bg-white/10 px-1.5 py-0.5 rounded text-[0.88em] text-red-400">
     {children}
   </code>
 );
@@ -32,7 +32,7 @@ export const A = ({ href, children }: { href: string; children: ReactNode }) => 
     <a
       href={href}
       {...(internal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-      className="text-blue-300 underline underline-offset-4 hover:text-blue-300"
+      className="text-red-400 underline underline-offset-4 hover:text-red-400"
     >
       {children}
     </a>

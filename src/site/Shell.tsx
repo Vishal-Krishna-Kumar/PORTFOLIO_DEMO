@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 import Backdrop from "./Backdrop";
@@ -12,9 +12,9 @@ export const LINKEDIN_URL = "https://www.linkedin.com/in/vishal-krishna-kumar-65
 const SECTIONS = [
   { id: "about", label: "About" },
   { id: "experience", label: "Experience" },
-  { id: "projects", label: "Projects" },
+  { id: "projects", label: "Work" },
   { id: "writing", label: "Writing" },
-  { id: "skills", label: "Skills" },
+  { id: "skills", label: "Stack" },
   { id: "contact", label: "Contact" },
 ];
 
@@ -29,145 +29,224 @@ export function goToSection(id: string) {
   }
 }
 
+/** Small numbered label that opens every section: "01 — About". */
+export const SectionLabel = ({ index, children }: { index: string; children: ReactNode }) => (
+  <div className="flex items-center gap-3">
+    <span className="ink-label text-white/35">{index}</span>
+    <span className="h-px w-7 bg-red-500/70" />
+    <span className="ink-label text-white/55">{children}</span>
+  </div>
+);
+
+/** A dot that follows the pointer, grows over links and can carry a short word. */
+const Cursor = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [label, setLabel] = useState("");
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || !window.matchMedia?.("(pointer: fine)").matches) return;
+    let x = 0;
+    let y = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let frame = 0;
+
+    const loop = () => {
+      x += (targetX - x) * 0.22;
+      y += (targetY - y) * 0.22;
+      element.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+      frame = requestAnimationFrame(loop);
+    };
+    const onMove = (event: MouseEvent) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+      element.dataset.on = "true";
+      const target = event.target instanceof Element ? event.target : null;
+      const labelled = target?.closest<HTMLElement>("[data-cursor]");
+      const inControl = target?.closest(".reel button, video");
+      if (labelled && !inControl) {
+        element.dataset.mode = "label";
+        setLabel(labelled.dataset.cursor ?? "");
+      } else if (target?.closest("a, button, [role='button']")) {
+        element.dataset.mode = "link";
+        setLabel("");
+      } else {
+        element.dataset.mode = "";
+        setLabel("");
+      }
+    };
+    const onLeave = () => {
+      element.dataset.on = "false";
+    };
+
+    frame = requestAnimationFrame(loop);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("mousemove", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return (
+    <div ref={ref} className="ink-cursor" aria-hidden="true">
+      {label && <span>{label}</span>}
+    </div>
+  );
+};
+
+const ThemeIcon = ({ theme }: { theme: "dark" | "light" }) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    {theme === "dark" ? (
+      <>
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+      </>
+    ) : (
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+    )}
+  </svg>
+);
+
 export const SiteNav = () => {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const theme = useTheme();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
-  const link = "text-sm text-gray-300 hover:text-white transition-colors";
+  const goHome = () => {
+    setOpen(false);
+    if (window.location.hash.startsWith("#/")) window.location.hash = "";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <header
-      className={`invertible fixed top-0 inset-x-0 z-40 transition-colors ${
-        scrolled || open ? "bg-black/85 backdrop-blur border-b border-white/10" : ""
-      }`}
-    >
-      <nav className="mx-auto max-w-5xl px-5 h-16 flex items-center justify-between">
+    <>
+      <header className="fixed top-0 inset-x-0 z-[60] px-5 py-5 sm:px-7 md:px-9 flex items-center justify-between mix-blend-difference">
         <button
-          onClick={() => {
-            setOpen(false);
-            if (window.location.hash.startsWith("#/")) window.location.hash = "";
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="font-bold text-white tracking-tight text-lg"
+          onClick={goHome}
+          aria-label="Vishal Krishna Kumar, back to top"
+          className="ink-display text-2xl text-white"
         >
-          Vishal Krishna Kumar
+          VK.
         </button>
-
-        <div className="hidden md:flex items-center gap-6">
-          {SECTIONS.map((section) => (
-            <button key={section.id} onClick={() => goToSection(section.id)} className={link}>
-              {section.label}
-            </button>
-          ))}
-          <button
-            onClick={toggleTheme}
-            aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-            title={theme === "dark" ? "Light theme" : "Dark theme"}
-            className="p-1.5 rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              {theme === "dark" ? (
-                <>
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-                </>
-              ) : (
-                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-              )}
-            </svg>
-          </button>
-          <a
-            href={RESUME_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-semibold rounded-md bg-green-500 hover:bg-green-400 text-black px-3.5 py-1.5 transition-colors"
-          >
-            Resume
+        <div className="flex items-center gap-5">
+          <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className="ink-label hidden sm:block text-white/80 hover:text-white">
+            Resume ↗
           </a>
-        </div>
-
-        <div className="md:hidden flex items-center gap-1">
           <button
-            onClick={toggleTheme}
-            aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-            title={theme === "dark" ? "Light theme" : "Dark theme"}
-            className="p-1.5 rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="flex items-center gap-3 text-white"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              {theme === "dark" ? (
-                <>
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-                </>
-              ) : (
-                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-              )}
-            </svg>
-          </button>
-          <button
-            className="p-2 -mr-2 text-gray-200"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen(!open)}
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-            </svg>
+            <span className="ink-label text-[11px]">{open ? "Close" : "Menu"}</span>
+            <span className="relative block h-2.5 w-6">
+              <span className={`absolute left-0 h-0.5 w-full bg-white transition-transform duration-300 ${open ? "top-1 rotate-45" : "top-0"}`} />
+              <span className={`absolute left-0 h-0.5 w-full bg-white transition-transform duration-300 ${open ? "top-1 -rotate-45" : "top-2"}`} />
+            </span>
           </button>
         </div>
-      </nav>
+      </header>
 
       {open && (
-        <div className="md:hidden px-5 pb-5 flex flex-col gap-4 border-b border-white/10">
-          {SECTIONS.map((section) => (
-            <button
-              key={section.id}
-              onClick={() => {
-                setOpen(false);
-                goToSection(section.id);
-              }}
-              className="text-left text-base text-gray-200"
-            >
-              {section.label}
-            </button>
-          ))}
-          <a
-            href={RESUME_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="self-start text-sm font-semibold rounded-md bg-green-500 text-black px-3.5 py-2"
-          >
-            Resume
-          </a>
+        <div className="invertible ink-menu fixed inset-0 z-50 overflow-y-auto bg-[#080808] text-[#F1F0EC]">
+          <div className="min-h-full flex flex-col justify-between px-[6vw] pt-24 pb-8">
+            <nav className="grid lg:grid-cols-12 gap-10 items-end">
+              <ul className="lg:col-span-8">
+                {SECTIONS.map((section, position) => (
+                  <li key={section.id} className="border-b border-white/10">
+                    <button
+                      onClick={() => {
+                        setOpen(false);
+                        goToSection(section.id);
+                      }}
+                      className="group w-full flex items-baseline gap-5 py-2 text-left"
+                    >
+                      <span className="ink-label text-red-500">{String(position + 1).padStart(2, "0")}</span>
+                      <span className="ink-display ink-menu-link block">{section.label}</span>
+                    </button>
+                  </li>
+                ))}
+                <li className="border-b border-white/10">
+                  <a href="#/blog" onClick={() => setOpen(false)} className="w-full flex items-baseline gap-5 py-2">
+                    <span className="ink-label text-red-500">07</span>
+                    <span className="ink-display ink-menu-link block">Blog</span>
+                  </a>
+                </li>
+              </ul>
+              <div className="lg:col-span-4 space-y-6">
+                <div>
+                  <p className="ink-label text-white/40">Say hello</p>
+                  <a href={`mailto:${EMAIL}`} className="mt-2 block text-lg text-white hover:text-red-400 transition-colors break-all">
+                    {EMAIL}
+                  </a>
+                </div>
+                <div className="flex flex-wrap gap-x-6 gap-y-3">
+                  <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className="ink-link ink-label">
+                    Resume <span className="arrow">↗</span>
+                  </a>
+                  <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="ink-link ink-label">
+                    GitHub <span className="arrow">↗</span>
+                  </a>
+                  <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="ink-link ink-label">
+                    LinkedIn <span className="arrow">↗</span>
+                  </a>
+                </div>
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center gap-3 rounded-full border border-white/20 hover:border-white/60 px-4 py-2 text-white/80 hover:text-white transition-colors"
+                >
+                  <ThemeIcon theme={theme} />
+                  <span className="ink-label">{theme === "dark" ? "Light theme" : "Dark theme"}</span>
+                </button>
+              </div>
+            </nav>
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-3 ink-label text-white/40">
+              <span>Seattle, WA · Open to SWE and ML roles from July 2027</span>
+              <a href="#/terminal" onClick={() => setOpen(false)} className="hover:text-white">
+                Terminal mode
+              </a>
+            </div>
+          </div>
         </div>
       )}
-    </header>
+    </>
   );
 };
 
 export const SiteFooter = () => (
-  <footer className="border-t border-white/10">
-    <div className="mx-auto max-w-5xl px-5 py-8 flex flex-col sm:flex-row gap-3 items-center justify-between text-sm text-gray-500">
+  <footer className="border-t border-white/10 bg-[#080808]">
+    <div className="px-[6vw] py-7 flex flex-col sm:flex-row gap-4 items-center justify-between ink-label text-white/40">
       <p>© {new Date().getFullYear()} Vishal Krishna Kumar</p>
-      <div className="flex gap-5">
-        <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-gray-200">
+      <div className="flex flex-wrap justify-center gap-6">
+        <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white">
           GitHub
         </a>
-        <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="hover:text-gray-200">
+        <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white">
           LinkedIn
         </a>
-        <a href={`mailto:${EMAIL}`} className="hover:text-gray-200">
+        <a href={`mailto:${EMAIL}`} className="hover:text-white">
           Email
         </a>
-        <a href="#/terminal" className="hover:text-gray-200" title="The original terminal-style version of this site">
+        <a href="#/blog" className="hover:text-white">
+          Blog
+        </a>
+        <a href="#/terminal" className="hover:text-white" title="The original terminal-style version of this site">
           Terminal mode
         </a>
       </div>
@@ -186,6 +265,7 @@ export const Page = ({ children }: { children: ReactNode }) => {
         {children}
         <SiteFooter />
       </div>
+      <Cursor />
     </div>
   );
 };
