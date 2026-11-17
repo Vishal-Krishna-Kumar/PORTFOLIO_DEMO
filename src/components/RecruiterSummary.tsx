@@ -10,8 +10,7 @@ const EMAIL = "vishalkrishnakkr@gmail.com";
 const LINKS = [
   { name: "GitHub", url: "https://github.com/Vishal-Krishna-Kumar" },
   { name: "LinkedIn", url: "https://www.linkedin.com/in/vishal-krishna-kumar-65583a201/" },
-  { name: "Blog", url: "https://www.vishalkrishna.dev/blog" },
-  { name: "Projects site", url: "https://www.vishalkrishna.dev" },
+  { name: "Blog", url: "/#/blog" },
 ];
 
 const HIGHLIGHTS = [
@@ -70,7 +69,7 @@ const RecruiterSummary = ({ onClose }: RecruiterSummaryProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-[60] overflow-y-auto bg-[#0b0d10] text-gray-200 print:static print:bg-white print:text-black"
+      className="clean-site fixed inset-0 z-[60] overflow-y-auto bg-[#0b0d10] text-gray-200 print:static print:bg-white print:text-black"
       role="dialog"
       aria-modal="true"
       aria-label="Summary of Vishal Krishna Kumar"
@@ -82,7 +81,7 @@ const RecruiterSummary = ({ onClose }: RecruiterSummaryProps) => {
             onClick={onClose}
             className="text-sm text-gray-400 hover:text-white border border-gray-700 hover:border-gray-500 rounded px-3 py-1 transition-colors"
           >
-            Explore the interactive site →
+            Go to the full site →
           </button>
         </div>
 
@@ -136,7 +135,7 @@ const RecruiterSummary = ({ onClose }: RecruiterSummaryProps) => {
           ))}
         </div>
         <p className="hidden print:block mt-3 text-sm">
-          {EMAIL} · github.com/Vishal-Krishna-Kumar · vishalkrishna.dev
+          {EMAIL} · github.com/Vishal-Krishna-Kumar · vishal-krishna.me
         </p>
 
         <section className="mt-9">

@@ -919,7 +919,7 @@ const App = () => {
                 {[
                   { name: "GitHub", url: "https://github.com/Vishal-Krishna-Kumar" },
                   { name: "LinkedIn", url: "https://www.linkedin.com/in/vishal-krishna-kumar-65583a201/" },
-                  { name: "Blog", url: "https://www.vishalkrishna.dev/blog" },
+                  { name: "Blog", url: "/#/blog" },
                   { name: "Resume", url: "/vishal_krishna_kumar_resume.pdf" },
                 ].map((link) => (
                   <a
