@@ -141,10 +141,25 @@ function useCardStack() {
       const list = cards();
       const position = list.indexOf(card);
       if (position < 0) return;
-      // Where the card sits in the page before any sticking: the container's top plus the cards above it.
-      let natural = container.getBoundingClientRect().top + window.scrollY;
-      for (let before = 0; before < position; before += 1) natural += list[before].offsetHeight;
-      scrollToY(natural - tops(list)[position] + 2);
+      const offsets = tops(list);
+      // Where each card sits in the page before any sticking: the container's top plus the cards above it.
+      const start = container.getBoundingClientRect().top + window.scrollY;
+      const scrollFor = (index: number) => {
+        let natural = start;
+        for (let before = 0; before < index; before += 1) natural += list[before].offsetHeight;
+        return natural - offsets[index] + 2;
+      };
+      // A card is open when it has reached its place and the next card has not yet covered it.
+      const box = card.getBoundingClientRect();
+      const next = list[position + 1];
+      const reached = box.top <= offsets[position] + 6;
+      const uncovered = next ? next.getBoundingClientRect().top - box.top > 140 : true;
+      if (reached && uncovered) {
+        // Clicking the open card closes it: the next card slides over it, or the last one steps back.
+        scrollToY(next ? scrollFor(position + 1) : scrollFor(Math.max(position - 1, 0)));
+      } else {
+        scrollToY(scrollFor(position));
+      }
     };
 
     level();
@@ -323,7 +338,7 @@ const ExperienceCard = ({ item, index }: { item: Experience; index: number }) =>
         </div>
         {item.image && (
           <div className="md:col-span-4">
-            <div className="overflow-hidden rounded-lg border border-white/10 bg-white">
+            <div className="keep-light overflow-hidden rounded-lg border border-white/10 bg-white">
               <img
                 src={item.image}
                 alt={`${title}: ${item.window}`}
