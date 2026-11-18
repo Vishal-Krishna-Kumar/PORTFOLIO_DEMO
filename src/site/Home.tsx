@@ -22,18 +22,22 @@ import {
 import { useTheme } from "./theme";
 
 const SKILLS: { group: string; items: string[] }[] = [
-  { group: "Languages", items: ["Python", "JavaScript", "TypeScript", "Java", "C++", "SQL"] },
+  { group: "Languages", items: ["Python", "SQL", "JavaScript", "TypeScript", "Java", "Go", "C++", "HTML/CSS"] },
   {
     group: "Machine learning",
     items: ["PyTorch", "TensorFlow", "Keras", "Hugging Face", "scikit-learn", "OpenCV", "pandas", "NumPy"],
   },
   {
     group: "LLM and RAG",
-    items: ["RAG", "Retrieval evaluation", "Agents", "Vertex AI (Gemini)", "Pinecone", "FAISS", "Neo4j"],
+    items: ["RAG", "Retrieval evaluation", "BM25 and TF-IDF", "LangChain", "Agents", "Vertex AI (Gemini)", "Pinecone", "FAISS", "Neo4j"],
   },
   {
-    group: "Backend and tooling",
-    items: ["FastAPI", "SQLAlchemy", "MySQL", "PostgreSQL", "REST APIs", "OAuth 2.0", "Docker", "AWS", "GitHub Actions"],
+    group: "Backend and data",
+    items: ["FastAPI", "Node.js", "REST APIs", "SQLAlchemy", "PostgreSQL", "MySQL", "MongoDB", "OAuth 2.0"],
+  },
+  {
+    group: "Frontend and cloud",
+    items: ["React", "Vue 3", "AWS", "Azure", "Docker", "GitHub Actions", "Linux", "pytest"],
   },
 ];
 
@@ -306,7 +310,9 @@ const ScrollStatement = ({ text }: { text: string }) => {
 
 /** One role as a full card. Cards are sticky, so each new one slides over the last as you scroll. */
 const ExperienceCard = ({ item, index }: { item: Experience; index: number }) => {
-  const title = clean(item.title).replace(/^Job simulation \(Forage\) — /, "");
+  const full = clean(item.title).replace(/^Job simulation \(Forage\) — /, "");
+  // A long title keeps the role as the heading; the team or course moves to the line below it.
+  const [title, detail] = full.length > 40 ? full.split(/ — | \| /) : [full];
   const description = item.description.replace(/^Forage job simulation \(not employment\)\.\s*/, "");
   // Some images are not mine; the data records who made them, and the card says so.
   const credit = item.description.match(/Image credit:.*$/)?.[0];
@@ -320,6 +326,7 @@ const ExperienceCard = ({ item, index }: { item: Experience; index: number }) =>
         <div className="md:col-span-7">
           <h3 className="text-2xl md:text-[2rem] md:leading-[2.4rem] md:truncate tracking-[-0.04em] text-[#F1F0EC]" title={title}>{title}</h3>
           <p className="ink-label mt-3 text-white/50">
+            {detail ? `${detail} · ` : ""}
             {item.window} · {item.date}
           </p>
           {item.achievements && item.achievements.length > 0 ? (
@@ -371,7 +378,7 @@ const FEATURED = ["oss-chunkaudit", "oss-ragbench", "research-008", "medical-ai-
 /** For each project, plainly: what is mine and what it is built on. */
 const BUILT: Record<string, string> = {
   "oss-chunkaudit": "All of it is mine: the chunkers, the BM25 index, the audit and 83 tests, with CI.",
-  "oss-ragbench": "All of it is mine: BM25, TF-IDF and hybrid retrieval written from scratch, with tests and CI.",
+  "oss-ragbench": "All of it is mine: BM25, TF-IDF and hybrid retrieval written from scratch, with 34 tests and CI.",
   "gai-001": "Mine: a scoring script, tests and CI. The KG-RAG framework and the BiomixQA benchmark are the Baranzini Lab's.",
   "medical-ai-002": "Mine: leading the team, and training and modifying the model. The architecture and base code are Islam et al.'s (2019).",
   "deepfake-003": "A team project; I am a co-author of the paper. The animated demo shown is from PyDeepFakeDet.",
@@ -895,16 +902,26 @@ const Home = () => {
           </div>
           <div className="mt-16 grid md:grid-cols-2 gap-x-10">
             <div className="border-t border-white/10 py-6">
-              <p className="ink-label text-white/40">Expected June 2027 · Dean&apos;s Scholar</p>
+              <p className="ink-label text-white/40">Expected June 2027 · GPA 3.9 / 4.0 · Dean&apos;s Scholar</p>
               <h3 className="mt-3 text-2xl tracking-[-0.03em] text-[#F1F0EC]">City University of Seattle</h3>
               <p className="mt-1 text-sm text-white/55">M.S. Computer Science, Data Science concentration</p>
             </div>
             <div className="border-t border-white/10 py-6">
-              <p className="ink-label text-white/40">Undergraduate</p>
+              <p className="ink-label text-white/40">Undergraduate · October 2024</p>
               <h3 className="mt-3 text-2xl tracking-[-0.03em] text-[#F1F0EC]">SRM Institute of Science and Technology</h3>
               <p className="mt-1 text-sm text-white/55">B.Tech Computer Science and Engineering</p>
             </div>
           </div>
+          <p className="border-t border-white/10 py-6 text-sm leading-relaxed text-white/55">
+            <span className="ink-label mr-3 text-white/40">Leadership</span>
+            Vice President, STC Tech Club, City University of Seattle (August 2025 to present): I run the
+            weekly tech sessions and recruit the speakers.
+          </p>
+          <p className="border-t border-white/10 py-6 text-sm leading-relaxed text-white/55">
+            <span className="ink-label mr-3 text-white/40">Also studied at</span>
+            Illinois Institute of Technology, Chicago: graduate coursework in computer science, January to
+            May 2025, before I transferred to City University of Seattle.
+          </p>
           <p className="border-t border-white/10 pt-6 text-sm leading-relaxed text-white/55">
             <span className="ink-label mr-3 text-white/40">Publication</span>
             &quot;Deepfake Detection System: AI and Deep Learning Framework for Cyber Verification&quot;, TDEMAS,

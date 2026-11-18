@@ -7,15 +7,15 @@ export const experiencesData: Experience[] = [
     window: "Hirello.ai — Remote",
     date: "July 2026 – September 2026",
     description:
-      "Built a resume-grounded RAG application-autofill feature for job-portal forms. Contributed code to 5 of the platform's 10 agents (Resume Optimizer, LinkedIn Labs, Outreach, Action Academy, Chat with Hiro). Fixed 3 Resume Optimizer defects (a five-page template, inconsistent fit scores, broken PDF export), repaired Gmail, Outlook and Yahoo OAuth connection problems, fixed an IDOR access-control vulnerability and added regression tests, and added cross-browser end-to-end tests covering 3 browsers. Worked in a 7-person product and engineering team across 10 one-week sprints.",
+      "Built a resume-grounded RAG application-autofill feature for job-portal forms. Contributed code to 5 of the platform's 10 agents (Resume Optimizer, LinkedIn Labs, Outreach, Action Academy, Chat with Hiro). Fixed 3 Resume Optimizer defects (a five-page template, inconsistent fit scores, broken PDF export) and a silent-save defect, repaired Gmail, Outlook and Yahoo OAuth connection problems, fixed an IDOR access-control vulnerability and added regression tests, and added cross-browser end-to-end tests covering 3 browsers. Worked in a 7-person product and engineering team across 10 one-week sprints; the team grew its test suite from 65 to 1,146 passing tests in four sprints.",
     image: "/hirello-1.png",
     role: "AI Engineer Intern",
     technologies: ["Python", "FastAPI", "SQLAlchemy", "MySQL", "JavaScript", "Vue 3", "Vertex AI/Gemini", "Pinecone"],
     achievements: [
-      "Built a resume-grounded RAG application-autofill feature for job-portal forms",
-      "Contributed code to 5 of the platform's 10 agents",
-      "Fixed an IDOR access-control vulnerability and added regression tests",
-      "Added cross-browser end-to-end tests covering 3 browsers"
+      "Shipped a resume-grounded RAG autofill feature for job-application forms, end to end",
+      "Contributed code to 5 of the platform's 10 AI agents in a 7-person Agile team",
+      "Fixed an IDOR access-control vulnerability with regression tests, 3 Resume Optimizer defects and a silent-save defect",
+      "Added end-to-end tests across 3 browsers as the team grew its suite from 65 to 1,146 passing tests in four sprints"
     ],
   },
 
@@ -42,7 +42,21 @@ export const experiencesData: Experience[] = [
 
   },
   {
-    title: "[3] Graduate Teaching Assistant (part-time) — Computer Networks",
+    title: "[3] Student Worker — School of Technology and Computing",
+    window: "City University of Seattle",
+    date: "August 2025 – Present",
+    description:
+      "Set up AWS lab environments and grade assignments for graduate data science and AI cloud computing courses (DS 623, AI 510).",
+    image: "/student-worker.svg",
+    role: "Student Worker",
+    technologies: ["AWS", "Lab environments", "Grading"],
+    achievements: [
+      "Set up AWS lab environments for graduate courses",
+      "Grade assignments for the graduate data science and AI cloud computing courses (DS 623, AI 510)"
+    ],
+  },
+  {
+    title: "[4] Graduate Teaching Assistant (part-time) — Computer Networks",
     window: "Illinois Institute of Technology",
     date: "January 2025 – May 2025",
     description:
@@ -58,7 +72,7 @@ export const experiencesData: Experience[] = [
   },
 
   {
-    title: "[4] Job simulation (Forage) — BCG Data Science",
+    title: "[5] Job simulation (Forage) — BCG Data Science",
     window: "Job simulation (Forage) — not employment",
     kind: "simulation",
     date: "January 2026",
@@ -74,7 +88,7 @@ export const experiencesData: Experience[] = [
   },
 
   {
-    title: "[5] Job simulation (Forage) — Walmart Advanced Software Engineering",
+    title: "[6] Job simulation (Forage) — Walmart Advanced Software Engineering",
     window: "Job simulation (Forage) — not employment",
     kind: "simulation",
     date: "January 2026",
@@ -123,8 +137,8 @@ export const projectsData: Project[] = [
     images: ["/chunkaudit-squad.png", "/chunkaudit-demo.png"],
     links: [
       { name: "GitHub", url: "https://github.com/Vishal-Krishna-Kumar/chunkaudit" },
-      { name: "Write-up: how often chunking cuts the answer", url: "https://www.vishalkrishna.dev/blog/chunking-cuts-the-answer" },
-      { name: "Write-up: chunk size depends on the retriever", url: "https://www.vishalkrishna.dev/blog/chunk-size-depends-on-retriever" }
+      { name: "Write-up: how often chunking cuts the answer", url: "/#/blog/chunking-cuts-the-answer" },
+      { name: "Write-up: chunk size depends on the retriever", url: "/#/blog/chunk-size-depends-on-retriever" }
     ],
     metrics: [
       { label: "SQuAD questions audited", value: "10,570", color: "blue", icon: "target" },
@@ -155,7 +169,7 @@ export const projectsData: Project[] = [
     images: ["/ragbench-scifact.png"],
     links: [
       { name: "GitHub", url: "https://github.com/Vishal-Krishna-Kumar/ragbench" },
-      { name: "Write-up: an inverted index in NumPy", url: "https://www.vishalkrishna.dev/blog/inverted-index-in-numpy" }
+      { name: "Write-up: an inverted index in NumPy", url: "/#/blog/inverted-index-in-numpy" }
     ],
     metrics: [
       { label: "TF-IDF query latency", value: "216 ms → 0.22 ms", color: "green", icon: "zap" },
@@ -176,7 +190,7 @@ export const projectsData: Project[] = [
     // NOTE: App.tsx selects the GAI layout with title.includes('GraphAugmented Intelligence') — keep that phrase in the title.
     title: "[3] GraphAugmented Intelligence (GAI)",
     window: "Knowledge-Graph RAG for Biomedical Q&A (built on KG-RAG, Baranzini Lab, UCSF)",
-    date: "September 2025",
+    date: "2026",
     description: "Knowledge-graph retrieval-augmented generation (KG-RAG) for biomedical question answering, built on the open-source KG-RAG framework from the Baranzini Lab, UCSF. I evaluated GPT-4 and Llama on the BiomixQA benchmark. Credit: the KG-RAG framework is the Baranzini Lab's work; BiomixQA is an existing benchmark, not my dataset.",
     category: "AI/ML",
     status: "Active",
@@ -227,7 +241,7 @@ export const projectsData: Project[] = [
     // NOTE: App.tsx captions the video "3D MRI Segmentation Demo" when the title includes "Tumor" — keep that word.
     title: "[4] 3D Attention U-Net for Brain Tumor Segmentation",
     window: "Medical AI & Volumetric Segmentation",
-    date: "June 2025",
+    date: "April 2025",
     description:
       "2nd place, Hack for Research 2025 (team lead). Brain tumor segmentation on multimodal MRI from the BraTS 2019 dataset with a 3D Attention U-Net in PyTorch. I trained and modified public code from Islam et al. (2019); the architecture is theirs. Image credit: the gallery figures are from published papers — Islam et al. (2019) (BraTS 2019 results figure), a third-party 3D U-Net/CoT architecture figure, and Zhou et al. (2018) (UNet++ diagram) — credited to their authors; they are not my results.",
     category: "Healthcare AI",
@@ -499,7 +513,7 @@ export const projectsData: Project[] = [
     id: "research-008",
     title: "[10] AeroForge-TRIAD (research in progress)",
     window: "Certified Gradients for Neural CFD Surrogates",
-    date: "In progress (status as of October 2026)",
+    date: "January 2026 – Present",
     description:
       "Ongoing, unpublished research question: are neural-surrogate gradients much less accurate than predicted values, and can a guaranteed error bound (\"certificate\") on gradients stay valid along a whole optimiser run under distribution drift? Built a CFD pipeline on the SU2 solver (laminar flow, Re 1000) with exact adjoint gradients checked against finite differences (agreement within 0.12%). Surrogates: ensembles of 5 Fourier Neural Operator (FNO) and 5 MLP models. Hypotheses and decision rules were pre-registered before seeing data (protocols v1–v3).",
     category: "Research (in progress)",
@@ -684,7 +698,7 @@ export const education = [
   {
     institution: "City University of Seattle",
     degree: "MS Computer Science, Data Science concentration (in progress)",
-    date: "Expected 2027",
+    date: "Expected June 2027",
     gpa: "3.9",
     courses: ["Deep Learning", "NLP", "Large Language Models", "Graph RAG", "AI Cloud Computing", "Secure Systems", "Networking"],
     awards: ["Dean's Scholar"],

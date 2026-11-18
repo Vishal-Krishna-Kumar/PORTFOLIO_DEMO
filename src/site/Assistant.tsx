@@ -149,13 +149,13 @@ const LOCAL: { label: string; match: RegExp; answer: () => string }[] = [
     label: "Skills",
     match: /\b(skills?|stack|tech|technolog|languages?|tools?|framework)\b/,
     answer: () =>
-      "- **Languages:** Python, JavaScript, TypeScript, Java, C++, SQL\n- **Machine learning:** PyTorch, TensorFlow, Hugging Face, scikit-learn\n- **LLM and RAG:** retrieval evaluation, agents, Vertex AI (Gemini), Pinecone, FAISS, Neo4j\n- **Backend:** FastAPI, SQLAlchemy, MySQL, PostgreSQL, Docker, AWS, GitHub Actions",
+      "- **Languages:** Python, SQL, JavaScript, TypeScript, Java, Go, C++\n- **Machine learning:** PyTorch, TensorFlow, Hugging Face, scikit-learn\n- **LLM and RAG:** retrieval evaluation, LangChain, agents, Vertex AI (Gemini), Pinecone, FAISS, Neo4j\n- **Backend and data:** FastAPI, Node.js, SQLAlchemy, PostgreSQL, MySQL, MongoDB\n- **Frontend and cloud:** React, Vue 3, AWS, Azure, Docker, GitHub Actions",
   },
   {
     label: "Education",
     match: /\b(education|degree|university|college|school|study|studied|masters?|m\.?s\.?|b\.?tech|gpa)\b/,
     answer: () =>
-      "- **M.S. Computer Science**, Data Science concentration, City University of Seattle (expected June 2027, Dean's Scholar)\n- **B.Tech Computer Science and Engineering**, SRM Institute of Science and Technology",
+      "- **M.S. Computer Science**, Data Science concentration, City University of Seattle (expected June 2027, GPA 3.9/4.0, Dean's Scholar)\n- **B.Tech Computer Science and Engineering**, SRM Institute of Science and Technology (October 2024)\n- Graduate coursework at Illinois Institute of Technology, January to May 2025, before I transferred\n- **Vice President, STC Tech Club** at CityU since August 2025",
   },
   {
     label: "Availability",
