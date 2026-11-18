@@ -43,7 +43,6 @@ const LIVE: Record<string, Clip[]> = {
 const CARD_VIDEOS: Record<string, string[]> = {
   "web-3d-006": ["/hero-4.mp4", "/3dsite-hero-3.mp4", "/3dsite-feature-2.mp4", "/3dsite-feature-3.mp4", "/3dsite-feature-5.mp4"],
   "desktop-007": ["/3D-DEMO.mov"],
-  "gai-001": ["/KGRAGDEMO-2.mp4", "/GPT_DEMO-1.mp4"],
   "research-008": ["/aeroforge-kg-growth.mp4", "/aeroforge-certificate-toy.mp4"],
 };
 
