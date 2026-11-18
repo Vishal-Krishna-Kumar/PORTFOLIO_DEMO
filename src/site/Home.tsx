@@ -365,6 +365,23 @@ const COVERS: Record<string, string> = {
   "nlp-005": "/cover-nlp-005.webp",
 };
 
+/** The four projects shown first; the rest are one click away. */
+const FEATURED = ["oss-chunkaudit", "oss-ragbench", "research-008", "medical-ai-002"];
+
+/** For each project, plainly: what is mine and what it is built on. */
+const BUILT: Record<string, string> = {
+  "oss-chunkaudit": "All of it is mine: the chunkers, the BM25 index, the audit and 83 tests, with CI.",
+  "oss-ragbench": "All of it is mine: BM25, TF-IDF and hybrid retrieval written from scratch, with tests and CI.",
+  "gai-001": "Mine: a scoring script, tests and CI. The KG-RAG framework and the BiomixQA benchmark are the Baranzini Lab's.",
+  "medical-ai-002": "Mine: leading the team, and training and modifying the model. The architecture and base code are Islam et al.'s (2019).",
+  "deepfake-003": "A team project; I am a co-author of the paper. The animated demo shown is from PyDeepFakeDet.",
+  "rl-004": "I worked through Robert Förster's tutorial to learn the method; the code is his.",
+  "nlp-005": "Mine: the experiments and the comparison. Two starter files are by Bamman and Smith.",
+  "web-3d-006": "Built by following JavaScript Mastery's tutorial; the design it reproduces is Zentry's.",
+  "desktop-007": "The engine follows Stanislav Petrov's open-source ray-casting game for Pygame.",
+  "research-008": "Mine: the pipeline, the experiments and the analysis. The flow solver is SU2, which is open source.",
+};
+
 /** One full-height panel of the work section. */
 const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number; onOpen: () => void }) => {
   const { ref, visible } = useOnScreen<HTMLDivElement>(0.3);
@@ -432,6 +449,12 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
             <p className="mt-5 max-w-[520px] text-sm md:text-[15px] leading-relaxed text-white/60">
               {firstSentence(project.description)}
             </p>
+            {BUILT[project.id ?? ""] && (
+              <p className="mt-3 max-w-[520px] text-[13px] leading-relaxed text-white/50">
+                <span className="text-red-400">Mine and built on · </span>
+                {BUILT[project.id ?? ""]}
+              </p>
+            )}
             <div className="mt-7 flex flex-wrap items-center gap-2.5">
               <span className="ink-label rounded-full bg-white px-4 py-2 text-black">Open project →</span>
               {mainLinks(project).map((link) => (
@@ -475,6 +498,17 @@ const WorkSection = ({ onOpen }: { onOpen: (project: Project) => void }) => {
   const outer = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
+  const [showAll, setShowAll] = useState(false);
+  const featured = FEATURED.map((id) => projectsData.find((project) => project.id === id)).filter(
+    (project): project is Project => !!project
+  );
+  const others = projectsData.filter((project) => !FEATURED.includes(project.id ?? ""));
+  const shown = showAll ? [...featured, ...others] : featured;
+
+  // The strip changes length when the rest are shown, so its scroll distance is measured again.
+  useEffect(() => {
+    window.dispatchEvent(new Event("resize"));
+  }, [showAll]);
 
   useOnScroll(() => {
     const section = outer.current;
@@ -507,15 +541,37 @@ const WorkSection = ({ onOpen }: { onOpen: (project: Project) => void }) => {
                 A few things I <em>built,</em> and what the numbers <em>said.</em>
               </h2>
               <p className="mt-8 max-w-[440px] text-sm leading-relaxed text-white/55">
-                {projectsData.length} projects, from open-source retrieval tools to medical imaging and a
-                3D site. Open any one for the videos, results and code.
+                My four strongest projects come first. Open any one for the videos, results and
+                code, or show all {projectsData.length} at the end.
               </p>
               <p className="ink-label mt-10 hidden min-[900px]:block text-white/40">Keep scrolling →</p>
             </div>
           </div>
-          {projectsData.map((project, position) => (
+          {shown.map((project, position) => (
             <WorkPanel key={project.title} project={project} index={position} onOpen={() => onOpen(project)} />
           ))}
+          <div className="ink-panel ink-panel-intro !cursor-default flex flex-col justify-center px-[6vw] py-16">
+            <p className="ink-label text-white/45">
+              {showAll ? `All ${projectsData.length} projects shown` : `${others.length} more projects`}
+            </p>
+            <h3 className="ink-statement mt-6">
+              {showAll ? (
+                <>
+                  That is <em>everything.</em>
+                </>
+              ) : (
+                <>
+                  Coursework, games and <em>experiments.</em>
+                </>
+              )}
+            </h3>
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="ink-label mt-10 self-start rounded-full bg-white px-5 py-3 text-black hover:bg-red-400 transition-colors"
+            >
+              {showAll ? "Show only the top four" : `Show all ${projectsData.length} projects`}
+            </button>
+          </div>
         </div>
         <span className="hidden min-[900px]:block absolute left-0 bottom-0 h-0.5 w-full bg-white/10">
           <span ref={bar} className="block h-full w-full origin-left scale-x-0 bg-red-500" />
@@ -682,7 +738,7 @@ const Home = () => {
           </h1>
         </div>
 
-        <div className="rise absolute left-[6vw] bottom-[6.5vh] flex items-start gap-4" style={{ animationDelay: "700ms" }}>
+        <div className="rise absolute left-[6vw] bottom-[6.5vh] hidden sm:flex items-start gap-4" style={{ animationDelay: "700ms" }}>
           <span className="mt-[0.5em] h-px w-9 shrink-0 bg-white/55" />
           <p className="ink-label max-w-[320px] leading-[1.7] text-white/75">
             AI and software engineer

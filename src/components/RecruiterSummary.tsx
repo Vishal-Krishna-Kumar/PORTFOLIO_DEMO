@@ -69,7 +69,7 @@ const RecruiterSummary = ({ onClose }: RecruiterSummaryProps) => {
 
   return (
     <div
-      className="clean-site fixed inset-0 z-[60] overflow-y-auto bg-[#0b0d10] text-gray-200 print:static print:bg-white print:text-black"
+      className="clean-site fixed inset-0 z-[60] overflow-y-auto bg-[#06121f] text-gray-200 print:static print:bg-white print:text-black"
       role="dialog"
       aria-modal="true"
       aria-label="Summary of Vishal Krishna Kumar"

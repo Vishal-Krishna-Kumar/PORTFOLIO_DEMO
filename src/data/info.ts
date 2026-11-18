@@ -306,18 +306,17 @@ export const projectsData: Project[] = [
     window: "Deep Reinforcement Learning & Game AI",
     date: "December 2024",
     description:
-      "AlphaZero-style game agent: self-play reinforcement learning with Monte Carlo Tree Search (MCTS) guided by a policy-value network, in PyTorch with CUDA. Extended Robert Förster's AlphaZero tutorial (the base implementation is his). Reached an 81% win rate vs rule-based opponents. Image credit: the gallery shows third-party illustrations (a CNN diagram, an Othello-agent figure, a figure on chess concepts in AlphaZero) and a screenshot of my separate ChessAI project; none shows this agent's results.",
+      "AlphaZero-style game agent: self-play reinforcement learning with Monte Carlo Tree Search (MCTS) guided by a policy-value network, in PyTorch with CUDA. Learned by working through Robert Förster's AlphaZero tutorial; the implementation is his. Image credit: the gallery shows third-party illustrations (a CNN diagram, an Othello-agent figure, a figure on chess concepts in AlphaZero) and a screenshot of my separate ChessAI project; none shows this agent's results.",
     category: "Reinforcement Learning",
     status: "Completed",
     images: ["/AlphaZero-6.jpg", "/AlphaZero-2.png", "/AlphaZero-4.png", "/AlphaZero-5.png"],
     metrics: [
-      { label: "Win rate vs rule-based opponents", value: "81%", color: "green", icon: "trophy" }
     ],
     techStack: ["PyTorch", "CUDA", "Monte Carlo Tree Search", "Policy-value network"],
     features: [
       "Self-play reinforcement learning",
       "Monte Carlo Tree Search guided by a policy-value network",
-      "Built by extending Robert Förster's AlphaZero tutorial"
+      "Worked through Robert Förster's AlphaZero tutorial to learn the method"
     ],
     links: [
       { name: "Write-up: what I did", url: "/#/blog/alphazero-self-play-notes" },
@@ -394,10 +393,6 @@ export const projectsData: Project[] = [
     VideoDemo: "/hero-4.mp4",
     images: ["/3dGamingSite-1.webp", "/3dGamingSite-2.webp", "/3dGamingSite-3.gif"],
     metrics: [
-      { label: "Page Load Time", value: "< 1.5s", color: "green", icon: "zap" },
-      { label: "FPS Performance", value: "90 FPS", color: "blue", icon: "activity" },
-      { label: "Bundle Size", value: "12 MB", color: "purple", icon: "package" },
-      { label: "Lighthouse Score", value: "98", color: "orange", icon: "bar-chart" }
     ],
     techStack: ["React", "GSAP", "ScrollTrigger", "Vite", "Tailwind CSS"],
     features: [
@@ -430,13 +425,6 @@ export const projectsData: Project[] = [
       // }
     ],
     teamSize: 1,
-    performance: {
-      "First Contentful Paint": "0.8s",
-      "Time to Interactive": "1.2s",
-      "Cumulative Layout Shift": "0.05",
-      "SEO Score": "100/100"
-    },
-    impact: "Demonstrates cutting-edge web graphics capabilities"
   },
 
 
