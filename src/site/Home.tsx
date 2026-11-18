@@ -586,6 +586,8 @@ const Home = () => {
   const [openProject, setOpenProject] = useState<Project | null>(null);
   useScrollReveal();
   // The top picture: shifts a few pixels against the pointer and sinks slightly as the page scrolls.
+  const reducedMotion =
+    typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const sceneRef = useRef<HTMLDivElement>(null);
   const scene = useRef({ x: 0, y: 0 });
   const placeScene = () => {
@@ -640,7 +642,17 @@ const Home = () => {
             To return to the drawn horizon, render <HeroArt /> here instead. */}
         <div className="hero-photo absolute inset-0" aria-hidden="true">
           <div ref={sceneRef} className="hero-photo-move absolute inset-0">
-            <img src="/hero-scene.webp" alt="" className="h-full w-full object-cover" />
+            {/* Plays once and rests on its last frame; the still image shows first and for
+                visitors who ask for reduced motion. */}
+            <video
+              className="h-full w-full object-cover"
+              src="/hero-scene.mp4"
+              poster="/hero-scene.webp"
+              autoPlay={!reducedMotion}
+              muted
+              playsInline
+              preload="auto"
+            />
           </div>
         </div>
         <div className="ink-vignette" aria-hidden="true" />
