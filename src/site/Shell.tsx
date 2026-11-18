@@ -168,7 +168,7 @@ export const SiteNav = () => {
       </header>
 
       {open && (
-        <div data-lenis-prevent className="invertible ink-menu fixed inset-0 z-50 overflow-y-auto bg-[#080808] text-[#F1F0EC]">
+        <div data-lenis-prevent className="invertible ink-menu fixed inset-0 z-50 overflow-y-auto bg-[#06121f] text-[#F1F0EC]">
           <div className="min-h-full flex flex-col justify-between px-[6vw] pt-24 pb-8">
             <nav className="grid lg:grid-cols-12 gap-10 items-end">
               <ul className="lg:col-span-8">
@@ -234,7 +234,7 @@ export const SiteNav = () => {
 };
 
 export const SiteFooter = () => (
-  <footer className="border-t border-white/10 bg-[#080808]">
+  <footer className="border-t border-white/10 bg-[#06121f]">
     <div className="px-[6vw] py-7 flex flex-col sm:flex-row gap-4 items-center justify-between ink-label text-white/40">
       <p>© {new Date().getFullYear()} Vishal Krishna Kumar</p>
       <div className="flex flex-wrap justify-center gap-6">

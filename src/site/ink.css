@@ -3,9 +3,15 @@
    portfolio (MIT); see THIRD_PARTY_NOTICES.md. */
 
 .clean-site {
-  --ink: #080808;
+  --ink: #06121f;
   --paper: #f1f0ec;
-  --red: #ef2b2b;
+  --red: #f2b233;
+  /* The accent comes from the straw hat in the top picture. Every red utility on the
+     site reads these, so changing them here recolours the accent everywhere. */
+  --color-red-300: #fbd98a;
+  --color-red-400: #f7c65a;
+  --color-red-500: #f2b233;
+  --color-red-700: #b9801a;
 }
 
 /* Heavy display type for statements and project names */
@@ -69,14 +75,14 @@
   inset: -10%;
   pointer-events: none;
   background:
-    radial-gradient(42% 52% at 64% 46%, rgba(239, 43, 43, 0.62), rgba(140, 8, 8, 0.3) 48%, transparent 76%);
+    radial-gradient(42% 52% at 64% 46%, rgba(52, 150, 230, 0.55), rgba(14, 70, 140, 0.3) 48%, transparent 76%);
   animation: ink-pulse 9s ease-in-out infinite;
 }
 .clean-site .ink-vignette {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 30%, transparent 55%, rgba(8, 8, 8, 0.95));
+  background: linear-gradient(180deg, transparent 70%, #06121f 100%);
 }
 
 /* Arrow link with a line that draws in */
@@ -233,7 +239,7 @@
     position: absolute;
     inset: 30% 0 0 0;
     pointer-events: none;
-    background: linear-gradient(180deg, transparent, rgba(8, 8, 8, 0.82) 60%, #080808);
+    background: linear-gradient(180deg, transparent, rgba(6, 18, 31, 0.82) 60%, #06121f);
     z-index: 1;
   }
   .clean-site .ink-panel[data-bleed="true"] .ink-panel-text {
@@ -286,7 +292,7 @@
   font-stretch: 125%;
   font-size: clamp(3.4rem, 11vw, 8.5rem);
   letter-spacing: -0.05em;
-  color: #f0c9c6;
+  color: #cfe6fb;
   opacity: 0.85;
 }
 .clean-site .ink-stair {
@@ -336,7 +342,7 @@
   margin: -46px 0 0 -40px;
   padding: 9px 16px;
   border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(12, 12, 12, 0.82);
+  background: rgba(8, 23, 38, 0.82);
   mix-blend-mode: normal;
   white-space: nowrap;
 }
@@ -435,12 +441,12 @@
 }
 .clean-site .ink-panel-shade {
   background:
-    linear-gradient(90deg, rgba(8, 8, 8, 0.97) 0%, rgba(8, 8, 8, 0.9) 30%, rgba(8, 8, 8, 0.5) 56%, rgba(8, 8, 8, 0.22) 100%),
-    linear-gradient(0deg, rgba(8, 8, 8, 0.95) 0%, rgba(8, 8, 8, 0) 34%, rgba(8, 8, 8, 0) 74%, rgba(8, 8, 8, 0.6) 100%);
+    linear-gradient(90deg, rgba(6, 18, 31, 0.97) 0%, rgba(6, 18, 31, 0.9) 30%, rgba(6, 18, 31, 0.5) 56%, rgba(6, 18, 31, 0.22) 100%),
+    linear-gradient(0deg, rgba(6, 18, 31, 0.95) 0%, rgba(6, 18, 31, 0) 34%, rgba(6, 18, 31, 0) 74%, rgba(6, 18, 31, 0.6) 100%);
 }
 @media (max-width: 899px) {
   .clean-site .ink-panel-shade {
-    background: linear-gradient(0deg, rgba(8, 8, 8, 0.97) 0%, rgba(8, 8, 8, 0.78) 55%, rgba(8, 8, 8, 0.55) 100%);
+    background: linear-gradient(0deg, rgba(6, 18, 31, 0.97) 0%, rgba(6, 18, 31, 0.78) 55%, rgba(6, 18, 31, 0.55) 100%);
   }
 }
 
@@ -466,24 +472,16 @@
   }
 }
 
-/* Hero photograph: turned to grey, darkened, then washed with the site's red, so a bright
-   picture reads as part of a dark page. Lighter and clearer on the right, where the figures are. */
+/* Hero photograph: shown in its own colours. Navy shading sits behind the text on the left and
+   along the top, and the bottom fades into the page, so the picture runs into the site. */
 .clean-site .hero-photo {
-  /* Keeps the washes below inside the picture, so they never tint the headline */
+  /* Keeps the shading below inside the picture, so it never tints the headline */
   isolation: isolate;
   z-index: 0;
 }
 .clean-site .hero-photo img {
   object-position: 60% 72%;
-  filter: grayscale(1) contrast(1.2) brightness(1.02);
-}
-.clean-site .hero-photo::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(180deg, #8f1217 0%, #e2313a 44%, #7d1015 100%);
-  mix-blend-mode: multiply;
+  filter: saturate(1.06) contrast(1.04) brightness(0.9);
 }
 .clean-site .hero-photo::after {
   content: "";
@@ -491,8 +489,9 @@
   inset: 0;
   z-index: 2;
   background:
-    linear-gradient(90deg, rgba(8, 8, 8, 0.78) 0%, rgba(8, 8, 8, 0.38) 40%, rgba(8, 8, 8, 0) 100%),
-    linear-gradient(0deg, rgba(8, 8, 8, 0.7) 0%, rgba(8, 8, 8, 0) 38%, rgba(8, 8, 8, 0.45) 100%);
+    linear-gradient(90deg, rgba(6, 18, 31, 0.86) 0%, rgba(6, 18, 31, 0.62) 30%, rgba(6, 18, 31, 0.12) 62%, rgba(6, 18, 31, 0) 100%),
+    linear-gradient(0deg, #06121f 0%, rgba(6, 18, 31, 0.86) 10%, rgba(6, 18, 31, 0.3) 30%, rgba(6, 18, 31, 0) 48%),
+    linear-gradient(180deg, rgba(6, 18, 31, 0.72) 0%, rgba(6, 18, 31, 0.3) 20%, rgba(6, 18, 31, 0) 40%);
 }
 @media (max-width: 767px) {
   .clean-site .hero-photo img {
@@ -504,4 +503,37 @@
   .clean-site .hero-photo img {
     transform: translateX(9%) scale(1.2);
   }
+}
+@media (max-width: 767px) {
+  .clean-site .hero-photo img {
+    transform: scale(1.1);
+  }
+}
+
+/* The picture breathes: a very slow push in and sideways, then back */
+@keyframes hero-drift {
+  from { scale: 1; translate: 0 0; }
+  to { scale: 1.07; translate: -1.4% -1.1%; }
+}
+.clean-site .hero-photo img {
+  animation: hero-drift 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.clean-site .hero-photo-move {
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .clean-site .hero-photo img {
+    animation: none;
+  }
+}
+
+/* The top section keeps its own dark look in the light theme: a dark red photograph with
+   white type is one picture, and inverting it would wash it out. */
+.clean-site[data-theme="light"] .invertible #home {
+  filter: invert(1) hue-rotate(180deg);
+}
+.clean-site[data-theme="light"] .invertible #home .hero-photo img {
+  filter: saturate(1.06) contrast(1.04) brightness(0.9);
 }

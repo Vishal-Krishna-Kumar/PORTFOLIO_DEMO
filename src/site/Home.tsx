@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { ReactNode } from "react";
+import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 import { experiencesData, projectsData } from "../data/info";
@@ -39,7 +39,7 @@ const SKILLS: { group: string; items: string[] }[] = [
 const STATEMENT =
   "I like questions that can be settled by measuring. So I build the retrieval system, and then the benchmark that tells me whether it works.";
 
-const SECTION = "relative bg-[#080808]/90 text-[#F1F0EC]";
+const SECTION = "relative bg-[#06121f]/90 text-[#F1F0EC]";
 const WRAP = "px-[6vw] py-24 md:py-32";
 
 function useLeetCodeTotal(): number | null {
@@ -311,7 +311,7 @@ const ExperienceCard = ({ item, index }: { item: Experience; index: number }) =>
   const credit = item.description.match(/Image credit:.*$/)?.[0];
   return (
     <article
-      className="ink-stack-card border-t border-white/15 bg-[#0b0b0b] pt-4 pb-12 md:pb-16 md:cursor-pointer"
+      className="ink-stack-card border-t border-white/15 bg-[#0a1b2e] pt-4 pb-12 md:pb-16 md:cursor-pointer"
       style={{ top: `${4.4 + index * 3.9}rem` }}
     >
       <div className="grid md:grid-cols-12 gap-x-6 gap-y-5">
@@ -496,7 +496,7 @@ const WorkSection = ({ onOpen }: { onOpen: (project: Project) => void }) => {
   });
 
   return (
-    <section id="projects" ref={outer} className="relative bg-[#080808] text-[#F1F0EC]">
+    <section id="projects" ref={outer} className="relative bg-[#06121f] text-[#F1F0EC]">
       <div className="ink-pin">
         <div ref={track} className="ink-track">
           <div className="ink-panel ink-panel-intro !cursor-default flex flex-col justify-between px-[6vw] pt-24 pb-12 md:pb-[7vh]">
@@ -585,6 +585,30 @@ const Home = () => {
   const theme = useTheme();
   const [openProject, setOpenProject] = useState<Project | null>(null);
   useScrollReveal();
+  // The top picture: shifts a few pixels against the pointer and sinks slightly as the page scrolls.
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const scene = useRef({ x: 0, y: 0 });
+  const placeScene = () => {
+    const element = sceneRef.current;
+    if (!element) return;
+    const sink = Math.min(window.scrollY, window.innerHeight) * 0.14;
+    element.style.transform = `translate3d(${scene.current.x.toFixed(1)}px, ${(scene.current.y + sink).toFixed(1)}px, 0)`;
+  };
+  const moveScene = (event: ReactMouseEvent<HTMLElement>) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const box = event.currentTarget.getBoundingClientRect();
+    scene.current = {
+      x: ((event.clientX - box.left) / box.width - 0.5) * -22,
+      y: ((event.clientY - box.top) / box.height - 0.5) * -14,
+    };
+    placeScene();
+  };
+  const restScene = () => {
+    scene.current = { x: 0, y: 0 };
+    placeScene();
+  };
+  useOnScroll(placeScene);
+
   const experienceStack = useCardStack();
   const skillStack = useCardStack();
 
@@ -605,43 +629,64 @@ const Home = () => {
       <Preloader />
 
       {/* Hero */}
-      <section id="home" className="relative h-screen min-h-[560px] overflow-hidden text-white">
+      <section
+        id="home"
+        className="relative h-screen min-h-[560px] overflow-hidden text-white"
+        onMouseMove={moveScene}
+        onMouseLeave={restScene}
+      >
         {/* The scene image, graded into the site's dark red so it sits with the rest of the page.
+            It drifts slowly by itself and shifts a little with the pointer and the scroll.
             To return to the drawn horizon, render <HeroArt /> here instead. */}
         <div className="hero-photo absolute inset-0" aria-hidden="true">
-          <img src="/hero-scene.webp" alt="" className="h-full w-full object-cover" />
+          <div ref={sceneRef} className="hero-photo-move absolute inset-0">
+            <img src="/hero-scene.webp" alt="" className="h-full w-full object-cover" />
+          </div>
         </div>
         <div className="ink-vignette" aria-hidden="true" />
 
-        <p className="ink-label absolute top-[5.2rem] right-[6vw] hidden sm:flex items-center gap-2.5 text-white/70">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-          </span>
-          Open to SWE and ML roles · July 2027
-        </p>
+        {/* What the picture is about: looking out toward the first full-time role */}
+        <div className="rise absolute top-[5.4rem] right-[6vw] hidden sm:block text-right" style={{ animationDelay: "900ms" }}>
+          <p className="ink-label flex items-center justify-end gap-2.5 text-white/70">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+            </span>
+            Looking out for
+          </p>
+          <p className="mt-2 text-xl md:text-[1.7rem] md:leading-tight font-medium tracking-[-0.03em] text-white">
+            my first full-time role
+          </p>
+          <p className="ink-label mt-2 text-white/60">SWE or ML · from July 2027</p>
+        </div>
 
-        <h1
-          className="ink-display ink-hero-title absolute left-[6vw] bottom-[17vh] select-none"
-          aria-label="Vishal Krishna Kumar. Build. Measure. Ship."
-        >
-          <span className="ink-line">
-            <span>BUILD.</span>
-          </span>
-          <span className="ink-line">
-            <span style={{ animationDelay: "110ms" }}>MEASURE.</span>
-          </span>
-          <span className="ink-line">
-            <span style={{ animationDelay: "220ms" }}>SHIP.</span>
-          </span>
-        </h1>
+        <div className="absolute left-[6vw] bottom-[17vh]">
+          <p
+            className="rise mb-4 md:mb-5 flex items-center gap-3 text-lg md:text-2xl font-semibold tracking-[-0.02em] text-white"
+            style={{ animationDelay: "350ms" }}
+          >
+            <span className="h-0.5 w-8 bg-red-500" />
+            Vishal Krishna Kumar
+          </p>
+          <h1 className="ink-display ink-hero-title select-none" aria-label="Build. Measure. Ship.">
+            <span className="ink-line">
+              <span>BUILD.</span>
+            </span>
+            <span className="ink-line">
+              <span style={{ animationDelay: "110ms" }}>MEASURE.</span>
+            </span>
+            <span className="ink-line">
+              <span style={{ animationDelay: "220ms" }}>SHIP.</span>
+            </span>
+          </h1>
+        </div>
 
         <div className="rise absolute left-[6vw] bottom-[6.5vh] flex items-start gap-4" style={{ animationDelay: "700ms" }}>
           <span className="mt-[0.5em] h-px w-9 shrink-0 bg-white/55" />
-          <p className="ink-label max-w-[300px] leading-[1.7] text-white/75">
-            Vishal Krishna Kumar
-            <br />
+          <p className="ink-label max-w-[320px] leading-[1.7] text-white/75">
             AI and software engineer
+            <br />
+            Seattle, WA · M.S. CS, June 2027
           </p>
         </div>
 
@@ -778,7 +823,7 @@ const Home = () => {
             {SKILLS.map((skill, position) => (
               <div
                 key={skill.group}
-                className="ink-stack-card grid md:grid-cols-12 gap-x-6 gap-y-4 border-t border-white/15 bg-[#0b0b0b] px-1 pt-6 pb-16 md:pb-24"
+                className="ink-stack-card grid md:grid-cols-12 gap-x-6 gap-y-4 border-t border-white/15 bg-[#0a1b2e] px-1 pt-6 pb-16 md:pb-24"
                 style={{ top: `${5 + position * 4.4}rem` }}
               >
                 <p className="ink-label md:col-span-1 text-red-500">({String(position + 1).padStart(2, "0")})</p>
@@ -812,7 +857,7 @@ const Home = () => {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="relative overflow-hidden bg-[#080808] text-[#F1F0EC]">
+      <section id="contact" className="relative overflow-hidden bg-[#06121f] text-[#F1F0EC]">
         <div className="ink-glow opacity-60" aria-hidden="true" />
         <div className="relative px-[6vw] pt-24 md:pt-32 pb-16">
           <SectionLabel index="06">Contact</SectionLabel>

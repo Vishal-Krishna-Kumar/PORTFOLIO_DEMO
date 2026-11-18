@@ -4,7 +4,7 @@ import { POSTS, formatDate } from "./posts";
 import type { IPost } from "./posts";
 import { Page, SectionLabel, jumpToTop } from "./Shell";
 
-const FRAME = "relative min-h-screen bg-[#080808]/90 text-[#F1F0EC]";
+const FRAME = "relative min-h-screen bg-[#06121f]/90 text-[#F1F0EC]";
 
 /** One post as a row: number, title and summary, date. A red line draws over it on hover. */
 export const PostRow = ({ post, index }: { post: IPost; index: number }) => (
