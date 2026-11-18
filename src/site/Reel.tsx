@@ -37,6 +37,49 @@ export function useOnScreen<T extends Element>(threshold = 0.35) {
   return { ref, visible };
 }
 
+/** How a clip is merged into the picture behind it in the "blend" variant. */
+type Tone = "dark" | "light" | "photo";
+const TONES = new Map<string, Tone>();
+
+/**
+ * Looks at a small copy of the picture. Mostly black (a terminal, a dark chart): the black can
+ * simply drop out. Mostly white (a diagram on paper): it is inverted first, then the black drops
+ * out. Anything else is treated as a photograph and only gets soft edges.
+ */
+function measureTone(source: HTMLImageElement | HTMLVideoElement): Tone {
+  try {
+    const size = 32;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (!context) return "photo";
+    context.drawImage(source, 0, 0, size, size);
+    const pixels = context.getImageData(0, 0, size, size).data;
+    let dark = 0;
+    let light = 0;
+    for (let offset = 0; offset < pixels.length; offset += 4) {
+      const luminance = (0.2126 * pixels[offset] + 0.7152 * pixels[offset + 1] + 0.0722 * pixels[offset + 2]) / 255;
+      // "Light" means paper white, not a pale colour: every channel has to be high.
+      const lowest = Math.min(pixels[offset], pixels[offset + 1], pixels[offset + 2]) / 255;
+      if (luminance < 0.16) dark += 1;
+      else if (lowest > 0.84) light += 1;
+    }
+    const total = size * size;
+    if (dark / total > 0.5) return "dark";
+    if (light / total > 0.5) return "light";
+    return "photo";
+  } catch {
+    return "photo";
+  }
+}
+
+const TONE_CLASS: Record<Tone, string> = {
+  dark: "mix-blend-screen",
+  light: "invert hue-rotate-180 mix-blend-screen",
+  photo: "blend-photo",
+};
+
 const Icon = ({ children }: { children: ReactNode }) => (
   <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
     {children}
@@ -54,6 +97,7 @@ const ROUND =
  * - "card":   fills its parent, small pause button only
  * - "hero":   fills its parent, with a caption
  * - "detail": a 16:9 player with caption, previous/next, pause and sound
+ * - "blend":  like "card" but with no box: the clip is merged into whatever is behind it
  */
 export const Reel = ({
   clips,
@@ -62,7 +106,7 @@ export const Reel = ({
   onIndexChange,
 }: {
   clips: Clip[];
-  variant: "card" | "hero" | "detail";
+  variant: "card" | "hero" | "detail" | "blend";
   active?: boolean;
   onIndexChange?: (index: number) => void;
 }) => {
@@ -118,14 +162,28 @@ export const Reel = ({
     handler();
   };
 
-  const cover = variant !== "detail" && clip.kind === "video";
-  const mediaClass = `reel-fade absolute inset-0 w-full h-full ${
-    variant === "card" ? "card-zoom " : ""
-  }${cover ? "object-cover" : variant === "detail" ? "object-contain" : "object-contain p-3"}`;
+  const blend = variant === "blend";
+  const [tones, setTones] = useState<Record<string, Tone>>({});
+  const tone = tones[clip.src] ?? TONES.get(clip.src);
+  const learnTone = (element: HTMLImageElement | HTMLVideoElement) => {
+    if (!blend || TONES.has(clip.src)) return;
+    const found = measureTone(element);
+    TONES.set(clip.src, found);
+    setTones((current) => ({ ...current, [clip.src]: found }));
+  };
+
+  const cover = (variant === "card" || variant === "hero") && clip.kind === "video";
+  const mediaClass = blend
+    ? `absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ${
+        tone ? `opacity-100 ${TONE_CLASS[tone]}` : "opacity-0"
+      }`
+    : `reel-fade absolute inset-0 w-full h-full ${variant === "card" ? "card-zoom " : ""}${
+        cover ? "object-cover" : variant === "detail" ? "object-contain" : "object-contain p-3"
+      }`;
 
   return (
     <div
-      className={`reel overflow-hidden bg-[#0b0d12] ${
+      className={`reel ${blend ? "" : "overflow-hidden bg-[#0b0d12]"} ${
         variant === "detail" ? "relative aspect-video rounded-xl border border-white/10" : "absolute inset-0"
       }`}
     >
@@ -141,6 +199,7 @@ export const Reel = ({
             loop={!many}
             preload="auto"
             className={mediaClass}
+            onLoadedData={(event) => learnTone(event.currentTarget)}
             onLoadedMetadata={(event) => {
               if (clip.start) event.currentTarget.currentTime = clip.start;
             }}
@@ -160,11 +219,17 @@ export const Reel = ({
             }}
           />
         ) : clip.kind === "live" && clip.Live ? (
-          <div key={clip.src} className="reel-fade absolute inset-0 [container-type:inline-size]">
+          <div key={clip.src} className={`reel-fade absolute inset-0 [container-type:inline-size] ${blend ? "mix-blend-screen" : ""}`}>
             <clip.Live />
           </div>
         ) : (
-          <img key={clip.src} src={clip.src} alt={clip.label ?? ""} className={mediaClass} />
+          <img
+            key={clip.src}
+            src={clip.src}
+            alt={clip.label ?? ""}
+            className={mediaClass}
+            onLoad={(event) => learnTone(event.currentTarget)}
+          />
         ))}
 
       {/* One bar per clip, filling as it plays */}
