@@ -465,3 +465,43 @@
     animation: none;
   }
 }
+
+/* Hero photograph: turned to grey, darkened, then washed with the site's red, so a bright
+   picture reads as part of a dark page. Lighter and clearer on the right, where the figures are. */
+.clean-site .hero-photo {
+  /* Keeps the washes below inside the picture, so they never tint the headline */
+  isolation: isolate;
+  z-index: 0;
+}
+.clean-site .hero-photo img {
+  object-position: 60% 72%;
+  filter: grayscale(1) contrast(1.2) brightness(1.02);
+}
+.clean-site .hero-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, #8f1217 0%, #e2313a 44%, #7d1015 100%);
+  mix-blend-mode: multiply;
+}
+.clean-site .hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(90deg, rgba(8, 8, 8, 0.78) 0%, rgba(8, 8, 8, 0.38) 40%, rgba(8, 8, 8, 0) 100%),
+    linear-gradient(0deg, rgba(8, 8, 8, 0.7) 0%, rgba(8, 8, 8, 0) 38%, rgba(8, 8, 8, 0.45) 100%);
+}
+@media (max-width: 767px) {
+  .clean-site .hero-photo img {
+    object-position: 56% 60%;
+  }
+}
+/* On wide screens the picture is nudged right, so the figures stand clear of the headline */
+@media (min-width: 768px) {
+  .clean-site .hero-photo img {
+    transform: translateX(9%) scale(1.2);
+  }
+}
