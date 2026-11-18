@@ -453,10 +453,14 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
         <div className="ink-panel-stage">
           <div
             ref={ref}
-            className="ink-panel-media relative overflow-hidden rounded-lg border border-white/10 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)] transition-transform duration-700 group-hover:scale-[1.015]"
+            className={`ink-panel-media relative ${
+              bleed
+                ? "overflow-hidden rounded-lg border border-white/10 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]"
+                : ""
+            }`}
           >
             {clips.length > 0 ? (
-              <Reel clips={clips} variant="card" active={visible} />
+              <Reel clips={clips} variant={bleed ? "card" : "blend"} active={visible} />
             ) : (
               <div className="absolute inset-0 grid place-items-center bg-[radial-gradient(circle_at_30%_20%,rgba(239,43,43,0.35),transparent_60%)]">
                 <span className="ink-display text-3xl text-white/70 px-6 text-center">{title}</span>
