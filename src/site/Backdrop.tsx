@@ -3,8 +3,8 @@ import type { Theme } from "./theme";
 
 const SCRIM = {
   dark: {
-    narrow: "rgba(0,0,0,0.68)",
-    wide: "rgba(0,0,0,0.62)",
+    narrow: "rgba(6,18,31,0.74)",
+    wide: "rgba(6,18,31,0.7)",
   },
   light: {
     narrow: "rgba(255,255,255,0.8)",
@@ -23,7 +23,7 @@ const SCRIM = {
  */
 const Backdrop = ({ theme }: { theme: Theme }) => (
   <div
-    className={`fixed inset-0 -z-10 ${theme === "dark" ? "bg-black" : "bg-white"}`}
+    className={`fixed inset-0 -z-10 ${theme === "dark" ? "bg-[#06121f]" : "bg-white"}`}
     aria-hidden="true"
   >
     <div

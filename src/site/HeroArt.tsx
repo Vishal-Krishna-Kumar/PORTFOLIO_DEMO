@@ -126,12 +126,12 @@ const HeroArt = () => {
       {/* The hill in front, and someone standing on it looking out */}
       <path
         d="M 0 900 L 0 812 C 260 790, 520 800, 800 770 C 1010 748, 1180 690, 1330 672 C 1450 658, 1540 668, 1600 676 L 1600 900 Z"
-        fill="#050505"
+        fill="#040d17"
         stroke="#ff8a7a"
         strokeWidth="1.2"
         strokeOpacity="0.35"
       />
-      <g transform="translate(1322 673)" fill="#050505" stroke="#ff8a7a" strokeWidth="1.2" strokeOpacity="0.55">
+      <g transform="translate(1322 673)" fill="#040d17" stroke="#ff8a7a" strokeWidth="1.2" strokeOpacity="0.55">
         <circle cx="0" cy="-104" r="12.5" />
         <path d="M -11 -90 C -14 -62, -13 -44, -9 -40 L -11 0 L -3 0 L 0 -36 L 3 0 L 11 0 L 9 -40 C 13 -44, 14 -62, 11 -90 Z" />
         <path d="M -11 -86 C -24 -70, -24 -56, -15 -46 L -11 -50 C -17 -58, -16 -68, -8 -78 Z" />

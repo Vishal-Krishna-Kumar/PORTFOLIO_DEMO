@@ -341,7 +341,7 @@ const Assistant = () => {
         aria-label={open ? "Close the assistant" : "Ask about Vishal"}
         aria-expanded={open}
         title={open ? "Close" : "Ask about me"}
-        className="invertible site-mono group/ask fixed bottom-5 right-5 z-[65] flex h-12 items-center gap-2 rounded-full border border-white/20 bg-[#101010]/90 px-4 text-[13px] text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.9)] backdrop-blur hover:border-red-400 transition-colors"
+        className="invertible site-mono group/ask fixed bottom-5 right-5 z-[65] flex h-12 items-center gap-2 rounded-full border border-white/20 bg-[#0a1b2e]/90 px-4 text-[13px] text-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.9)] backdrop-blur hover:border-red-400 transition-colors"
       >
         <span className="text-red-400">&gt;_</span>
         <span className="max-w-0 overflow-hidden whitespace-nowrap transition-[max-width] duration-300 group-hover/ask:max-w-[8rem]">
@@ -353,7 +353,7 @@ const Assistant = () => {
         <div
           role="dialog"
           aria-label="Ask about Vishal"
-          className="invertible assistant-in fixed bottom-20 right-5 z-[65] flex h-[min(38rem,calc(100vh-10rem))] w-[min(27rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0d0d0f]/95 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.95)] backdrop-blur-xl"
+          className="invertible assistant-in fixed bottom-20 right-5 z-[65] flex h-[min(38rem,calc(100vh-10rem))] w-[min(27rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#081726]/95 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.95)] backdrop-blur-xl"
         >
           <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.04] px-4 py-3">
             <button type="button" aria-label="Close" onClick={() => setOpen(false)} className="h-3 w-3 rounded-full bg-[#ff5f57]" />

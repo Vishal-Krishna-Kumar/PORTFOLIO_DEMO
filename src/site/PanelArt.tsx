@@ -35,12 +35,12 @@ const ChunkArt = () => {
     <svg {...FRAME} className={CLASS} aria-hidden="true">
       <defs>
         <radialGradient id="chunk-glow" cx="72%" cy="42%" r="60%">
-          <stop offset="0%" stopColor="#7a1414" stopOpacity="0.85" />
-          <stop offset="55%" stopColor="#2a0b0d" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#09090b" stopOpacity="0" />
+          <stop offset="0%" stopColor="#14508a" stopOpacity="0.85" />
+          <stop offset="55%" stopColor="#0b2440" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#06121f" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="1600" height="900" fill="#09090b" />
+      <rect width="1600" height="900" fill="#06121f" />
       <rect width="1600" height="900" fill="url(#chunk-glow)" />
       <g transform="rotate(-9 800 450) translate(0 -20)">
         {rows.map((row, index) =>
@@ -67,7 +67,7 @@ const ChunkArt = () => {
             y1={-80}
             x2={x}
             y2={980}
-            stroke={position === 2 ? "#ef2b2b" : "#ffffff"}
+            stroke={position === 2 ? "#f2b233" : "#ffffff"}
             strokeWidth={position === 2 ? 3 : 1.5}
             strokeDasharray={position === 2 ? "0" : "10 12"}
             opacity={position === 2 ? 0.95 : 0.22}
@@ -95,20 +95,20 @@ const BenchArt = () => {
         <radialGradient id="bench-glow" cx="68%" cy="48%" r="58%">
           <stop offset="0%" stopColor="#12324a" stopOpacity="0.9" />
           <stop offset="60%" stopColor="#0b1622" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="#08090b" stopOpacity="0" />
+          <stop offset="100%" stopColor="#06121f" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="1600" height="900" fill="#08090b" />
+      <rect width="1600" height="900" fill="#06121f" />
       <rect width="1600" height="900" fill="url(#bench-glow)" />
       {[120, 240, 380, 540, 720].map((radius) => (
         <ellipse key={radius} cx={centre.x} cy={centre.y} rx={radius} ry={radius * 0.78} fill="none" stroke="#ffffff" strokeWidth="1.2" opacity="0.1" />
       ))}
       {nearest.map((dot, position) => (
-        <line key={`l-${position}`} x1={centre.x} y1={centre.y} x2={dot.x} y2={dot.y} stroke="#ef2b2b" strokeWidth="1.6" opacity={0.75 - position * 0.08} />
+        <line key={`l-${position}`} x1={centre.x} y1={centre.y} x2={dot.x} y2={dot.y} stroke="#f2b233" strokeWidth="1.6" opacity={0.75 - position * 0.08} />
       ))}
       {dots.map((dot, position) => {
         const hit = nearest.includes(dot);
-        return <circle key={position} cx={dot.x} cy={dot.y} r={hit ? dot.size + 3 : dot.size} fill={hit ? "#ff5a5a" : "#ffffff"} opacity={hit ? 1 : 0.16 + (position % 4) * 0.06} />;
+        return <circle key={position} cx={dot.x} cy={dot.y} r={hit ? dot.size + 3 : dot.size} fill={hit ? "#f7c65a" : "#ffffff"} opacity={hit ? 1 : 0.16 + (position % 4) * 0.06} />;
       })}
       <circle cx={centre.x} cy={centre.y} r="15" fill="#ffffff" />
       <circle cx={centre.x} cy={centre.y} r="34" fill="none" stroke="#ffffff" strokeWidth="2" opacity="0.5" />
@@ -138,10 +138,10 @@ const FlowArt = () => {
         <radialGradient id="flow-glow" cx="66%" cy="50%" r="55%">
           <stop offset="0%" stopColor="#3b0f14" stopOpacity="0.9" />
           <stop offset="60%" stopColor="#0c1424" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="#07080b" stopOpacity="0" />
+          <stop offset="100%" stopColor="#06121f" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="1600" height="900" fill="#07080b" />
+      <rect width="1600" height="900" fill="#06121f" />
       <rect width="1600" height="900" fill="url(#flow-glow)" />
       {lines.map((line) => (
         <path

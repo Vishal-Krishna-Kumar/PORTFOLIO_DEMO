@@ -256,7 +256,7 @@ export const ProjectDetail = ({ project, onClose }: { project: Project; onClose:
 
   return (
     <div
-      className={`invertible fixed inset-0 z-50 overflow-y-auto bg-[#080808] text-[#F1F0EC] ${
+      className={`invertible fixed inset-0 z-50 overflow-y-auto bg-[#06121f] text-[#F1F0EC] ${
         closing ? "detail-backdrop-out" : "ink-menu"
       }`}
       role="dialog"
@@ -264,7 +264,7 @@ export const ProjectDetail = ({ project, onClose }: { project: Project; onClose:
       aria-modal="true"
       aria-label={title}
     >
-      <div className="sticky top-0 z-20 flex items-center justify-between gap-4 px-[6vw] py-5 bg-[#080808]/90 backdrop-blur border-b border-white/10">
+      <div className="sticky top-0 z-20 flex items-center justify-between gap-4 px-[6vw] py-5 bg-[#06121f]/90 backdrop-blur border-b border-white/10">
         <p className="ink-label truncate text-white/50">
           {project.category ?? "Project"} · {project.date}
         </p>
