@@ -17,7 +17,7 @@ const HIGHLIGHTS = [
   {
     label: "AI Engineer Intern, Hirello.ai",
     detail:
-      "Built a resume-grounded RAG autofill feature for job-portal forms and contributed code to 5 of the platform's 10 AI agents. Fixed an access-control vulnerability and added cross-browser end-to-end tests.",
+      "Built a resume-grounded RAG autofill feature for job-portal forms and contributed code to 5 of the platform's 10 AI agents. Fixed an access-control vulnerability and added cross-browser end-to-end tests as the team grew its suite from 65 to 1,146 passing tests.",
     meta: "Jul to Sep 2026 · Python, FastAPI, Vertex AI (Gemini), Pinecone, Vue 3",
   },
   {
@@ -31,22 +31,23 @@ const HIGHLIGHTS = [
     label: "ragbench (open source)",
     detail:
       "BM25, TF-IDF and hybrid retrieval implemented from scratch. An inverted index took TF-IDF query latency from 216 ms to 0.22 ms and indexing memory from 4.1 GB to 123 MB, with identical top-10 results on BEIR SciFact.",
-    meta: "Nov 2026 · Python, NumPy, FastAPI, Docker",
+    meta: "Nov 2026 · Python, NumPy, FastAPI, Docker · 34 tests, CI",
     url: "https://github.com/Vishal-Krishna-Kumar/ragbench",
   },
   {
     label: "3D Attention U-Net for brain tumor segmentation",
     detail:
       "Team lead; 2nd place at Hack for Research 2025. Trained and modified public code from Islam et al. (2019) in PyTorch on the BraTS 2019 dataset.",
-    meta: "2025 · PyTorch, 3D medical imaging",
+    meta: "April 2025 · PyTorch, 3D medical imaging",
   },
 ];
 
 const SKILLS: { group: string; items: string }[] = [
-  { group: "Languages", items: "Python, JavaScript, TypeScript, Java, C++, SQL" },
+  { group: "Languages", items: "Python, SQL, JavaScript, TypeScript, Java, Go, C++" },
   { group: "ML", items: "PyTorch, TensorFlow, Keras, Hugging Face, scikit-learn, OpenCV, pandas, NumPy" },
-  { group: "LLM and RAG", items: "RAG, retrieval evaluation, agents, Vertex AI (Gemini), Pinecone, FAISS, Neo4j" },
-  { group: "Backend", items: "FastAPI, SQLAlchemy, MySQL, PostgreSQL, REST APIs, OAuth 2.0, Docker, AWS, CI" },
+  { group: "LLM and RAG", items: "RAG, retrieval evaluation, LangChain, agents, Vertex AI (Gemini), Pinecone, FAISS, Neo4j" },
+  { group: "Backend", items: "FastAPI, Node.js, SQLAlchemy, PostgreSQL, MySQL, MongoDB, REST APIs, OAuth 2.0" },
+  { group: "Frontend and cloud", items: "React, Vue 3, AWS, Azure, Docker, GitHub Actions" },
 ];
 
 /**

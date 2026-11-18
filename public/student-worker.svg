@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" role="img" aria-label="Lab environments set up for graduate courses, and assignments graded">
+  <rect width="800" height="300" fill="#ffffff"/>
+  <g font-family="Inter, Arial, sans-serif">
+    <text x="24" y="40" font-size="17" letter-spacing="3" fill="#5b6b7c">SCHOOL OF TECHNOLOGY AND COMPUTING</text>
+    <text x="24" y="78" font-size="30" font-weight="700" fill="#06121f">City University of Seattle</text>
+
+    <!-- courses -->
+    <rect x="24" y="118" width="212" height="150" rx="12" fill="#06121f"/>
+    <text x="130" y="178" font-size="16" letter-spacing="2" fill="#f7c65a" text-anchor="middle">GRADUATE COURSES</text>
+    <text x="130" y="214" font-size="24" font-weight="700" fill="#ffffff" text-anchor="middle">DS 623 · AI 510</text>
+
+    <path d="M236 193 H286" stroke="#06121f" stroke-width="3"/>
+    <path d="M278 184 l11 9 -11 9" fill="none" stroke="#06121f" stroke-width="3"/>
+
+    <!-- lab environments -->
+    <rect x="296" y="118" width="250" height="150" rx="12" fill="#f4f1e8" stroke="#06121f" stroke-width="2"/>
+    <text x="421" y="148" font-size="15" letter-spacing="2" fill="#5b6b7c" text-anchor="middle">AWS LAB ENVIRONMENTS</text>
+    <g fill="#ffffff" stroke="#06121f" stroke-width="2">
+      <rect x="316" y="162" width="210" height="28" rx="6"/>
+      <rect x="316" y="196" width="210" height="28" rx="6"/>
+      <rect x="316" y="230" width="210" height="28" rx="6"/>
+    </g>
+    <g fill="#f2b233">
+      <circle cx="334" cy="176" r="6"/>
+      <circle cx="334" cy="210" r="6"/>
+      <circle cx="334" cy="244" r="6"/>
+    </g>
+    <g font-size="17" fill="#06121f">
+      <text x="352" y="182">lab 01 · ready</text>
+      <text x="352" y="216">lab 02 · ready</text>
+      <text x="352" y="250">lab 03 · ready</text>
+    </g>
+
+    <path d="M546 193 H596" stroke="#06121f" stroke-width="3"/>
+    <path d="M588 184 l11 9 -11 9" fill="none" stroke="#06121f" stroke-width="3"/>
+
+    <!-- grading -->
+    <rect x="606" y="118" width="170" height="150" rx="12" fill="#ffffff" stroke="#06121f" stroke-width="2"/>
+    <text x="691" y="148" font-size="15" letter-spacing="2" fill="#5b6b7c" text-anchor="middle">GRADING</text>
+    <g stroke="#06121f" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M628 180 l9 9 15 -18"/>
+      <path d="M628 222 l9 9 15 -18"/>
+    </g>
+    <g stroke="#c9d1d9" stroke-width="9" stroke-linecap="round">
+      <path d="M670 182 H752"/>
+      <path d="M670 224 H730"/>
+    </g>
+  </g>
+</svg>
