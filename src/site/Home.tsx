@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 
 import { experiencesData, projectsData } from "../data/info";
 import type { Experience, Project } from "../types/indexs";
+import HeroVideo from "./HeroVideo";
 import { panelArt } from "./PanelArt";
 import { POSTS, formatDate } from "./posts";
 import { ProjectDetail, cardClips, clean, firstSentence, mainLinks } from "./Projects";
@@ -586,8 +587,6 @@ const Home = () => {
   const [openProject, setOpenProject] = useState<Project | null>(null);
   useScrollReveal();
   // The top picture: shifts a few pixels against the pointer and sinks slightly as the page scrolls.
-  const reducedMotion =
-    typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const sceneRef = useRef<HTMLDivElement>(null);
   const scene = useRef({ x: 0, y: 0 });
   const placeScene = () => {
@@ -642,22 +641,12 @@ const Home = () => {
             To return to the drawn horizon, render <HeroArt /> here instead. */}
         <div className="hero-photo absolute inset-0" aria-hidden="true">
           <div ref={sceneRef} className="hero-photo-move absolute inset-0">
-            {/* Plays once and rests on its last frame; the still image shows first and for
-                visitors who ask for reduced motion. */}
-            <video
-              className="h-full w-full object-cover"
-              src="/hero-scene.mp4"
-              poster="/hero-scene.webp"
-              autoPlay={!reducedMotion}
-              muted
-              playsInline
-              preload="auto"
-            />
+            <HeroVideo />
           </div>
         </div>
         <div className="ink-vignette" aria-hidden="true" />
 
-        {/* What the picture is about: looking out toward the first full-time role */}
+        {/* What the picture is about: looking out toward the next role */}
         <div className="rise absolute top-[5.4rem] right-[6vw] hidden sm:block text-right" style={{ animationDelay: "900ms" }}>
           <p className="ink-label flex items-center justify-end gap-2.5 text-white/70">
             <span className="relative flex h-2 w-2">
@@ -667,7 +656,7 @@ const Home = () => {
             Looking out for
           </p>
           <p className="mt-2 text-xl md:text-[1.7rem] md:leading-tight font-medium tracking-[-0.03em] text-white">
-            my first full-time role
+            a full-time role
           </p>
           <p className="ink-label mt-2 text-white/60">SWE or ML · from July 2027</p>
         </div>
