@@ -366,6 +366,12 @@ const COVERS: Record<string, string> = {
   "research-008": "/cover-research-008.webp",
 };
 
+/**
+ * Covers that are themselves screenshots full of text. Behind a figure they would read as a
+ * second, clashing layer of text, so they are blurred down to a wash of colour.
+ */
+const WASH_COVERS = new Set(["oss-chunkaudit", "oss-ragbench", "research-008"]);
+
 /** One full-height panel of the work section. */
 const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number; onOpen: () => void }) => {
   const { ref, visible } = useOnScreen<HTMLDivElement>(0.3);
@@ -402,7 +408,9 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
           alt=""
           loading="lazy"
           className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform duration-[1400ms] group-hover:scale-[1.04] ${
-            backdrop ? "opacity-60" : "scale-125 blur-3xl opacity-25"
+            backdrop && !WASH_COVERS.has(project.id ?? "")
+              ? "scale-105 blur-[5px] opacity-40"
+              : "scale-125 blur-3xl opacity-30"
           }`}
         />
       )}
@@ -453,14 +461,10 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
         <div className="ink-panel-stage">
           <div
             ref={ref}
-            className={`ink-panel-media relative ${
-              bleed
-                ? "overflow-hidden rounded-lg border border-white/10 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]"
-                : ""
-            }`}
+            className="ink-panel-media relative overflow-hidden rounded-xl border border-white/15 bg-[#0b0d12] shadow-[0_50px_110px_-45px_rgba(0,0,0,1)]"
           >
             {clips.length > 0 ? (
-              <Reel clips={clips} variant={bleed ? "card" : "blend"} active={visible} />
+              <Reel clips={clips} variant="card" active={visible} />
             ) : (
               <div className="absolute inset-0 grid place-items-center bg-[radial-gradient(circle_at_30%_20%,rgba(239,43,43,0.35),transparent_60%)]">
                 <span className="ink-display text-3xl text-white/70 px-6 text-center">{title}</span>
