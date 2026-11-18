@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 
 import { experiencesData, projectsData } from "../data/info";
 import type { Experience, Project } from "../types/indexs";
+import { panelArt } from "./PanelArt";
 import { POSTS, formatDate } from "./posts";
 import { ProjectDetail, cardClips, clean, firstSentence, mainLinks } from "./Projects";
 import { Reel, useOnScreen } from "./Reel";
@@ -356,21 +357,12 @@ const ExperienceCard = ({ item, index }: { item: Experience; index: number }) =>
 
 /** Full-panel background pictures for the projects whose media is not a full-screen video. */
 const COVERS: Record<string, string> = {
-  "oss-chunkaudit": "/cover-oss-chunkaudit.webp",
-  "oss-ragbench": "/cover-oss-ragbench.webp",
   "gai-001": "/cover-gai-001.webp",
   "medical-ai-002": "/cover-medical-ai-002.webp",
   "deepfake-003": "/cover-deepfake-003.webp",
   "rl-004": "/cover-rl-004.webp",
   "nlp-005": "/cover-nlp-005.webp",
-  "research-008": "/cover-research-008.webp",
 };
-
-/**
- * Covers that are themselves screenshots full of text. Behind a figure they would read as a
- * second, clashing layer of text, so they are blurred down to a wash of colour.
- */
-const WASH_COVERS = new Set(["oss-chunkaudit", "oss-ragbench", "research-008"]);
 
 /** One full-height panel of the work section. */
 const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number; onOpen: () => void }) => {
@@ -380,6 +372,7 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
   // Projects whose media is all video use it as the whole panel's background.
   const bleed = clips.length > 0 && clips.every((clip) => clip.kind === "video");
   const backdrop = COVERS[project.id ?? ""];
+  const Art = panelArt(project.id ?? "");
   const number = String(index + 1).padStart(2, "0");
   const full = clean(project.title).replace(/\s*\((open source|research in progress)\)$/i, "");
   // "chunkaudit — Auditing RAG Chunking" shows as the name, with the rest as a subtitle.
@@ -401,21 +394,20 @@ const WorkPanel = ({ project, index, onOpen }: { project: Project; index: number
         }
       }}
     >
-      {/* A large picture behind the whole panel; the video or figure sits on top of it */}
-      {!bleed && (backdrop || cover) && (
-        <img
-          src={backdrop ?? cover}
-          alt=""
-          loading="lazy"
-          className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform duration-[1400ms] group-hover:scale-[1.04] ${
-            backdrop && !WASH_COVERS.has(project.id ?? "")
-              ? "scale-105 blur-[5px] opacity-40"
-              : "scale-125 blur-3xl opacity-30"
-          }`}
-        />
+      {/* The background: drawn artwork, a photograph, or a soft wash of the project's own image */}
+      {!bleed && (
+        <div className="ink-panel-bg absolute inset-0 pointer-events-none transition-transform duration-[1600ms] ease-out group-hover:scale-[1.035]">
+          {Art ? (
+            <Art />
+          ) : backdrop ? (
+            <img src={backdrop} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+          ) : cover ? (
+            <img src={cover} alt="" loading="lazy" className="absolute inset-0 h-full w-full scale-125 object-cover opacity-40 blur-3xl" />
+          ) : null}
+        </div>
       )}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#080808]/95 via-[#080808]/60 to-[#080808]/25 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808]/40 pointer-events-none" />
+      {/* Shading: dark behind the text on the left, clear on the right where the picture shows */}
+      <div className="ink-panel-shade absolute inset-0 pointer-events-none" />
       <span className="ink-display ink-ghost absolute -bottom-[0.06em] right-[2vw] select-none pointer-events-none" aria-hidden="true">
         {number}
       </span>
