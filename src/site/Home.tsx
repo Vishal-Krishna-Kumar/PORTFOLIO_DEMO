@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 
 import { experiencesData, projectsData } from "../data/info";
 import type { Experience, Project } from "../types/indexs";
+import HeroArt from "./HeroArt";
 import { panelArt } from "./PanelArt";
 import { POSTS, formatDate } from "./posts";
 import { ProjectDetail, cardClips, clean, firstSentence, mainLinks } from "./Projects";
@@ -606,7 +607,7 @@ const Home = () => {
 
       {/* Hero */}
       <section id="home" className="relative h-screen min-h-[560px] overflow-hidden text-white">
-        <div className="ink-glow" aria-hidden="true" />
+        <HeroArt />
         <div className="ink-vignette" aria-hidden="true" />
 
         <p className="ink-label absolute top-[5.2rem] right-[6vw] hidden sm:flex items-center gap-2.5 text-white/70">

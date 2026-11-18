@@ -443,3 +443,25 @@
     background: linear-gradient(0deg, rgba(8, 8, 8, 0.97) 0%, rgba(8, 8, 8, 0.78) 55%, rgba(8, 8, 8, 0.55) 100%);
   }
 }
+
+/* Hero scene: glints and stars shimmer, the light around the sun breathes */
+@keyframes hero-twinkle {
+  0%, 100% { opacity: var(--o, 1); }
+  50% { opacity: 0.08; }
+}
+.clean-site .hero-twinkle {
+  animation: hero-twinkle 5.5s ease-in-out infinite;
+}
+@keyframes hero-halo {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+.clean-site .hero-halo {
+  animation: hero-halo 8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .clean-site .hero-twinkle,
+  .clean-site .hero-halo {
+    animation: none;
+  }
+}
