@@ -297,11 +297,6 @@ export const projectsData: Project[] = [
     ],
     links: [
       { name: "Write-up: what I did", url: "/#/blog/deepfake-detection-with-xception" },
-      {
-        name: "GitHub Repository",
-        url: "https://github.com/Vishal-Krishna-Kumar/DeepFake-Detection-System",
-        // icon: "github"
-      },
 
     ],
     recognition: "Published: TDEMAS, 2023"
